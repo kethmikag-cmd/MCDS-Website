@@ -238,6 +238,111 @@ header {
     color: var(--color-text-gray);
 }
 
+/* Contact Form Styles */
+.contact-section {
+    /* Removed display: flex and justify-content: center */
+}
+
+.contact-section .container {
+    display: flex;
+    justify-content: flex-end;
+    /* Align right */
+    align-items: center;
+    position: relative;
+}
+
+.inquiry-box {
+    background-color: var(--color-dark-gray);
+    padding: 50px 60px;
+    /* Expanded padding */
+    border-radius: 20px;
+    /* Smooth edges */
+    box-shadow: 0 0 15px rgba(212, 175, 55, 0.3), 0 0 30px rgba(212, 175, 55, 0.1);
+    /* Glowing outline */
+    border: 1px solid var(--color-gold);
+    max-width: 700px;
+    /* Larger max-width */
+    width: 100%;
+    margin: 0;
+    /* Align right via flex container */
+}
+
+.inquiry-box h2 {
+    text-align: center;
+    text-transform: uppercase;
+    margin-bottom: var(--spacing-lg);
+    border-bottom: none;
+    /* Override default underline from text-section */
+    position: static;
+    /* Reset relative positioning */
+}
+
+.inquiry-box h2::after {
+    display: none;
+    /* Remove gold underline from text-section h2 */
+}
+
+.form-group {
+    margin-bottom: var(--spacing-md);
+}
+
+.form-group label {
+    display: block;
+    color: var(--color-gold);
+    margin-bottom: 5px;
+    font-weight: 700;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 10px;
+    border-radius: 8px;
+    /* Smooth input edges */
+    border: 1px solid #444;
+    background-color: #0a0a0a;
+    color: var(--color-white);
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1rem;
+    transition: all var(--transition-speed);
+}
+
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+    color: #666;
+    /* Grey placeholder text */
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: var(--color-gold);
+    box-shadow: 0 0 8px rgba(212, 175, 55, 0.4);
+}
+
+.submit-btn {
+    display: block;
+    width: 100%;
+    padding: 12px;
+    background-color: var(--color-gold);
+    color: var(--color-black);
+    font-weight: bold;
+    font-family: 'Montserrat', sans-serif;
+    text-transform: uppercase;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1.1rem;
+    transition: all var(--transition-speed);
+    margin-top: var(--spacing-md);
+}
+
+.submit-btn:hover {
+    background-color: #fceea7;
+    box-shadow: 0 0 15px var(--color-gold);
+}
+
 /* Add slight offset handling for sticky header when jumping to anchors */
 html {
     scroll-behavior: smooth;

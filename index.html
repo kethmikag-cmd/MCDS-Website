@@ -40,7 +40,7 @@
                         </ul>
                     </li>
                     <li class="nav-item"><a href="#" class="nav-link">News</a></li>
-                    <li class="nav-item"><a href="#" class="nav-link">Contact</a></li>
+                    <li class="nav-item"><a href="#" onclick="showTab('contact')" class="nav-link">Contact</a></li>
                 </ul>
             </nav>
         </div>
@@ -119,6 +119,41 @@
                     <h2>Siyapatha Magazine</h2>
                     <p>Siyapatha is our trilingual magazine published every month with school news, interviews of
                         prominent alumni and officials, and literary and artistic creations of Senanayakians.</p>
+                </div>
+            </section>
+        </div>
+
+        <!-- Contact Tab Content -->
+        <div id="contact-content" class="tab-content hidden">
+            <section class="page-title-section">
+                <div class="container">
+                    <h1>Contact</h1>
+                </div>
+            </section>
+
+            <section class="text-section contact-section">
+                <div class="container">
+                    <div class="inquiry-box">
+                        <h2>Inquiries</h2>
+                        <form action="#" method="post">
+                            <div class="form-group">
+                                <label for="name">Name</label>
+                                <input type="text" id="name" name="name" placeholder="Your name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="email">Email</label>
+                                <input type="email" id="email" name="email" placeholder="your@example.com" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="message">Message/Inquiry</label>
+                                <textarea id="message" name="message" rows="5" placeholder="Your message"
+                                    required></textarea>
+                            </div>
+                            <button type="submit" class="submit-btn"
+                                onclick="event.preventDefault(); alert('Inquiry feature coming soon!');">Send
+                                Inquiry</button>
+                        </form>
+                    </div>
                 </div>
             </section>
         </div>

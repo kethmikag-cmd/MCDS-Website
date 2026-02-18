@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Media Circle of D. S. Senanayake College</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Lato:wght@400;700&family=Montserrat:wght@700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <header>
+        <div class="container header-container">
+            <a href="#" onclick="showTab('home')" class="logo">MCDS</a>
+            <nav>
+                <ul class="nav-links">
+                    <!-- About Us Tab with Dropdown -->
+                    <li class="nav-item">
+                        <a href="#" onclick="showTab('about')" class="nav-link">About Us</a>
+                        <ul class="dropdown">
+                            <li><a href="#" onclick="showTab('about'); scrollToSection('who-are-we')">Who Are We?</a>
+                            </li>
+                            <li><a href="#" onclick="showTab('about'); scrollToSection('vision')">Vision</a></li>
+                            <li><a href="#" onclick="showTab('about'); scrollToSection('mission')">Mission</a></li>
+                            <li><a href="#" onclick="showTab('about'); scrollToSection('history')">History</a></li>
+                        </ul>
+                    </li>
+                    <!-- Publications Tab with Dropdown -->
+                    <li class="nav-item">
+                        <a href="#" onclick="showTab('publications')" class="nav-link">Publications</a>
+                        <ul class="dropdown">
+                            <li><a href="#"
+                                    onclick="showTab('publications'); scrollToSection('siyapatha-magazine')">Siyapatha
+                                    Magazine</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item"><a href="#" class="nav-link">News</a></li>
+                    <li class="nav-item"><a href="#" class="nav-link">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <!-- Home Tab Content -->
+        <div id="home-content" class="tab-content active">
+            <section class="hero">
+                <div class="container">
+                    <img src="Images/DS Media both.png" alt="MCDS Logo" class="hero-logo">
+                    <h1>Media Circle of D.S.Senanayake College</h1>
+                    <p>WE LEAD THE AUDIENCE</p>
+                </div>
+            </section>
+        </div>
+
+        <!-- About Us Tab Content -->
+        <div id="about-content" class="tab-content hidden">
+            <section class="page-title-section">
+                <div class="container">
+                    <h1>About Us</h1>
+                </div>
+            </section>
+
+            <section id="who-are-we" class="text-section">
+                <div class="container">
+                    <h2>Who Are We?</h2>
+                    <p>The Media Circle of D. S. Senanayake College, better known as MCDSSC and spanning a history of
+                        more
+                        than three decades since inauguration, is a trilingual school club recognized across Sri Lanka
+                        for its efforts to nurture and inspire the next generation of pioneers in the Sri Lankan Media
+                        genealogy.</p>
+                </div>
+            </section>
+
+            <section id="vision" class="text-section">
+                <div class="container">
+                    <h2>Vision</h2>
+                    <p>To become a leading media unit in Sri Lanka and assuring a standard place for D. S. Senanayake
+                        College in the Sri Lankan school announcing arena while marking each member a successful media
+                        personality in the country.</p>
+                </div>
+            </section>
+
+            <section id="mission" class="text-section">
+                <div class="container">
+                    <h2>Mission</h2>
+                    <p>To promote and develop the vocal skills and announcing skills among the school students as an
+                        important cocurricular activity to produce media personalities with a proper awareness and
+                        development in media affiliated skills.</p>
+                </div>
+            </section>
+
+            <section id="history" class="text-section">
+                <div class="container">
+                    <h2>History</h2>
+                    <p>Starting off from humble beginnings in 1994, the rise to prominence and prestige of Media Circle
+                        of D. S. Senanayake College is a continuous decades-long tale of unwavering commitment,
+                        dedication
+                        and vision to conquer its place as the flagbearers of Sri Lanka's evolving media lineage.</p>
+                </div>
+            </section>
+        </div>
+
+        <!-- Publications Tab Content -->
+        <div id="publications-content" class="tab-content hidden">
+            <section class="page-title-section">
+                <div class="container">
+                    <h1>Publications</h1>
+                </div>
+            </section>
+
+            <section id="siyapatha-magazine" class="text-section">
+                <div class="container">
+                    <h2>Siyapatha Magazine</h2>
+                    <p>Siyapatha is our trilingual magazine published every month with school news, interviews of
+                        prominent alumni and officials, and literary and artistic creations of Senanayakians.</p>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 Media Circle of D. S. Senanayake College. All Rights Reserved.</p>
+        </div>
+    </footer>
+    <script src="script.js"></script>
+</body>
+
+</html>

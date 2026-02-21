@@ -18,10 +18,15 @@
         <div class="container header-container">
             <a href="#" onclick="showTab('home')" class="logo">MCDS</a>
             <nav>
-                <ul class="nav-links">
+                <button class="hamburger" id="hamburger-btn" aria-label="Toggle navigation" aria-expanded="false">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+                <ul class="nav-links" id="nav-links">
                     <!-- About Us Tab with Dropdown -->
                     <li class="nav-item">
-                        <a href="#" onclick="showTab('about')" class="nav-link">About Us</a>
+                        <a href="#" onclick="showTab('about')" class="nav-link" data-tab="about">About Us</a>
                         <ul class="dropdown">
                             <li><a href="#" onclick="showTab('about'); scrollToSection('who-are-we')">Who Are We?</a>
                             </li>
@@ -32,15 +37,15 @@
                     </li>
                     <!-- Publications Tab with Dropdown -->
                     <li class="nav-item">
-                        <a href="#" onclick="showTab('publications')" class="nav-link">Publications</a>
+                        <a href="#" onclick="showTab('publications')" class="nav-link" data-tab="publications">Publications</a>
                         <ul class="dropdown">
                             <li><a href="#"
                                     onclick="showTab('publications'); scrollToSection('siyapatha-magazine')">Siyapatha
                                     Magazine</a></li>
                         </ul>
                     </li>
-                    <li class="nav-item"><a href="#" class="nav-link">News</a></li>
-                    <li class="nav-item"><a href="#" onclick="showTab('contact')" class="nav-link">Contact</a></li>
+                    <li class="nav-item"><a href="#" class="nav-link" data-tab="news">News</a></li>
+                    <li class="nav-item"><a href="#" onclick="showTab('contact')" class="nav-link" data-tab="contact">Contact</a></li>
                 </ul>
             </nav>
         </div>
@@ -54,6 +59,7 @@
                     <img src="Images/DS Media both.png" alt="MCDS Logo" class="hero-logo">
                     <h1>Media Circle of D.S.Senanayake College</h1>
                     <p>WE LEAD THE AUDIENCE</p>
+                    <a href="#" onclick="showTab('about'); return false;" class="hero-cta">Discover More</a>
                 </div>
             </section>
         </div>

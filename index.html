@@ -11,6 +11,15 @@
         href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Lato:wght@400;700&family=Montserrat:wght@700&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="style.css">
+    <script type="importmap">
+        {
+            "imports": {
+                "firebase/app": "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js",
+                "firebase/analytics": "https://www.gstatic.com/firebasejs/10.12.2/firebase-analytics.js",
+                "firebase/database": "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js"
+            }
+        }
+    </script>
 </head>
 
 <body>
@@ -37,7 +46,8 @@
                     </li>
                     <!-- Publications Tab with Dropdown -->
                     <li class="nav-item">
-                        <a href="#" onclick="showTab('publications')" class="nav-link" data-tab="publications">Publications</a>
+                        <a href="#" onclick="showTab('publications')" class="nav-link"
+                            data-tab="publications">Publications</a>
                         <ul class="dropdown">
                             <li><a href="#"
                                     onclick="showTab('publications'); scrollToSection('siyapatha-magazine')">Siyapatha
@@ -45,7 +55,8 @@
                         </ul>
                     </li>
                     <li class="nav-item"><a href="#" class="nav-link" data-tab="news">News</a></li>
-                    <li class="nav-item"><a href="#" onclick="showTab('contact')" class="nav-link" data-tab="contact">Contact</a></li>
+                    <li class="nav-item"><a href="#" onclick="showTab('contact')" class="nav-link"
+                            data-tab="contact">Contact</a></li>
                 </ul>
             </nav>
         </div>
@@ -55,7 +66,27 @@
         <!-- Home Tab Content -->
         <div id="home-content" class="tab-content active">
             <section class="hero">
-                <div class="container">
+                <!-- Background Slideshow -->
+                <div class="hero-slideshow">
+                    <div class="slide"
+                        style="background-image: url('Images/598055872_1454392313314706_7306116201682928065_n.jpg');">
+                    </div>
+                    <div class="slide"
+                        style="background-image: url('Images/599081343_1454392626648008_5108513334297776338_n.jpg');">
+                    </div>
+                    <div class="slide"
+                        style="background-image: url('Images/599099382_1454400516647219_7761865302152585937_n.jpg');">
+                    </div>
+                    <div class="slide"
+                        style="background-image: url('Images/599653252_1454399239980680_2913467772723890983_n.jpg');">
+                    </div>
+                    <div class="slide"
+                        style="background-image: url('Images/600347197_1454392329981371_3857630184493199513_n.jpg');">
+                    </div>
+                    <div class="slideshow-overlay"></div>
+                </div>
+
+                <div class="container hero-content">
                     <img src="Images/DS Media both.png" alt="MCDS Logo" class="hero-logo">
                     <h1>Media Circle of D.S.Senanayake College</h1>
                     <p>WE LEAD THE AUDIENCE</p>
@@ -123,8 +154,14 @@
             <section id="siyapatha-magazine" class="text-section">
                 <div class="container">
                     <h2>Siyapatha Magazine</h2>
-                    <p>Siyapatha is our trilingual magazine published every month with school news, interviews of
-                        prominent alumni and officials, and literary and artistic creations of Senanayakians.</p>
+                    <p>Siyapatha is the only trillingual school magazine by D.S.Senanayake College,
+published as three editions over three consecutive academic terms every
+year. Released officially in digital and paperback format, the magazine is a
+treasure trove of the diverse ideas, artistic creativity, and vibrant talent of the
+Senanayakian community.</p>
+                    <p>The magazine collects diverse forms of writing like poetry, short stories, articles and opinion pieces (except radically political content) in all three main languages: Sinhala, English, Tamil. There are also sections dedicated for written interviews of school officials, teachers, and prominent Senanayakian alumni including reflections on their involvement and time at D.S.Senananayake College, event briefings and also creative art pieces by Senanayakians.</p>
+                    <p>More than the mere objective of improving talent of young Senanayakians and encouraging reading, Siyapatha upholds the cultural continuity of
+D.S.Senanayake College.</p>
                 </div>
             </section>
         </div>
@@ -171,6 +208,7 @@
         </div>
     </footer>
     <script src="script.js"></script>
+    <script type="module" src="firebase-config.js"></script>
 </body>
 
 </html>

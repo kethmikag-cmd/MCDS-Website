@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register — Ninnada'26 | MCDS</title>
+    <meta name="description" content="Register now for Ninnada'26 — the largest all-island trillingual media competition in Sri Lanka, organized by the Media Circle of D.S.Senanayake College.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Lato:wght@400;700&family=Montserrat:wght@400;700;900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <!-- Firebase SDK importmap (must be before any module script) -->
+    <script type="importmap">
+    {
+        "imports": {
+            "firebase/app": "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js",
+            "firebase/firestore": "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js"
+        }
+    }
+    </script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            corePlugins: {
+                preflight: false,
+                container: false,
+            }
+        }
+    </script>
+    <style>
+        /* Registration Page Styles */
+        .reg-page {
+            min-height: 100vh;
+            background: linear-gradient(180deg, #000000 0%, #020713 40%, #081125 80%, #000000 100%);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Glassmorphic Form Container */
+        .glass-form {
+            background: rgba(5, 5, 10, 0.75);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(218, 165, 32, 0.2);
+            box-shadow:
+                0 0 40px rgba(218, 165, 32, 0.06),
+                0 0 80px rgba(218, 165, 32, 0.03),
+                inset 0 1px 0 rgba(255, 255, 255, 0.04);
+            border-radius: 24px;
+        }
+
+        /* Input field styles */
+        .reg-input,
+        .reg-select {
+            width: 100%;
+            padding: 14px 18px;
+            background: rgba(0, 0, 0, 0.55);
+            border: 1px solid rgba(218, 165, 32, 0.2);
+            border-radius: 10px;
+            color: #ffffff;
+            font-family: 'Lato', sans-serif;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            outline: none;
+            appearance: none;
+            -webkit-appearance: none;
+        }
+
+        .reg-input::placeholder {
+            color: rgba(180, 180, 180, 0.4);
+        }
+
+        .reg-input:focus,
+        .reg-select:focus {
+            border-color: rgba(218, 165, 32, 0.7);
+            box-shadow: 0 0 0 3px rgba(218, 165, 32, 0.12), 0 0 15px rgba(218, 165, 32, 0.15);
+            background: rgba(0, 0, 0, 0.7);
+        }
+
+        .reg-select {
+            cursor: pointer;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23DAA520' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 16px center;
+            padding-right: 44px;
+        }
+
+        .reg-select option {
+            background-color: #0a0a0a;
+            color: #ffffff;
+        }
+
+        .reg-label {
+            display: block;
+            color: rgba(218, 165, 32, 0.85);
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            font-size: 0.75rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+
+        /* Submit button */
+        .reg-submit-btn {
+            width: 100%;
+            padding: 16px;
+            background-color: #ffff00;
+            color: #3e2723;
+            font-weight: 900;
+            font-family: 'Montserrat', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            font-size: 0.9rem;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 0 20px rgba(255, 255, 0, 0.5), 0 0 40px rgba(255, 255, 0, 0.15);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            margin-top: 8px;
+        }
+
+        .reg-submit-btn:hover {
+            transform: scale(1.03);
+            background-color: #ffff33;
+            box-shadow: 0 0 30px rgba(255, 255, 0, 0.9), 0 0 60px rgba(255, 255, 0, 0.3);
+        }
+
+        .reg-submit-btn:active {
+            transform: scale(0.98);
+        }
+
+        /* Back link */
+        .back-link {
+            color: rgba(218, 165, 32, 0.6);
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .back-link:hover {
+            color: rgba(255, 255, 0, 0.9);
+            text-shadow: 0 0 10px rgba(255, 255, 0, 0.5);
+        }
+
+        /* Divider line between form groups */
+        .form-divider {
+            border: none;
+            border-top: 1px solid rgba(218, 165, 32, 0.08);
+            margin: 8px 0;
+        }
+
+        /* Orb blur filters */
+        .ninnada-orb { filter: blur(70px); }
+        .orb-sm { filter: blur(50px); }
+        .orb-lg { filter: blur(100px); }
+
+        /* ── Success overlay ───────────────────────────────────────────────── */
+        #success-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            background: rgba(0,0,0,0.82);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            align-items: center;
+            justify-content: center;
+            animation: fadeInOverlay 0.45s ease;
+        }
+
+        @keyframes fadeInOverlay {
+            from { opacity: 0; }
+            to   { opacity: 1; }
+        }
+
+        .success-card {
+            background: rgba(5,5,10,0.9);
+            border: 1px solid rgba(255,255,0,0.3);
+            box-shadow:
+                0 0 40px rgba(255,255,0,0.12),
+                0 0 80px rgba(255,255,0,0.05),
+                inset 0 1px 0 rgba(255,255,255,0.04);
+            border-radius: 24px;
+            padding: 52px 44px;
+            max-width: 480px;
+            width: 90%;
+            text-align: center;
+            animation: slideUpCard 0.5s cubic-bezier(0.175,0.885,0.32,1.275);
+        }
+
+        @keyframes slideUpCard {
+            from { transform: translateY(30px); opacity: 0; }
+            to   { transform: translateY(0);    opacity: 1; }
+        }
+
+        .success-tick {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: rgba(255,255,0,0.1);
+            border: 2px solid rgba(255,255,0,0.5);
+            box-shadow: 0 0 30px rgba(255,255,0,0.3), 0 0 60px rgba(255,255,0,0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 24px;
+            font-size: 2.4rem;
+            animation: popTick 0.6s cubic-bezier(0.175,0.885,0.32,1.275) 0.2s both;
+        }
+
+        @keyframes popTick {
+            from { transform: scale(0.4); opacity: 0; }
+            to   { transform: scale(1);   opacity: 1; }
+        }
+
+        .success-title {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 900;
+            font-size: 1.5rem;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            color: #ffff00;
+            text-shadow: 0 0 20px rgba(255,255,0,0.6), 0 0 40px rgba(255,255,0,0.2);
+            margin-bottom: 16px;
+        }
+
+        .success-msg {
+            font-family: 'Lato', sans-serif;
+            color: rgba(210,210,210,0.85);
+            font-size: 1rem;
+            line-height: 1.7;
+            margin-bottom: 32px;
+        }
+
+        .success-back-btn {
+            display: inline-block;
+            padding: 13px 36px;
+            background-color: #ffff00;
+            color: #1a1000;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 900;
+            font-size: 0.8rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 0 20px rgba(255,255,0,0.5), 0 0 40px rgba(255,255,0,0.15);
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .success-back-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 35px rgba(255,255,0,0.9), 0 0 60px rgba(255,255,0,0.3);
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container header-container">
+            <a href="index.html" class="logo logo-ninnada" id="reg-logo">Ninnada'26</a>
+            <nav>
+                <ul class="nav-links">
+                    <li class="nav-item"><a href="index.html#ninnada" class="nav-link" onclick="goToNinnada(event)">← Back to Ninnada</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Page -->
+    <div class="reg-page flex-1">
+
+        <!-- Animated Glowing Orbs Background -->
+        <div class="absolute inset-0 pointer-events-none overflow-hidden z-0">
+            <div class="ninnada-orb orb-lg orb-1" style="width:600px;height:600px;top:-150px;left:-200px;"></div>
+            <div class="ninnada-orb orb-2" style="width:420px;height:420px;top:30%;right:-120px;background:radial-gradient(circle, rgba(255,215,0,0.5) 0%, rgba(218,165,32,0.1) 50%, transparent 80%);"></div>
+            <div class="ninnada-orb orb-lg orb-3" style="width:580px;height:580px;bottom:0;left:-150px;"></div>
+            <div class="ninnada-orb orb-4" style="width:460px;height:460px;bottom:-80px;right:-140px;background:radial-gradient(circle, rgba(255,215,0,0.45) 0%, rgba(218,165,32,0.08) 50%, transparent 80%);"></div>
+            <div class="ninnada-orb orb-sm orb-5" style="width:260px;height:260px;top:20%;left:40%;background:radial-gradient(circle, rgba(218,165,32,0.4) 0%, rgba(218,165,32,0.06) 50%, transparent 80%);"></div>
+            <div class="ninnada-orb orb-sm orb-6" style="width:200px;height:200px;top:60%;right:30%;background:radial-gradient(circle, rgba(255,230,0,0.55) 0%, rgba(218,165,32,0.1) 50%, transparent 80%);"></div>
+        </div>
+
+        <!-- Form Section -->
+        <main class="relative z-10 flex-1 flex items-center justify-center py-16 px-4">
+            <div class="w-full max-w-2xl">
+
+                <!-- Page Title -->
+                <div class="text-center mb-12">
+                    <h1 class="text-4xl md:text-6xl font-black text-glow-yellow-lg tracking-widest uppercase mb-4 font-[Montserrat]">
+                        Registration Form
+                    </h1>
+                    <p class="text-gray-400 text-base md:text-lg font-[Lato] tracking-wide">
+                        Complete your registration for <span class="text-yellow-400 font-bold">Ninnada'26</span>
+                    </p>
+                    <div class="mt-5 w-20 h-px mx-auto bg-gradient-to-r from-transparent via-yellow-500 to-transparent opacity-60"></div>
+                </div>
+
+                <!-- Glass Form Card -->
+                <div class="glass-form px-8 md:px-12 py-10">
+                    <form id="registration-form" onsubmit="handleSubmit(event)" novalidate>
+
+                        <!-- Full Name -->
+                        <div class="mb-6">
+                            <label for="fullName" class="reg-label">Full Name</label>
+                            <input type="text" id="fullName" name="fullName" class="reg-input"
+                                placeholder="Enter your full name" required>
+                        </div>
+
+                        <!-- School -->
+                        <div class="mb-6">
+                            <label for="school" class="reg-label">School</label>
+                            <input type="text" id="school" name="school" class="reg-input"
+                                placeholder="Name of your school" required>
+                        </div>
+
+                        <!-- Email -->
+                        <div class="mb-6">
+                            <label for="email" class="reg-label">Email Address</label>
+                            <input type="email" id="email" name="email" class="reg-input"
+                                placeholder="your@email.com" required>
+                        </div>
+
+                        <!-- Mobile Number -->
+                        <div class="mb-6">
+                            <label for="mobileNumber" class="reg-label">Mobile Number</label>
+                            <input type="tel" id="mobileNumber" name="mobileNumber" class="reg-input"
+                                placeholder="+94 7X XXX XXXX" required>
+                        </div>
+
+                        <hr class="form-divider mb-6">
+
+                        <!-- Category -->
+                        <div class="mb-6">
+                            <label for="category" class="reg-label">Competition Category</label>
+                            <select id="category" name="category" class="reg-select" required>
+                                <option value="" disabled selected>Select your category</option>
+                                <option value="news-presenting">News Presenting</option>
+                                <option value="news-editing">News Editing</option>
+                                <option value="program-presenting">Program Presenting</option>
+                                <option value="radio-presenting">Radio Presenting</option>
+                                <option value="sports-commentary">Sports Commentary</option>
+                                <option value="dubbing">Dubbing</option>
+                                <option value="cartoon-drawing">Cartoon Drawing</option>
+                                <option value="photography">Photography</option>
+                                <option value="videography">Videography</option>
+                                <option value="graphic-designing">Graphic Designing</option>
+                                <option value="short-film">Short Film</option>
+                            </select>
+                        </div>
+
+                        <!-- Language -->
+                        <div class="mb-6">
+                            <label for="language" class="reg-label">Language Medium</label>
+                            <select id="language" name="language" class="reg-select" required>
+                                <option value="" disabled selected>Select your language</option>
+                                <option value="sinhala">Sinhala</option>
+                                <option value="english">English</option>
+                                <option value="tamil">Tamil</option>
+                            </select>
+                        </div>
+
+                        <!-- Age Category -->
+                        <div class="mb-8">
+                            <label for="ageCategory" class="reg-label">Age Category</label>
+                            <select id="ageCategory" name="ageCategory" class="reg-select" required>
+                                <option value="" disabled selected>Select your age category</option>
+                                <option value="junior">Junior (Under 13)</option>
+                                <option value="intermediate">Intermediate (13–15)</option>
+                                <option value="senior">Senior (16–19)</option>
+                            </select>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <button type="submit" id="submit-btn" class="reg-submit-btn">
+                            Submit Registration
+                        </button>
+
+                        <!-- Status Message -->
+                        <p id="form-status" class="text-center mt-4 text-sm font-[Montserrat] font-bold tracking-wide hidden"></p>
+
+                    </form>
+                </div>
+
+                <!-- Back Link -->
+                <div class="text-center mt-8">
+                    <a href="index.html" onclick="goToNinnada(event)" class="back-link">
+                        ← Return to Ninnada'26
+                    </a>
+                </div>
+
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="relative z-10">
+            <div class="container">
+                <p>&copy; 2026 Media Circle of D. S. Senanayake College. All Rights Reserved.</p>
+            </div>
+        </footer>
+    </div>
+
+    <!-- ── Success Overlay (shown after successful Firestore write) ─────────── -->
+    <div id="success-overlay" class="hidden">
+        <div class="success-card">
+            <div class="success-tick">&#10003;</div>
+            <p class="success-title">Registration Recorded!</p>
+            <p class="success-msg">
+                Your registration has been recorded.<br>
+                Thank you for registering for <strong style="color:#ffff00;">Ninnada'25</strong>.
+            </p>
+            <a href="index.html" onclick="goToNinnada(event)" class="success-back-btn">
+                Back to Ninnada
+            </a>
+        </div>
+    </div>
+
+    <!-- Non-module helpers -->
+    <script>
+        function goToNinnada(e) {
+            e.preventDefault();
+            sessionStorage.setItem('openTab', 'ninnada');
+            window.location.href = 'index.html';
+        }
+    </script>
+
+    <!-- Firebase Firestore module script -->
+    <script type="module">
+        import { initializeApp } from 'firebase/app';
+        import { getFirestore, collection, doc, runTransaction, serverTimestamp } from 'firebase/firestore';
+
+        // ── Firebase config for Ninnada registrations (project: aditha-ca321) ──
+        const firebaseConfig = {
+            apiKey: "AIzaSyChk85PHMlKF5SFGwXSITg0u2QoE2azkws",
+            authDomain: "aditha-ca321.firebaseapp.com",
+            databaseURL: "https://aditha-ca321.firebaseio.com",
+            projectId: "aditha-ca321",
+            storageBucket: "aditha-ca321.firebasestorage.app",
+            messagingSenderId: "359615698823",
+            appId: "1:359615698823:web:359465a9f94fdb3caee522",
+            measurementId: "G-1QZQK8F8EZ"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db  = getFirestore(app);
+
+        // Expose handleSubmit globally so the form's onsubmit attribute can call it
+        window.handleSubmit = async function(e) {
+            e.preventDefault();
+
+            const form       = document.getElementById('registration-form');
+            const status     = document.getElementById('form-status');
+            const btn        = document.getElementById('submit-btn');
+            const successBox = document.getElementById('success-overlay');
+
+            // ── Validate required fields ──────────────────────────────────────────
+            const fields = form.querySelectorAll('[required]');
+            let valid = true;
+            fields.forEach(f => {
+                if (!f.value.trim()) {
+                    f.style.borderColor = 'rgba(255,80,80,0.7)';
+                    f.style.boxShadow   = '0 0 0 3px rgba(255,80,80,0.1)';
+                    valid = false;
+                } else {
+                    f.style.borderColor = '';
+                    f.style.boxShadow   = '';
+                }
+            });
+
+            if (!valid) {
+                status.textContent  = 'Please fill in all required fields.';
+                status.className    = 'text-center mt-4 text-sm font-[Montserrat] font-bold tracking-wide text-red-400';
+                return;
+            }
+
+            // ── Collect field values ──────────────────────────────────────────────
+            const fullName     = document.getElementById('fullName').value.trim();
+            const school       = document.getElementById('school').value.trim();
+            const email        = document.getElementById('email').value.trim();
+            const mobilenumber = document.getElementById('mobileNumber').value.trim();
+            const category     = document.getElementById('category').value;
+            const language     = document.getElementById('language').value;
+            const agecategory  = document.getElementById('ageCategory').value;
+
+            // ── Loading state ─────────────────────────────────────────────────────
+            btn.textContent  = 'Submitting…';
+            btn.disabled     = true;
+            btn.style.opacity = '0.7';
+            status.textContent = '';
+
+            try {
+                // Generate a document reference with auto-ID
+                const regDocRef = doc(collection(db, 'registrations'));
+                const statsRef = doc(db, 'stats', 'overview');
+
+                // Run atomic transaction to save registration and update stats/overview
+                await runTransaction(db, async (transaction) => {
+                    const statsDoc = await transaction.get(statsRef);
+                    let schools = [];
+                    let contestantCount = 0;
+                    let schoolCount = 0;
+
+                    if (statsDoc.exists()) {
+                        const data = statsDoc.data();
+                        schools = data.schools || [];
+                        contestantCount = data.contestantCount || 0;
+                        schoolCount = data.schoolCount || 0;
+                    }
+
+                    // Increment stats
+                    contestantCount += 1;
+                    const normalizedSchool = school.trim().toLowerCase();
+                    const hasSchool = schools.some(s => s.trim().toLowerCase() === normalizedSchool);
+                    
+                    if (!hasSchool) {
+                        schools.push(school.trim());
+                        schoolCount += 1;
+                    }
+
+                    // Save registration record (satisfying phone, mobilenumber, agecategory, ageCategory)
+                    transaction.set(regDocRef, {
+                        fullName,
+                        school,
+                        email,
+                        mobilenumber,
+                        phone: mobilenumber,
+                        category,
+                        language,
+                        agecategory,
+                        ageCategory: agecategory,
+                        submittedAt: serverTimestamp()
+                    });
+
+                    // Save stats document
+                    transaction.set(statsRef, {
+                        contestantCount,
+                        schoolCount,
+                        schools,
+                        lastUpdated: serverTimestamp()
+                    }, { merge: true });
+                });
+
+                // ── Show success overlay ──────────────────────────────────────────
+                form.reset();
+                successBox.classList.remove('hidden');
+                successBox.classList.add('flex');
+
+            } catch (err) {
+                console.error('Firestore transaction error:', err);
+                btn.textContent   = 'Submit Registration';
+                btn.disabled      = false;
+                btn.style.opacity = '1';
+                status.textContent = 'Something went wrong. Please try again.';
+                status.className   = 'text-center mt-4 text-sm font-[Montserrat] font-bold tracking-wide text-red-400';
+            }
+        };
+    </script>
+</body>
+
+</html>

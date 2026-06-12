@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard — Ninnada'26 | MCDS</title>
+    <meta name="description" content="Admin dashboard for Ninnada'26 registration system.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Lato:wght@400;700&family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    
+    <!-- Firebase SDK importmap (must be before module scripts) -->
+    <script type="importmap">
+    {
+        "imports": {
+            "firebase/app": "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js",
+            "firebase/auth": "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js",
+            "firebase/firestore": "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js"
+        }
+    }
+    </script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            corePlugins: {
+                preflight: false,
+                container: false,
+            }
+        }
+    </script>
+    <style>
+        .admin-page {
+            min-height: 100vh;
+            background: linear-gradient(180deg, #000000 0%, #020713 40%, #081125 80%, #000000 100%);
+            position: relative;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .glass-card {
+            background: rgba(5, 5, 10, 0.75);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(218, 165, 32, 0.2);
+            box-shadow:
+                0 0 40px rgba(218, 165, 32, 0.06),
+                0 0 80px rgba(218, 165, 32, 0.03),
+                inset 0 1px 0 rgba(255, 255, 255, 0.04);
+            border-radius: 24px;
+        }
+
+        .admin-input,
+        .admin-select {
+            padding: 12px 16px;
+            background: rgba(0, 0, 0, 0.6);
+            border: 1px solid rgba(218, 165, 32, 0.25);
+            border-radius: 8px;
+            color: #ffffff;
+            font-family: 'Lato', sans-serif;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            outline: none;
+        }
+
+        .admin-input:focus,
+        .admin-select:focus {
+            border-color: rgba(255, 255, 0, 0.7);
+            box-shadow: 0 0 12px rgba(255, 255, 0, 0.15);
+            background: rgba(0, 0, 0, 0.75);
+        }
+
+        .admin-btn {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .admin-btn-yellow {
+            background-color: #ffff00;
+            color: #1a1000;
+            box-shadow: 0 0 15px rgba(255, 255, 0, 0.3);
+        }
+
+        .admin-btn-yellow:hover {
+            transform: scale(1.02);
+            box-shadow: 0 0 25px rgba(255, 255, 0, 0.6);
+            background-color: #ffff33;
+        }
+
+        .admin-btn-outline {
+            background-color: transparent;
+            border: 1px solid rgba(218, 165, 32, 0.4);
+            color: rgba(218, 165, 32, 0.85);
+        }
+
+        .admin-btn-outline:hover {
+            border-color: rgba(255, 255, 0, 0.7);
+            color: #ffff00;
+            text-shadow: 0 0 8px rgba(255, 255, 0, 0.4);
+            background-color: rgba(255, 255, 0, 0.03);
+        }
+
+        /* Table custom scrollbar */
+        .table-container::-webkit-scrollbar {
+            height: 8px;
+        }
+        .table-container::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.2);
+        }
+        .table-container::-webkit-scrollbar-thumb {
+            background: rgba(218, 165, 32, 0.3);
+            border-radius: 4px;
+        }
+        .table-container::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 0, 0.5);
+        }
+
+        /* Glowing Orbs */
+        .ninnada-orb { filter: blur(80px); }
+    </style>
+</head>
+
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container header-container">
+            <a href="index.html" class="logo logo-ninnada">Ninnada'26</a>
+            <nav>
+                <ul class="nav-links">
+                    <li class="nav-item">
+                        <button id="logout-btn" class="nav-link hidden bg-transparent border-none cursor-pointer" onclick="logoutAdmin()">Logout</button>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="admin-page flex-1">
+        
+        <!-- Glowing Orbs Background -->
+        <div class="absolute inset-0 pointer-events-none overflow-hidden z-0">
+            <div class="ninnada-orb orb-1 absolute w-[500px] h-[500px] -top-[100px] -left-[150px] opacity-40" style="background:radial-gradient(circle, rgba(255,215,0,0.4) 0%, rgba(218,165,32,0.08) 50%, transparent 80%);"></div>
+            <div class="ninnada-orb orb-2 absolute w-[500px] h-[500px] bottom-0 -right-[150px] opacity-40" style="background:radial-gradient(circle, rgba(255,215,0,0.35) 0%, rgba(218,165,32,0.06) 50%, transparent 80%);"></div>
+        </div>
+
+        <main class="relative z-10 flex-1 flex flex-col items-center justify-start py-12 px-4 md:px-8">
+            
+            <!-- ── LOGIN CONTAINER ─────────────────────────────────────────────── -->
+            <div id="login-container" class="w-full max-w-md my-auto">
+                <div class="text-center mb-8">
+                    <h1 class="text-3xl md:text-4xl font-black text-glow-yellow-lg tracking-widest uppercase mb-3 font-[Montserrat]">
+                        Admin Login
+                    </h1>
+                    <p class="text-gray-400 text-sm font-[Lato]">
+                        Authenticate to access the registrations portal
+                    </p>
+                </div>
+
+                <div class="glass-card p-8">
+                    <form id="login-form" onsubmit="loginAdmin(event)">
+                        <div class="mb-5 flex flex-col">
+                            <label class="text-xs uppercase font-bold text-yellow-500/80 mb-2 font-[Montserrat] tracking-wider">Email Address</label>
+                            <input type="email" id="login-email" class="admin-input" placeholder="admin@mcds.lk" required autocomplete="username">
+                        </div>
+                        <div class="mb-6 flex flex-col">
+                            <label class="text-xs uppercase font-bold text-yellow-500/80 mb-2 font-[Montserrat] tracking-wider">Password</label>
+                            <input type="password" id="login-password" class="admin-input" placeholder="••••••••" required autocomplete="current-password">
+                        </div>
+                        <button type="submit" id="login-submit-btn" class="w-full py-4 admin-btn admin-btn-yellow font-bold text-sm">
+                            Sign In
+                        </button>
+                        <p id="login-error" class="text-red-400 text-center text-xs font-bold font-[Montserrat] mt-4 hidden"></p>
+                    </form>
+                </div>
+            </div>
+
+            <!-- ── DASHBOARD CONTAINER ─────────────────────────────────────────── -->
+            <div id="dashboard-container" class="w-full max-w-7xl hidden flex flex-col gap-8">
+                
+                <!-- Page Title & Stats Grid -->
+                <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+                    <div>
+                        <h1 class="text-3xl md:text-5xl font-black text-glow-yellow-lg tracking-widest uppercase font-[Montserrat]">
+                            Registrations Portal
+                        </h1>
+                        <p class="text-gray-400 text-sm font-[Lato] mt-1">
+                            Ninnada'26 School Media Competitions Panel
+                        </p>
+                    </div>
+
+                    <!-- Metrics overview -->
+                    <div class="flex flex-wrap gap-4">
+                        <!-- Contestants metric -->
+                        <div class="glass-card px-6 py-4 flex flex-col justify-center min-w-[150px] border-yellow-500/20">
+                            <span class="text-gray-400 uppercase tracking-widest text-[0.65rem] font-bold font-[Montserrat] mb-1">Total Contestants</span>
+                            <span id="metric-contestants" class="text-2xl font-black text-yellow-400 text-glow-yellow">Loading…</span>
+                        </div>
+                        <!-- Schools metric -->
+                        <div class="glass-card px-6 py-4 flex flex-col justify-center min-w-[150px] border-yellow-500/20">
+                            <span class="text-gray-400 uppercase tracking-widest text-[0.65rem] font-bold font-[Montserrat] mb-1">Total Schools</span>
+                            <span id="metric-schools" class="text-2xl font-black text-yellow-400 text-glow-yellow">Loading…</span>
+                        </div>
+                        <!-- Refresh/Recalculate stats button -->
+                        <button onclick="triggerRecalculate()" class="glass-card px-4 hover:border-yellow-400/50 hover:bg-yellow-400/5 transition-all text-gray-400 hover:text-yellow-400 flex items-center justify-center title-tooltip" title="Recalculate Statistics from Database">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 1121.21 7.89M9 11l3 3L22 4" />
+                            </svg>
+                            <span class="ml-2 text-xs font-bold font-[Montserrat] uppercase tracking-wider hidden md:inline">Recalculate Stats</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Filters & Search Controls -->
+                <div class="glass-card p-6 flex flex-col md:flex-row flex-wrap items-center gap-4">
+                    <!-- Search by School -->
+                    <div class="flex-1 min-w-[240px] flex flex-col w-full">
+                        <label class="text-[0.65rem] uppercase font-bold text-yellow-500/80 mb-2 font-[Montserrat] tracking-wider">Search by School</label>
+                        <input type="text" id="filter-school" class="admin-input" placeholder="e.g. D.S. Senanayake College">
+                    </div>
+
+                    <!-- Filter by Category -->
+                    <div class="flex-1 min-w-[200px] flex flex-col w-full">
+                        <label class="text-[0.65rem] uppercase font-bold text-yellow-500/80 mb-2 font-[Montserrat] tracking-wider">Filter by Category</label>
+                        <select id="filter-category" class="admin-select">
+                            <option value="">All Categories</option>
+                            <option value="news-presenting">News Presenting</option>
+                            <option value="news-editing">News Editing</option>
+                            <option value="program-presenting">Program Presenting</option>
+                            <option value="radio-presenting">Radio Presenting</option>
+                            <option value="sports-commentary">Sports Commentary</option>
+                            <option value="dubbing">Dubbing</option>
+                            <option value="cartoon-drawing">Cartoon Drawing</option>
+                            <option value="photography">Photography</option>
+                            <option value="videography">Videography</option>
+                            <option value="graphic-designing">Graphic Designing</option>
+                            <option value="short-film">Short Film</option>
+                        </select>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="flex items-end gap-3 self-end w-full md:w-auto mt-2 md:mt-0">
+                        <button onclick="applyFilters()" class="flex-1 md:flex-none px-6 py-3 admin-btn admin-btn-yellow text-xs font-bold min-w-[100px]">
+                            Search
+                        </button>
+                        <button onclick="clearFilters()" class="flex-1 md:flex-none px-6 py-3 admin-btn admin-btn-outline text-xs font-bold min-w-[100px]">
+                            Clear
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Registrations Table Card -->
+                <div class="glass-card overflow-hidden flex flex-col">
+                    <div class="table-container overflow-x-auto w-full">
+                        <table class="w-full text-left border-collapse">
+                            <thead>
+                                <tr class="border-b border-yellow-500/20 bg-black/40 text-[0.7rem] uppercase font-bold text-yellow-500/90 font-[Montserrat] tracking-wider">
+                                    <th class="py-4 px-6">Full Name</th>
+                                    <th class="py-4 px-6">School</th>
+                                    <th class="py-4 px-6">Email</th>
+                                    <th class="py-4 px-6">Mobile Number</th>
+                                    <th class="py-4 px-6">Category</th>
+                                    <th class="py-4 px-6">Medium</th>
+                                    <th class="py-4 px-6">Age Category</th>
+                                    <th class="py-4 px-6">Submitted At</th>
+                                </tr>
+                            </thead>
+                            <tbody id="registrations-tbody" class="divide-y divide-white/5 font-[Lato] text-sm text-gray-200">
+                                <!-- Loaded dynamically -->
+                                <tr>
+                                    <td colspan="8" class="py-12 text-center text-gray-400 font-bold">
+                                        Loading registrations data…
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Pagination Controls -->
+                    <div class="flex flex-col sm:flex-row items-center justify-between gap-4 px-6 py-5 border-t border-white/5 bg-black/20">
+                        <div class="text-xs text-gray-400 font-[Lato]">
+                            Showing <span id="pagination-showing" class="text-yellow-400 font-bold">0</span> entries
+                        </div>
+                        
+                        <div class="flex items-center gap-2">
+                            <!-- Prev button -->
+                            <button id="btn-prev" onclick="prevPage()" class="px-4 py-2 admin-btn admin-btn-outline text-xs font-bold disabled:opacity-30 disabled:pointer-events-none">
+                                Prev
+                            </button>
+                            
+                            <!-- Page numbers container -->
+                            <div id="page-numbers" class="flex items-center gap-1">
+                                <!-- Populated dynamically -->
+                            </div>
+                            
+                            <!-- Next button -->
+                            <button id="btn-next" onclick="nextPage()" class="px-4 py-2 admin-btn admin-btn-outline text-xs font-bold disabled:opacity-30 disabled:pointer-events-none">
+                                Next
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer>
+            <div class="container">
+                <p>&copy; 2026 Media Circle of D. S. Senanayake College. All Rights Reserved.</p>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Firebase module scripts -->
+    <script type="module">
+        import { initializeApp } from 'firebase/app';
+        import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from 'firebase/auth';
+        import { getFirestore, doc, collection, getDoc, getDocs, setDoc, query, orderBy, limit, startAfter, where, serverTimestamp, getCountFromServer } from 'firebase/firestore';
+
+        // ── Firebase configuration (project: aditha-ca321) ──
+        const firebaseConfig = {
+            apiKey: "AIzaSyChk85PHMlKF5SFGwXSITg0u2QoE2azkws",
+            authDomain: "aditha-ca321.firebaseapp.com",
+            databaseURL: "https://aditha-ca321.firebaseio.com",
+            projectId: "aditha-ca321",
+            storageBucket: "aditha-ca321.firebasestorage.app",
+            messagingSenderId: "359615698823",
+            appId: "1:359615698823:web:359465a9f94fdb3caee522",
+            measurementId: "G-1QZQK8F8EZ"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db  = getFirestore(app);
+
+        // ── Pagination and Caching States ──────────────────────────────────────
+        let currentPage = 1;
+        const pageSize = 40;
+        let totalDocs = 0; // Total count from stats/overview
+
+        let schoolFilter = "";
+        let categoryFilter = "";
+
+        // Session caching state to eliminate repeated Firestore reads
+        let pageCache = {};            // pageNumber -> array of registration objects
+        let pageCursors = { 1: null };  // pageNumber -> DocumentSnapshot (used for startAfter)
+
+        // ── Auth Watcher ──────────────────────────────────────────────────────
+        onAuthStateChanged(auth, (user) => {
+            const loginBox = document.getElementById('login-container');
+            const dashboardBox = document.getElementById('dashboard-container');
+            const logoutBtn = document.getElementById('logout-btn');
+
+            if (user) {
+                loginBox.classList.add('hidden');
+                dashboardBox.classList.remove('hidden');
+                logoutBtn.classList.remove('hidden');
+                
+                // Initialize Dashboard
+                loadStats();
+                resetPagination();
+                loadCurrentPage();
+            } else {
+                loginBox.classList.remove('hidden');
+                dashboardBox.classList.add('hidden');
+                logoutBtn.classList.add('hidden');
+            }
+        });
+
+        // ── Sign In / Sign Out ─────────────────────────────────────────────────
+        window.loginAdmin = async function(e) {
+            e.preventDefault();
+            const email = document.getElementById('login-email').value.trim();
+            const pass = document.getElementById('login-password').value;
+            const errEl = document.getElementById('login-error');
+            const btn = document.getElementById('login-submit-btn');
+
+            btn.textContent = 'Authenticating…';
+            btn.disabled = true;
+            errEl.classList.add('hidden');
+
+            try {
+                await signInWithEmailAndPassword(auth, email, pass);
+            } catch (err) {
+                console.error(err);
+                errEl.textContent = 'Invalid credentials. Access Denied.';
+                errEl.classList.remove('hidden');
+                btn.textContent = 'Sign In';
+                btn.disabled = false;
+            }
+        };
+
+        window.logoutAdmin = async function() {
+            try {
+                await signOut(auth);
+            } catch (err) {
+                console.error(err);
+            }
+        };
+
+        // ── Load Stats Overview Document (1 Read) ──────────────────────────────
+        async function loadStats() {
+            try {
+                const statsDoc = await getDoc(doc(db, "stats", "overview"));
+                if (statsDoc.exists()) {
+                    const data = statsDoc.data();
+                    totalDocs = data.contestantCount || 0;
+                    document.getElementById('metric-contestants').textContent = totalDocs;
+                    document.getElementById('metric-schools').textContent = data.schoolCount || 0;
+                } else {
+                    document.getElementById('metric-contestants').textContent = '0';
+                    document.getElementById('metric-schools').textContent = '0';
+                    totalDocs = 0;
+                }
+                renderPaginationBar();
+            } catch (err) {
+                console.error("Error loading stats document:", err);
+            }
+        }
+
+        // ── Recalculate Stats Overview (Admin Action Only) ──────────────────────
+        window.triggerRecalculate = async function() {
+            if (!confirm("Recalculating statistics scans all documents in the 'registrations' collection. Are you sure you want to proceed?")) {
+                return;
+            }
+
+            const contestantsEl = document.getElementById('metric-contestants');
+            const schoolsEl = document.getElementById('metric-schools');
+            contestantsEl.textContent = 'Recalculating…';
+            schoolsEl.textContent = 'Recalculating…';
+
+            try {
+                // 1. Efficient server-side counting for contestants (uses metadata scan)
+                const countSnapshot = await getCountFromServer(collection(db, 'registrations'));
+                const contestantCount = countSnapshot.data().count;
+
+                // 2. Fetch documents to collect unique schools list
+                const regSnapshot = await getDocs(query(collection(db, 'registrations')));
+                const schoolsSet = new Set();
+                regSnapshot.forEach(doc => {
+                    const s = doc.data().school;
+                    if (s) schoolsSet.add(s.trim());
+                });
+
+                const schoolCount = schoolsSet.size;
+                const schoolsArray = Array.from(schoolsSet);
+
+                // 3. Write back to stats overview document
+                await setDoc(doc(db, 'stats', 'overview'), {
+                    contestantCount,
+                    schoolCount,
+                    schools: schoolsArray,
+                    lastUpdated: serverTimestamp()
+                }, { merge: true });
+
+                alert("Stats successfully recalculated and updated!");
+                await loadStats();
+            } catch (err) {
+                console.error("Error recalculating stats:", err);
+                alert("Failed to recalculate stats: " + err.message);
+                loadStats();
+            }
+        };
+
+        // ── Cursor-Based Pagination State Controller ──────────────────────────
+        function resetPagination() {
+            pageCache = {};
+            pageCursors = { 1: null };
+            currentPage = 1;
+        }
+
+        async function loadCurrentPage() {
+            const tbody = document.getElementById('registrations-tbody');
+            tbody.innerHTML = `
+                <tr>
+                    <td colspan="8" class="py-12 text-center text-gray-400 font-bold">
+                        Loading page ${currentPage}…
+                    </td>
+                </tr>
+            `;
+
+            try {
+                const data = await fetchPageData(currentPage);
+                renderTable(data);
+                updatePaginationControls(data.length);
+            } catch (err) {
+                console.error("Error loading page:", err);
+                let errMsg = "Something went wrong loading registrations.";
+                if (err.code === "failed-precondition") {
+                    errMsg = `Index required! Please create index in Firestore console. Link: <a href="https://console.firebase.google.com" target="_blank" class="text-yellow-400 underline font-bold">Create Index</a>`;
+                }
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="8" class="py-12 text-center text-red-400 font-bold">
+                            ${errMsg}
+                        </td>
+                    </tr>
+                `;
+            }
+        }
+
+        // Caching Fetch Engine
+        async function fetchPageData(pageNumber) {
+            // Check cache first to avoid Firestore reads
+            if (pageCache[pageNumber]) {
+                return pageCache[pageNumber];
+            }
+
+            // Get the cursor for this page
+            let cursor = pageCursors[pageNumber];
+
+            // If we don't have the cursor, sequential loads are required
+            if (cursor === undefined) {
+                let closest = 1;
+                for (let c = pageNumber - 1; c >= 1; c--) {
+                    if (pageCursors[c] !== undefined) {
+                        closest = c;
+                        break;
+                    }
+                }
+                for (let p = closest; p < pageNumber; p++) {
+                    await loadPageDataAndSaveCursor(p);
+                }
+                cursor = pageCursors[pageNumber];
+            }
+
+            return await loadPageDataAndSaveCursor(pageNumber);
+        }
+
+        async function loadPageDataAndSaveCursor(pageNumber) {
+            if (pageCache[pageNumber]) return pageCache[pageNumber];
+
+            const cursor = pageCursors[pageNumber];
+            let q = query(collection(db, "registrations"));
+
+            // Filter configuration
+            if (schoolFilter) {
+                q = query(q, where("school", ">=", schoolFilter), where("school", "<=", schoolFilter + "\uf8ff"));
+            }
+            if (categoryFilter) {
+                q = query(q, where("category", "==", categoryFilter));
+            }
+
+            // Ordering configuration
+            if (schoolFilter) {
+                q = query(q, orderBy("school"), orderBy("submittedAt", "desc"));
+            } else {
+                q = query(q, orderBy("submittedAt", "desc"));
+            }
+
+            // Cursor and Limit
+            if (cursor) {
+                q = query(q, startAfter(cursor));
+            }
+            q = query(q, limit(pageSize));
+
+            const snapshot = await getDocs(q);
+            const docs = snapshot.docs;
+            const data = docs.map(d => ({ id: d.id, ...d.data() }));
+
+            // Store in page cache
+            pageCache[pageNumber] = data;
+
+            // Set cursor for subsequent page
+            if (docs.length > 0) {
+                pageCursors[pageNumber + 1] = docs[docs.length - 1];
+            }
+
+            return data;
+        }
+
+        // ── Render Helpers ─────────────────────────────────────────────────────
+        function renderTable(data) {
+            const tbody = document.getElementById('registrations-tbody');
+            if (data.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="8" class="py-12 text-center text-gray-400 font-bold">
+                            No registration documents match the filters.
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            tbody.innerHTML = data.map(item => {
+                const date = item.submittedAt && typeof item.submittedAt.toDate === 'function'
+                    ? item.submittedAt.toDate().toLocaleString()
+                    : 'N/A';
+                
+                return `
+                    <tr class="hover:bg-white/[0.03] transition-colors">
+                        <td class="py-4 px-6 font-bold text-white">${escapeHtml(item.fullName)}</td>
+                        <td class="py-4 px-6 text-gray-300">${escapeHtml(item.school)}</td>
+                        <td class="py-4 px-6 text-gray-400 font-mono text-xs">${escapeHtml(item.email)}</td>
+                        <td class="py-4 px-6 text-gray-300 font-mono">${escapeHtml(item.mobilenumber || item.phone || '')}</td>
+                        <td class="py-4 px-6 text-yellow-400/90 font-bold uppercase text-xs tracking-wider">${escapeHtml(item.category)}</td>
+                        <td class="py-4 px-6 text-gray-300 uppercase text-xs">${escapeHtml(item.language || '')}</td>
+                        <td class="py-4 px-6 text-gray-300 uppercase text-xs">${escapeHtml(item.agecategory || item.ageCategory || '')}</td>
+                        <td class="py-4 px-6 text-gray-400 font-mono text-xs">${date}</td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function escapeHtml(str) {
+            if (!str) return '';
+            return String(str)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#39;');
+        }
+
+        // Render Page numbers buttons
+        function renderPaginationBar() {
+            const container = document.getElementById('page-numbers');
+            container.innerHTML = '';
+
+            // If filters are active, we don't know total count in advance, so render page indicators on the fly
+            if (schoolFilter || categoryFilter) {
+                const pageBtn = document.createElement('button');
+                pageBtn.className = 'w-8 h-8 flex items-center justify-center rounded-full text-xs font-bold font-[Montserrat] admin-btn admin-btn-yellow';
+                pageBtn.textContent = currentPage;
+                container.appendChild(pageBtn);
+                return;
+            }
+
+            const totalPages = Math.max(1, Math.ceil(totalDocs / pageSize));
+            
+            // Build pagination buttons array
+            for (let i = 1; i <= totalPages; i++) {
+                const btn = document.createElement('button');
+                btn.textContent = i;
+                
+                if (i === currentPage) {
+                    btn.className = 'w-8 h-8 flex items-center justify-center rounded-full text-xs font-bold font-[Montserrat] admin-btn admin-btn-yellow';
+                } else {
+                    btn.className = 'w-8 h-8 flex items-center justify-center rounded-full text-xs font-bold font-[Montserrat] admin-btn admin-btn-outline';
+                    btn.onclick = () => navigateToPage(i);
+                }
+                container.appendChild(btn);
+            }
+        }
+
+        function updatePaginationControls(itemsCount) {
+            const prevBtn = document.getElementById('btn-prev');
+            const nextBtn = document.getElementById('btn-next');
+            const showingEl = document.getElementById('pagination-showing');
+
+            // Previous button is enabled if not on page 1
+            prevBtn.disabled = (currentPage === 1);
+
+            // Next button is enabled if:
+            // - Unfiltered: currentPage is less than totalPages
+            // - Filtered: we loaded a full pageSize (meaning there could be more records)
+            if (schoolFilter || categoryFilter) {
+                nextBtn.disabled = (itemsCount < pageSize);
+            } else {
+                const totalPages = Math.ceil(totalDocs / pageSize);
+                nextBtn.disabled = (currentPage >= totalPages);
+            }
+
+            const startIdx = (currentPage - 1) * pageSize + 1;
+            const endIdx = startIdx + itemsCount - 1;
+            showingEl.textContent = itemsCount > 0 ? `${startIdx}–${endIdx}` : '0';
+
+            renderPaginationBar();
+        }
+
+        // ── Navigation Functions ──────────────────────────────────────────────
+        window.navigateToPage = function(pageNumber) {
+            if (pageNumber === currentPage) return;
+            currentPage = pageNumber;
+            loadCurrentPage();
+        };
+
+        window.prevPage = function() {
+            if (currentPage > 1) {
+                currentPage--;
+                loadCurrentPage();
+            }
+        };
+
+        window.nextPage = function() {
+            currentPage++;
+            loadCurrentPage();
+        };
+
+        // ── Filters & Search Handlers ──────────────────────────────────────────
+        window.applyFilters = function() {
+            schoolFilter = document.getElementById('filter-school').value.trim();
+            categoryFilter = document.getElementById('filter-category').value;
+            
+            resetPagination();
+            loadCurrentPage();
+        };
+
+        window.clearFilters = function() {
+            document.getElementById('filter-school').value = '';
+            document.getElementById('filter-category').value = '';
+            
+            schoolFilter = "";
+            categoryFilter = "";
+
+            resetPagination();
+            loadCurrentPage();
+        };
+    </script>
+</body>
+
+</html>

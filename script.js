@@ -22,6 +22,20 @@ function showTab(tabId) {
         activeLink.classList.add('active');
     }
 
+    // Update logo text, styling, and behavior based on the active tab
+    const logo = document.querySelector('.logo');
+    if (logo) {
+        if (tabId === 'ninnada') {
+            logo.textContent = "Ninnada'26";
+            logo.className = "logo logo-ninnada";
+            logo.setAttribute('onclick', "showTab('ninnada'); return false;");
+        } else {
+            logo.textContent = "MCDS";
+            logo.className = "logo";
+            logo.setAttribute('onclick', "showTab('home'); return false;");
+        }
+    }
+
     // Close mobile menu on tab switch
     const navLinks = document.getElementById('nav-links');
     const hamburger = document.getElementById('hamburger-btn');
@@ -48,9 +62,11 @@ function scrollToSection(sectionId) {
     }, 10);
 }
 
-// Initialize: Show Home tab by default
+// Initialize: Show Home tab or previously requested tab
 document.addEventListener('DOMContentLoaded', () => {
-    showTab('home');
+    const tabToOpen = sessionStorage.getItem('openTab') || 'home';
+    sessionStorage.removeItem('openTab');
+    showTab(tabToOpen);
 
     // Hamburger menu toggle
     const hamburger = document.getElementById('hamburger-btn');
@@ -62,4 +78,17 @@ document.addEventListener('DOMContentLoaded', () => {
             hamburger.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
         });
     }
+
+    // Scroll reveal observer for elements with .reveal-on-scroll
+    const revealObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('revealed');
+            }
+        });
+    }, { threshold: 0.15 });
+
+    document.querySelectorAll('.reveal-on-scroll').forEach(el => {
+        revealObserver.observe(el);
+    });
 });

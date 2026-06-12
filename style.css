@@ -599,3 +599,235 @@ footer {
     color: var(--color-gold);
     font-size: 0.9rem;
 }
+
+/* Ninnada Futuristic Neon Yellow Theme Styles */
+.ninnada-page-bg {
+    background: linear-gradient(180deg, #000000 0%, #020713 40%, #081125 80%, #000000 100%);
+    color: #ffffff;
+    padding-bottom: 60px;
+    position: relative;
+    overflow: hidden;
+}
+
+.logo-ninnada {
+    color: #ffff00 !important;
+    text-shadow: 0 0 8px rgba(255, 255, 0, 0.658), 0 0 15px rgba(255, 255, 0, 0.5);
+    transition: all 0.3s ease;
+}
+
+.logo-ninnada:hover {
+    text-shadow: 0 0 12px rgba(255, 255, 0, 1), 0 0 25px rgba(255, 255, 0, 0.8);
+}
+
+.text-glow-yellow {
+    color: #ffd700;
+    text-shadow: 0 0 10px rgba(255, 255, 0, 0.7), 0 0 20px rgba(255, 255, 0, 0.4);
+}
+
+.text-glow-yellow-lg {
+    color: #ffd700;
+    text-shadow: 0 0 6px rgba(255, 255, 0, 0.5), 0 0 12px rgba(255, 255, 0, 0.25);
+}
+
+.ninnada-btn-glow {
+    background-color: #ffd700;
+    color: #3e2723;
+    font-weight: 900;
+    font-family: 'Montserrat', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    box-shadow: 0 0 8px rgba(255, 255, 0, 0.3);
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.ninnada-btn-glow:hover {
+    transform: scale(1.05);
+    background-color: #ffff33;
+    box-shadow: 0 0 14px rgba(255, 255, 0, 0.5);
+}
+
+.ninnada-info-card {
+    background-color: rgba(0, 0, 0, 0.6);
+    border: 1px solid rgba(255, 255, 0, 0.3);
+    box-shadow: 0 0 15px rgba(255, 255, 0, 0.15);
+}
+
+.category-box {
+    border: 1px solid rgba(255, 255, 0, 0.2);
+    background-color: rgba(10, 10, 10, 0.85);
+    box-shadow: 0 0 10px rgba(255, 255, 0, 0.03);
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.category-box:hover {
+    transform: scale(1.03);
+    border-color: rgba(255, 255, 0, 0.6);
+    box-shadow: 0 0 20px rgba(255, 255, 0, 0.25);
+}
+
+/* Scroll Reveal Animations */
+.reveal-on-scroll {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1), transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.reveal-on-scroll.revealed {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.ninnada-page-bg h2::after {
+    display: none !important;
+}
+
+/* Animated Glowing Orbs Background */
+.ninnada-orb {
+    position: absolute;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(218, 165, 32, 0.55) 0%, rgba(218, 165, 32, 0.12) 50%, rgba(0, 0, 0, 0) 80%);
+    pointer-events: none;
+    mix-blend-mode: screen;
+    will-change: transform;
+}
+
+/* Large orbs */
+.orb-1 {
+    width: 520px;
+    height: 520px;
+    top: -120px;
+    left: -160px;
+    animation: float-orb-1 18s infinite ease-in-out;
+}
+
+.orb-2 {
+    width: 420px;
+    height: 420px;
+    top: 20%;
+    right: -110px;
+    background: radial-gradient(circle, rgba(255, 215, 0, 0.5) 0%, rgba(218, 165, 32, 0.1) 50%, rgba(0, 0, 0, 0) 80%);
+    animation: float-orb-2 15s infinite ease-in-out;
+}
+
+.orb-3 {
+    width: 620px;
+    height: 620px;
+    bottom: 15%;
+    left: -220px;
+    animation: float-orb-3 22s infinite ease-in-out;
+}
+
+.orb-4 {
+    width: 470px;
+    height: 470px;
+    bottom: -100px;
+    right: -160px;
+    background: radial-gradient(circle, rgba(255, 215, 0, 0.45) 0%, rgba(218, 165, 32, 0.08) 50%, rgba(0, 0, 0, 0) 80%);
+    animation: float-orb-1 20s infinite ease-in-out reverse;
+}
+
+/* Medium orbs */
+.orb-5 {
+    width: 320px;
+    height: 320px;
+    top: 48%;
+    left: 28%;
+    background: radial-gradient(circle, rgba(218, 165, 32, 0.42) 0%, rgba(218, 165, 32, 0.07) 50%, rgba(0, 0, 0, 0) 80%);
+    animation: float-orb-2 17s infinite ease-in-out reverse;
+}
+
+.orb-6 {
+    width: 360px;
+    height: 360px;
+    top: 65%;
+    right: 22%;
+    background: radial-gradient(circle, rgba(255, 223, 0, 0.38) 0%, rgba(218, 165, 32, 0.07) 50%, rgba(0, 0, 0, 0) 80%);
+    animation: float-orb-3 19s infinite ease-in-out;
+}
+
+.orb-7 {
+    width: 280px;
+    height: 280px;
+    top: 10%;
+    left: 45%;
+    background: radial-gradient(circle, rgba(255, 210, 0, 0.45) 0%, rgba(218, 165, 32, 0.08) 50%, rgba(0, 0, 0, 0) 80%);
+    animation: float-orb-1 16s infinite ease-in-out;
+}
+
+.orb-8 {
+    width: 380px;
+    height: 380px;
+    bottom: 40%;
+    right: 10%;
+    background: radial-gradient(circle, rgba(255, 200, 0, 0.35) 0%, rgba(218, 165, 32, 0.06) 50%, rgba(0, 0, 0, 0) 80%);
+    animation: float-orb-2 23s infinite ease-in-out reverse;
+}
+
+/* Small accent orbs */
+.orb-9 {
+    width: 180px;
+    height: 180px;
+    top: 35%;
+    left: 65%;
+    background: radial-gradient(circle, rgba(255, 230, 0, 0.6) 0%, rgba(218, 165, 32, 0.12) 50%, rgba(0, 0, 0, 0) 80%);
+    animation: float-orb-3 13s infinite ease-in-out;
+}
+
+.orb-10 {
+    width: 200px;
+    height: 200px;
+    top: 78%;
+    left: 15%;
+    background: radial-gradient(circle, rgba(255, 215, 0, 0.55) 0%, rgba(218, 165, 32, 0.1) 50%, rgba(0, 0, 0, 0) 80%);
+    animation: float-orb-1 14s infinite ease-in-out reverse;
+}
+
+@keyframes float-orb-1 {
+    0% {
+        transform: translate(0, 0) scale(1);
+    }
+
+    33% {
+        transform: translate(90px, 70px) scale(1.08);
+    }
+
+    66% {
+        transform: translate(-50px, 130px) scale(0.94);
+    }
+
+    100% {
+        transform: translate(0, 0) scale(1);
+    }
+}
+
+@keyframes float-orb-2 {
+    0% {
+        transform: translate(0, 0) scale(1.05);
+    }
+
+    50% {
+        transform: translate(-110px, 90px) scale(0.91);
+    }
+
+    100% {
+        transform: translate(0, 0) scale(1.05);
+    }
+}
+
+@keyframes float-orb-3 {
+    0% {
+        transform: translate(0, 0) scale(0.95);
+    }
+
+    40% {
+        transform: translate(70px, -100px) scale(1.07);
+    }
+
+    80% {
+        transform: translate(-90px, 50px) scale(1);
+    }
+
+    100% {
+        transform: translate(0, 0) scale(0.95);
+    }
+}

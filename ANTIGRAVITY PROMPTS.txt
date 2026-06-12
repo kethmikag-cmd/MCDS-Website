@@ -1,0 +1,156 @@
+
+ANTIGRAVITY PROMPTS
+
+Set up Firebase in this project using the following config:
+
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+  apiKey: "AIzaSyChk85PHMlKF5SFGwXSITg0u2QoE2azkws",
+  authDomain: "aditha-ca321.firebaseapp.com",
+  databaseURL: "https://aditha-ca321.firebaseio.com",
+  projectId: "aditha-ca321",
+  storageBucket: "aditha-ca321.firebasestorage.app",
+  messagingSenderId: "359615698823",
+  appId: "1:359615698823:web:359465a9f94fdb3caee522",
+  measurementId: "G-1QZQK8F8EZ"
+};
+
+
+Initialize Firebase and connect to Firestore.
+
+Then create a function to add a new document to a "registrations" collection with fields:
+fullName, school, email, phone, category.
+
+Make sure the form submits data to Firestore correctly.
+
+-----------------------------------------------------------------------------------------------------------------------------------
+
+Designing the "Ninnada" tab:
+First, Remove the previous edits done.
+
+Then, In the tabs bar at the top, display "Ninnada'26" in glowing neon yellow text (this should be shown only when Ninnada tab is clicked) in the opposite side to where the tabs are displayed horizontally. When clicking the text "Ninnada'26", it should still redirect the user to the "Ninnada" tab. Only show this when the tab "Ninnada" is clicked, for other tabs, show "MCDS" on the same spot as usual.
+
+After that,
+
+Page Background Design style:
+- Dark gradient background (black to neon yellow)
+- Futuristic / Cinematic UI
+- Clean and minimal layout
+- Use glowing YELLOW text
+- Add soft glow effects and subtle gradients
+
+SECTION (Top Section):
+- Large Heading (H1): "NINNADA'26" (in yellow glowing text, cinematic, futuristic font style)
+- H3 subtitle: "School Registrations are now open for the largest all-island trillingual media competition in Sri Lanka" below H1 heading.
+
+"Register Now" button should be like thiss:
+- Hover effect + brightening + slight scale
+- Glowing yellow colour background
+- Brownish bold text; center-aligned in the button
+
+- Event info card:
+  "25TH JULY 2026 | D.S.Senanayake College"
+
+SECTION 2:
+
+Add a stats section below Section 1, which hovers up as the user scrolls down the page.
+
+Design:
+- Two square cards side by side (responsive: stack on mobile)
+- Dark glassmorphism / slightly transparent background
+- Soft glow border (yellow accent)
+
+Content:
+Card 1:
+- Large bold number: "2500+"
+- Label below: "Contestants"
+
+Card 2:
+- Large bold number: "250+"
+- Label below: "Schools"
+
+Style:
+- Numbers should be VERY large and bold
+- Use glowing yellow gradient text for numbers
+- Labels smaller, clean, white/gray
+- Add subtle hover effect (scale + glow)
+
+Spacing:
+- Center aligned
+- Plenty of padding and spacing
+- Keep it clean and premium (not crowded)
+
+Tech:
+- Use Tailwind CSS
+
+SECTION 3:
+Put a heading: "What is Ninnada'26?" in yellow text
+Then below that, smaller, white text:
+"Ninnada is the trademark event of the Media Circle of D.S.Senanayake College. It is the largest and most prestigious all-island trillingual media competition and day in Sri Lanka, and its well-recognized for representing the most talented young media enthusiasts across the country. The judging panel will feature renowned media personalities to ensure a high-quality competitive experience and fair evaluations. The overall champions of Ninnada will receive the Hon. D.S. Senanayake Memorial Shield, while the Best School Student Media Personality will be awarded the prestigious R.I.T. Alles Memorial Trophy."
+
+SECTION 4:
+This section shows the contestant categories (which hovers up as you scroll down past Section 2)
+- Heading: "CONTESTANT CATEGORIES"
+- Subheading:
+  "Here's an outlook on all the competition categories contestants can take part in!"
+
+Categories Grid:
+- Display multiple categories boxes below: There should be boxes specifically for: 
+News Presenting,
+News Editing,
+Program Presenting,
+Radio Presenting,
+Sports Commentary, 
+Dubbing, 
+Cartoon Drawing, 
+Photography, 
+Videography, 
+Graphic Designing, 
+Short Film
+
+- Each category box should have:
+  - Title
+  - Short description (just put a brief description we'll edit it later)
+  - Smooth techy and tiny outline in yellow
+  - Hover effect (brighter glow + slight scale)
+
+Functionality:
+- When clicking "Register Now" button, navigate to a registration form page (which we will design later).
+- Keep layout responsive
+
+--------------------------------------------------------------------------------------------------------------------------------------
+
+Update the "Register Now" button to navigate to a new /register page using Next.js routing.
+
+Create the /register page with the SAME design style as the Ninnada page.
+
+Design requirements:
+- Same dark gradient background (black to yellow)
+- Same yellow glowing accents
+- Same typography and spacing style
+- Keep it cinematic, clean, and minimal
+
+Register Page Content:
+- Heading: "Registrations Form"
+- Subheading: "Complete your registration for Ninnada'26"
+- Centered form container with glassmorphism effect
+
+Form fields:
+- fullName
+- school
+- email
+- mobilenumber
+- category
+- language
+- agecategory
+
+UI:
+- Form fields should be glassmorphed black-hued boxes with white text
+- Inputs should match theme (dark background, light text)
+- Yellow glowing focus effects
+- Submit button with yellow glow and hover animation
+
+Navigation:
+- Clicking "Register Now" button should go to /register without reload
+
+Make sure the design feels consistent with the main Ninnada page (same colors, glow, and layout system).

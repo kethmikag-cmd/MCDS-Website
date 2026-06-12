@@ -1,0 +1,21 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Registrations collection:
+    // - Public users can create registrations (anonymously).
+    // - Public users cannot read, update, or delete registrations.
+    // - Authenticated admin users retain full access.
+    match /registrations/{registrationId} {
+      allow create: if true;
+      allow read, update, delete: if request.auth != null;
+    }
+    
+    // Stats collection:
+    // - Anyone can read stats (to display on the homepage).
+    // - Anyone can update/write stats (to increment counts atomically during registration).
+    match /stats/{docId} {
+      allow read, write: if true;
+    }
+  }
+}

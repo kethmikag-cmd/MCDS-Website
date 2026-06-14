@@ -16,10 +16,12 @@ function showTab(tabId) {
     // Update active nav link
     document.querySelectorAll('.nav-link').forEach(link => {
         link.classList.remove('active');
+        link.removeAttribute('aria-current');
     });
     const activeLink = document.querySelector(`.nav-link[data-tab="${tabId}"]`);
     if (activeLink) {
         activeLink.classList.add('active');
+        activeLink.setAttribute('aria-current', 'page');
     }
 
     // Update logo text, styling, and behavior based on the active tab
@@ -71,11 +73,39 @@ document.addEventListener('DOMContentLoaded', () => {
     // Hamburger menu toggle
     const hamburger = document.getElementById('hamburger-btn');
     const navLinks = document.getElementById('nav-links');
+
+    const closeMobileMenu = () => {
+        if (!navLinks || !hamburger) return;
+        navLinks.classList.remove('open');
+        hamburger.classList.remove('open');
+        hamburger.setAttribute('aria-expanded', 'false');
+    };
+
+    document.querySelectorAll('a[href="#"]').forEach(link => {
+        link.addEventListener('click', (event) => {
+            event.preventDefault();
+        });
+    });
+
     if (hamburger && navLinks) {
         hamburger.addEventListener('click', () => {
             const isOpen = navLinks.classList.toggle('open');
             hamburger.classList.toggle('open', isOpen);
             hamburger.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+        });
+
+        document.addEventListener('click', (event) => {
+            const clickedInsideNav = navLinks.contains(event.target);
+            const clickedHamburger = hamburger.contains(event.target);
+            if (!clickedInsideNav && !clickedHamburger) {
+                closeMobileMenu();
+            }
+        });
+
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape') {
+                closeMobileMenu();
+            }
         });
     }
 

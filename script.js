@@ -81,7 +81,7 @@ document.addEventListener('DOMContentLoaded', () => {
         hamburger.setAttribute('aria-expanded', 'false');
     };
 
-    document.querySelectorAll('a[href="#"]').forEach(link => {
+    document.querySelectorAll('.nav-links a[href="#"], .logo[href="#"], .hero-cta[href="#"]').forEach(link => {
         link.addEventListener('click', (event) => {
             event.preventDefault();
         });

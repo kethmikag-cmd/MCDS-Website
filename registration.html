@@ -31,9 +31,10 @@
         }
     </script>
     <style>
-        /* Registration Page Styles */
+        /* ── Registration Page Styles ── */
         .reg-page {
             min-height: 100vh;
+            min-height: 100svh;
             background: linear-gradient(180deg, #000000 0%, #020713 40%, #081125 80%, #000000 100%);
             position: relative;
             overflow: hidden;
@@ -54,21 +55,22 @@
             border-radius: 24px;
         }
 
-        /* Input field styles */
+        /* Input field styles — 16px min to prevent iOS auto-zoom */
         .reg-input,
         .reg-select {
             width: 100%;
-            padding: 14px 18px;
+            padding: 13px 16px;
             background: rgba(0, 0, 0, 0.55);
             border: 1px solid rgba(218, 165, 32, 0.2);
             border-radius: 10px;
             color: #ffffff;
             font-family: 'Lato', sans-serif;
-            font-size: 0.95rem;
+            font-size: 16px; /* 16px minimum prevents iOS auto-zoom */
             transition: all 0.3s ease;
             outline: none;
             appearance: none;
             -webkit-appearance: none;
+            min-height: 50px; /* Touch-friendly height */
         }
 
         .reg-input::placeholder {
@@ -100,13 +102,13 @@
             color: rgba(218, 165, 32, 0.85);
             font-family: 'Montserrat', sans-serif;
             font-weight: 700;
-            font-size: 0.75rem;
+            font-size: 0.72rem;
             letter-spacing: 0.1em;
             text-transform: uppercase;
             margin-bottom: 8px;
         }
 
-        /* Submit button */
+        /* Submit button — full-width, touch-friendly */
         .reg-submit-btn {
             width: 100%;
             padding: 16px;
@@ -115,14 +117,15 @@
             font-weight: 900;
             font-family: 'Montserrat', sans-serif;
             text-transform: uppercase;
-            letter-spacing: 3px;
-            font-size: 0.9rem;
+            letter-spacing: clamp(1px, 0.5vw, 3px);
+            font-size: clamp(0.8rem, 2vw, 0.9rem);
             border: none;
             border-radius: 50px;
             cursor: pointer;
             box-shadow: 0 0 20px rgba(255, 255, 0, 0.5), 0 0 40px rgba(255, 255, 0, 0.15);
             transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             margin-top: 8px;
+            min-height: 52px;
         }
 
         .reg-submit-btn:hover {
@@ -135,7 +138,7 @@
             transform: scale(0.98);
         }
 
-        /* Back link */
+        /* Back link — touch-friendly */
         .back-link {
             color: rgba(218, 165, 32, 0.6);
             font-family: 'Montserrat', sans-serif;
@@ -148,6 +151,8 @@
             display: inline-flex;
             align-items: center;
             gap: 6px;
+            min-height: 44px;
+            padding: 8px 0;
         }
 
         .back-link:hover {
@@ -167,7 +172,16 @@
         .orb-sm { filter: blur(50px); }
         .orb-lg { filter: blur(100px); }
 
-        /* ── Success overlay ───────────────────────────────────────────────── */
+        /* Orb container — prevent horizontal overflow */
+        .orb-container {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            overflow: hidden;
+            z-index: 0;
+        }
+
+        /* ── Success overlay ── */
         #success-overlay {
             position: fixed;
             inset: 0;
@@ -177,6 +191,7 @@
             -webkit-backdrop-filter: blur(8px);
             align-items: center;
             justify-content: center;
+            padding: 1rem;
             animation: fadeInOverlay 0.45s ease;
         }
 
@@ -193,9 +208,9 @@
                 0 0 80px rgba(255,255,0,0.05),
                 inset 0 1px 0 rgba(255,255,255,0.04);
             border-radius: 24px;
-            padding: 52px 44px;
+            padding: clamp(28px, 6vw, 52px) clamp(20px, 5vw, 44px);
             max-width: 480px;
-            width: 90%;
+            width: 100%;
             text-align: center;
             animation: slideUpCard 0.5s cubic-bezier(0.175,0.885,0.32,1.275);
         }
@@ -206,8 +221,8 @@
         }
 
         .success-tick {
-            width: 80px;
-            height: 80px;
+            width: clamp(60px, 15vw, 80px);
+            height: clamp(60px, 15vw, 80px);
             border-radius: 50%;
             background: rgba(255,255,0,0.1);
             border: 2px solid rgba(255,255,0,0.5);
@@ -215,8 +230,8 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            margin: 0 auto 24px;
-            font-size: 2.4rem;
+            margin: 0 auto 20px;
+            font-size: clamp(1.8rem, 5vw, 2.4rem);
             animation: popTick 0.6s cubic-bezier(0.175,0.885,0.32,1.275) 0.2s both;
         }
 
@@ -228,31 +243,33 @@
         .success-title {
             font-family: 'Montserrat', sans-serif;
             font-weight: 900;
-            font-size: 1.5rem;
+            font-size: clamp(1.1rem, 4vw, 1.5rem);
             letter-spacing: 0.05em;
             text-transform: uppercase;
             color: #ffff00;
             text-shadow: 0 0 20px rgba(255,255,0,0.6), 0 0 40px rgba(255,255,0,0.2);
-            margin-bottom: 16px;
+            margin-bottom: 12px;
         }
 
         .success-msg {
             font-family: 'Lato', sans-serif;
             color: rgba(210,210,210,0.85);
-            font-size: 1rem;
+            font-size: clamp(0.88rem, 2.5vw, 1rem);
             line-height: 1.7;
-            margin-bottom: 32px;
+            margin-bottom: 28px;
         }
 
         .success-back-btn {
-            display: inline-block;
-            padding: 13px 36px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 13px clamp(20px, 5vw, 36px);
             background-color: #ffff00;
             color: #1a1000;
             font-family: 'Montserrat', sans-serif;
             font-weight: 900;
-            font-size: 0.8rem;
-            letter-spacing: 3px;
+            font-size: clamp(0.7rem, 2vw, 0.8rem);
+            letter-spacing: clamp(1px, 0.5vw, 3px);
             text-transform: uppercase;
             border: none;
             border-radius: 50px;
@@ -260,11 +277,19 @@
             box-shadow: 0 0 20px rgba(255,255,0,0.5), 0 0 40px rgba(255,255,0,0.15);
             transition: all 0.3s ease;
             text-decoration: none;
+            min-height: 48px;
         }
 
         .success-back-btn:hover {
             transform: scale(1.05);
             box-shadow: 0 0 35px rgba(255,255,0,0.9), 0 0 60px rgba(255,255,0,0.3);
+        }
+
+        /* Responsive form adjustments */
+        @media (max-width: 480px) {
+            .glass-form {
+                border-radius: 16px;
+            }
         }
     </style>
 </head>
@@ -285,33 +310,33 @@
     <!-- Main Page -->
     <div class="reg-page flex-1">
 
-        <!-- Animated Glowing Orbs Background -->
-        <div class="absolute inset-0 pointer-events-none overflow-hidden z-0">
-            <div class="ninnada-orb orb-lg orb-1" style="width:600px;height:600px;top:-150px;left:-200px;"></div>
-            <div class="ninnada-orb orb-2" style="width:420px;height:420px;top:30%;right:-120px;background:radial-gradient(circle, rgba(255,215,0,0.5) 0%, rgba(218,165,32,0.1) 50%, transparent 80%);"></div>
-            <div class="ninnada-orb orb-lg orb-3" style="width:580px;height:580px;bottom:0;left:-150px;"></div>
-            <div class="ninnada-orb orb-4" style="width:460px;height:460px;bottom:-80px;right:-140px;background:radial-gradient(circle, rgba(255,215,0,0.45) 0%, rgba(218,165,32,0.08) 50%, transparent 80%);"></div>
-            <div class="ninnada-orb orb-sm orb-5" style="width:260px;height:260px;top:20%;left:40%;background:radial-gradient(circle, rgba(218,165,32,0.4) 0%, rgba(218,165,32,0.06) 50%, transparent 80%);"></div>
-            <div class="ninnada-orb orb-sm orb-6" style="width:200px;height:200px;top:60%;right:30%;background:radial-gradient(circle, rgba(255,230,0,0.55) 0%, rgba(218,165,32,0.1) 50%, transparent 80%);"></div>
+        <!-- Animated Glowing Orbs Background — overflow contained -->
+        <div class="orb-container">
+            <div class="ninnada-orb orb-lg" style="width:min(600px,90vw);height:min(600px,90vw);top:-150px;left:-200px;"></div>
+            <div class="ninnada-orb" style="width:min(420px,70vw);height:min(420px,70vw);top:30%;right:-120px;background:radial-gradient(circle, rgba(255,215,0,0.5) 0%, rgba(218,165,32,0.1) 50%, transparent 80%);"></div>
+            <div class="ninnada-orb orb-lg" style="width:min(580px,90vw);height:min(580px,90vw);bottom:0;left:-150px;"></div>
+            <div class="ninnada-orb" style="width:min(460px,75vw);height:min(460px,75vw);bottom:-80px;right:-140px;background:radial-gradient(circle, rgba(255,215,0,0.45) 0%, rgba(218,165,32,0.08) 50%, transparent 80%);"></div>
+            <div class="ninnada-orb orb-sm" style="width:min(260px,50vw);height:min(260px,50vw);top:20%;left:40%;background:radial-gradient(circle, rgba(218,165,32,0.4) 0%, rgba(218,165,32,0.06) 50%, transparent 80%);"></div>
+            <div class="ninnada-orb orb-sm" style="width:min(200px,40vw);height:min(200px,40vw);top:60%;right:30%;background:radial-gradient(circle, rgba(255,230,0,0.55) 0%, rgba(218,165,32,0.1) 50%, transparent 80%);"></div>
         </div>
 
         <!-- Form Section -->
-        <main class="relative z-10 flex-1 flex items-center justify-center py-16 px-4">
+        <main class="relative z-10 flex-1 flex items-center justify-center py-10 md:py-16 px-4">
             <div class="w-full max-w-2xl">
 
                 <!-- Page Title -->
-                <div class="text-center mb-12">
-                    <h1 class="text-4xl md:text-6xl font-black text-glow-yellow-lg tracking-widest uppercase mb-4 font-[Montserrat]">
+                <div class="text-center mb-8 md:mb-12">
+                    <h1 style="font-size:clamp(1.8rem,7vw,3.5rem);" class="font-black text-glow-yellow-lg tracking-widest uppercase mb-4 font-[Montserrat]">
                         Registration Form
                     </h1>
-                    <p class="text-gray-400 text-base md:text-lg font-[Lato] tracking-wide">
+                    <p class="text-gray-400 text-sm md:text-lg font-[Lato] tracking-wide">
                         Complete your registration for <span class="text-yellow-400 font-bold">Ninnada'26</span>
                     </p>
-                    <div class="mt-5 w-20 h-px mx-auto bg-gradient-to-r from-transparent via-yellow-500 to-transparent opacity-60"></div>
+                    <div class="mt-4 w-20 h-px mx-auto bg-gradient-to-r from-transparent via-yellow-500 to-transparent opacity-60"></div>
                 </div>
 
                 <!-- Glass Form Card -->
-                <div class="glass-form px-8 md:px-12 py-10">
+                <div class="glass-form px-4 sm:px-8 md:px-12 py-8 md:py-10">
                     <form id="registration-form" onsubmit="handleSubmit(event)" novalidate>
 
                         <!-- Full Name -->

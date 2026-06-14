@@ -33,6 +33,7 @@
     <style>
         .admin-page {
             min-height: 100vh;
+            min-height: 100svh;
             background: linear-gradient(180deg, #000000 0%, #020713 40%, #081125 80%, #000000 100%);
             position: relative;
             overflow-x: hidden;
@@ -54,15 +55,19 @@
 
         .admin-input,
         .admin-select {
+            width: 100%;
             padding: 12px 16px;
             background: rgba(0, 0, 0, 0.6);
             border: 1px solid rgba(218, 165, 32, 0.25);
             border-radius: 8px;
             color: #ffffff;
             font-family: 'Lato', sans-serif;
-            font-size: 0.9rem;
+            font-size: 16px; /* 16px min prevents iOS auto-zoom */
             transition: all 0.3s ease;
             outline: none;
+            appearance: none;
+            -webkit-appearance: none;
+            min-height: 48px;
         }
 
         .admin-input:focus,
@@ -80,6 +85,7 @@
             border-radius: 50px;
             transition: all 0.3s ease;
             cursor: pointer;
+            min-height: 44px;
         }
 
         .admin-btn-yellow {
@@ -108,22 +114,64 @@
         }
 
         /* Table custom scrollbar */
-        .table-container::-webkit-scrollbar {
-            height: 8px;
-        }
-        .table-container::-webkit-scrollbar-track {
-            background: rgba(0, 0, 0, 0.2);
-        }
-        .table-container::-webkit-scrollbar-thumb {
-            background: rgba(218, 165, 32, 0.3);
-            border-radius: 4px;
-        }
-        .table-container::-webkit-scrollbar-thumb:hover {
-            background: rgba(255, 255, 0, 0.5);
+        .table-container::-webkit-scrollbar { height: 8px; }
+        .table-container::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.2); }
+        .table-container::-webkit-scrollbar-thumb { background: rgba(218, 165, 32, 0.3); border-radius: 4px; }
+        .table-container::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 0, 0.5); }
+
+        /* Orb container — prevents layout overflow */
+        .orb-container-admin {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            overflow: hidden;
+            z-index: 0;
         }
 
         /* Glowing Orbs */
         .ninnada-orb { filter: blur(80px); }
+
+        /* ── Mobile card view for registrations ── */
+        .mobile-reg-cards { display: none; padding: 16px; }
+        .desktop-reg-table { display: block; }
+
+        @media (max-width: 767px) {
+            .mobile-reg-cards { display: block; }
+            .desktop-reg-table { display: none; }
+
+            /* Metric cards — full-width stack on mobile */
+            .metric-cards-row {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 10px;
+            }
+
+            /* Pagination wrap */
+            .pagination-row {
+                flex-direction: column;
+                gap: 12px;
+                align-items: center;
+                text-align: center;
+            }
+
+            .page-numbers-wrap {
+                flex-wrap: wrap;
+                justify-content: center;
+                max-width: 280px;
+                gap: 4px;
+            }
+
+            /* Login card responsive */
+            #login-container {
+                padding: 0 4px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .metric-cards-row {
+                grid-template-columns: 1fr;
+            }
+        }
     </style>
 </head>
 
@@ -145,10 +193,10 @@
     <!-- Main Container -->
     <div class="admin-page flex-1">
         
-        <!-- Glowing Orbs Background -->
-        <div class="absolute inset-0 pointer-events-none overflow-hidden z-0">
-            <div class="ninnada-orb orb-1 absolute w-[500px] h-[500px] -top-[100px] -left-[150px] opacity-40" style="background:radial-gradient(circle, rgba(255,215,0,0.4) 0%, rgba(218,165,32,0.08) 50%, transparent 80%);"></div>
-            <div class="ninnada-orb orb-2 absolute w-[500px] h-[500px] bottom-0 -right-[150px] opacity-40" style="background:radial-gradient(circle, rgba(255,215,0,0.35) 0%, rgba(218,165,32,0.06) 50%, transparent 80%);"></div>
+        <!-- Glowing Orbs Background — overflow contained -->
+        <div class="orb-container-admin">
+            <div class="ninnada-orb absolute opacity-40" style="width:min(500px,80vw);height:min(500px,80vw);top:-100px;left:-150px;background:radial-gradient(circle, rgba(255,215,0,0.4) 0%, rgba(218,165,32,0.08) 50%, transparent 80%);"></div>
+            <div class="ninnada-orb absolute opacity-40" style="width:min(500px,80vw);height:min(500px,80vw);bottom:0;right:-150px;background:radial-gradient(circle, rgba(255,215,0,0.35) 0%, rgba(218,165,32,0.06) 50%, transparent 80%);"></div>
         </div>
 
         <main class="relative z-10 flex-1 flex flex-col items-center justify-start py-12 px-4 md:px-8">
@@ -183,12 +231,12 @@
             </div>
 
             <!-- ── DASHBOARD CONTAINER ─────────────────────────────────────────── -->
-            <div id="dashboard-container" class="w-full max-w-7xl hidden flex flex-col gap-8">
+            <div id="dashboard-container" class="w-full max-w-7xl hidden flex flex-col gap-6 md:gap-8">
                 
                 <!-- Page Title & Stats Grid -->
-                <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+                <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 md:gap-6">
                     <div>
-                        <h1 class="text-3xl md:text-5xl font-black text-glow-yellow-lg tracking-widest uppercase font-[Montserrat]">
+                        <h1 style="font-size:clamp(1.6rem,5vw,3rem);" class="font-black text-glow-yellow-lg tracking-widest uppercase font-[Montserrat] leading-tight">
                             Registrations Portal
                         </h1>
                         <p class="text-gray-400 text-sm font-[Lato] mt-1">
@@ -197,23 +245,30 @@
                     </div>
 
                     <!-- Metrics overview -->
-                    <div class="flex flex-wrap gap-4">
+                    <div class="metric-cards-row flex flex-wrap gap-3">
                         <!-- Contestants metric -->
-                        <div class="glass-card px-6 py-4 flex flex-col justify-center min-w-[150px] border-yellow-500/20">
-                            <span class="text-gray-400 uppercase tracking-widest text-[0.65rem] font-bold font-[Montserrat] mb-1">Total Contestants</span>
-                            <span id="metric-contestants" class="text-2xl font-black text-yellow-400 text-glow-yellow">Loading…</span>
+                        <div class="glass-card px-4 md:px-6 py-3 md:py-4 flex flex-col justify-center flex-1 min-w-[130px] border-yellow-500/20">
+                            <span class="text-gray-400 uppercase tracking-widest text-[0.6rem] font-bold font-[Montserrat] mb-1">Total Contestants</span>
+                            <span id="metric-contestants" class="text-xl md:text-2xl font-black text-yellow-400 text-glow-yellow">Loading…</span>
                         </div>
                         <!-- Schools metric -->
-                        <div class="glass-card px-6 py-4 flex flex-col justify-center min-w-[150px] border-yellow-500/20">
-                            <span class="text-gray-400 uppercase tracking-widest text-[0.65rem] font-bold font-[Montserrat] mb-1">Total Schools</span>
-                            <span id="metric-schools" class="text-2xl font-black text-yellow-400 text-glow-yellow">Loading…</span>
+                        <div class="glass-card px-4 md:px-6 py-3 md:py-4 flex flex-col justify-center flex-1 min-w-[130px] border-yellow-500/20">
+                            <span class="text-gray-400 uppercase tracking-widest text-[0.6rem] font-bold font-[Montserrat] mb-1">Total Schools</span>
+                            <span id="metric-schools" class="text-xl md:text-2xl font-black text-yellow-400 text-glow-yellow">Loading…</span>
                         </div>
-                        <!-- Refresh/Recalculate stats button -->
-                        <button onclick="triggerRecalculate()" class="glass-card px-4 hover:border-yellow-400/50 hover:bg-yellow-400/5 transition-all text-gray-400 hover:text-yellow-400 flex items-center justify-center title-tooltip" title="Recalculate Statistics from Database">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <!-- Recalculate stats button -->
+                        <button onclick="triggerRecalculate()" class="glass-card px-3 md:px-4 hover:border-yellow-400/50 hover:bg-yellow-400/5 transition-all text-gray-400 hover:text-yellow-400 flex items-center justify-center" title="Recalculate Statistics from Database">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 1121.21 7.89M9 11l3 3L22 4" />
                             </svg>
-                            <span class="ml-2 text-xs font-bold font-[Montserrat] uppercase tracking-wider hidden md:inline">Recalculate Stats</span>
+                            <span class="ml-2 text-xs font-bold font-[Montserrat] uppercase tracking-wider hidden md:inline">Recalculate</span>
+                        </button>
+                        <!-- Export CSV button -->
+                        <button onclick="exportCSV()" id="export-csv-btn" class="glass-card px-3 md:px-4 hover:border-yellow-400/50 hover:bg-yellow-400/5 transition-all text-gray-400 hover:text-yellow-400 flex items-center justify-center" title="Export all registrations to CSV">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                            </svg>
+                            <span class="ml-2 text-xs font-bold font-[Montserrat] uppercase tracking-wider hidden md:inline">Export CSV</span>
                         </button>
                     </div>
                 </div>
@@ -258,24 +313,27 @@
 
                 <!-- Registrations Table Card -->
                 <div class="glass-card overflow-hidden flex flex-col">
-                    <div class="table-container overflow-x-auto w-full">
-                        <table class="w-full text-left border-collapse">
+
+                    <!-- Desktop Table -->
+                    <div class="desktop-reg-table table-container overflow-x-auto w-full">
+                        <table class="w-full text-left border-collapse" style="min-width:700px;">
                             <thead>
                                 <tr class="border-b border-yellow-500/20 bg-black/40 text-[0.7rem] uppercase font-bold text-yellow-500/90 font-[Montserrat] tracking-wider">
-                                    <th class="py-4 px-6">Full Name</th>
-                                    <th class="py-4 px-6">School</th>
-                                    <th class="py-4 px-6">Email</th>
-                                    <th class="py-4 px-6">Mobile Number</th>
-                                    <th class="py-4 px-6">Category</th>
-                                    <th class="py-4 px-6">Medium</th>
-                                    <th class="py-4 px-6">Age Category</th>
-                                    <th class="py-4 px-6">Submitted At</th>
+                                    <th class="py-4 px-4">Full Name</th>
+                                    <th class="py-4 px-4">School</th>
+                                    <th class="py-4 px-4">Email</th>
+                                    <th class="py-4 px-4">Phone</th>
+                                    <th class="py-4 px-4">Category</th>
+                                    <th class="py-4 px-4">Medium</th>
+                                    <th class="py-4 px-4">Age</th>
+                                    <th class="py-4 px-4">Submitted</th>
+                                    <th class="py-4 px-4 text-center">Action</th>
                                 </tr>
                             </thead>
                             <tbody id="registrations-tbody" class="divide-y divide-white/5 font-[Lato] text-sm text-gray-200">
                                 <!-- Loaded dynamically -->
                                 <tr>
-                                    <td colspan="8" class="py-12 text-center text-gray-400 font-bold">
+                                    <td colspan="9" class="py-12 text-center text-gray-400 font-bold">
                                         Loading registrations data…
                                     </td>
                                 </tr>
@@ -283,25 +341,32 @@
                         </table>
                     </div>
 
+                    <!-- Mobile Card View (shown below 768px) -->
+                    <div class="mobile-reg-cards">
+                        <div id="registrations-mobile-cards">
+                            <p class="text-center text-gray-400 font-bold py-12">Loading registrations data…</p>
+                        </div>
+                    </div>
+
                     <!-- Pagination Controls -->
-                    <div class="flex flex-col sm:flex-row items-center justify-between gap-4 px-6 py-5 border-t border-white/5 bg-black/20">
+                    <div class="pagination-row flex flex-col sm:flex-row items-center justify-between gap-4 px-4 md:px-6 py-4 md:py-5 border-t border-white/5 bg-black/20">
                         <div class="text-xs text-gray-400 font-[Lato]">
                             Showing <span id="pagination-showing" class="text-yellow-400 font-bold">0</span> entries
                         </div>
                         
                         <div class="flex items-center gap-2">
                             <!-- Prev button -->
-                            <button id="btn-prev" onclick="prevPage()" class="px-4 py-2 admin-btn admin-btn-outline text-xs font-bold disabled:opacity-30 disabled:pointer-events-none">
+                            <button id="btn-prev" onclick="prevPage()" class="px-3 md:px-4 py-2 admin-btn admin-btn-outline text-xs font-bold disabled:opacity-30 disabled:pointer-events-none">
                                 Prev
                             </button>
                             
                             <!-- Page numbers container -->
-                            <div id="page-numbers" class="flex items-center gap-1">
+                            <div id="page-numbers" class="page-numbers-wrap flex items-center gap-1">
                                 <!-- Populated dynamically -->
                             </div>
                             
                             <!-- Next button -->
-                            <button id="btn-next" onclick="nextPage()" class="px-4 py-2 admin-btn admin-btn-outline text-xs font-bold disabled:opacity-30 disabled:pointer-events-none">
+                            <button id="btn-next" onclick="nextPage()" class="px-3 md:px-4 py-2 admin-btn admin-btn-outline text-xs font-bold disabled:opacity-30 disabled:pointer-events-none">
                                 Next
                             </button>
                         </div>
@@ -317,6 +382,28 @@
                 <p>&copy; 2026 Media Circle of D. S. Senanayake College. All Rights Reserved.</p>
             </div>
         </footer>
+    </div>
+
+    <!-- ── View Registration Modal ─────────────────────────────────────────── -->
+    <div id="view-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/80 backdrop-blur-sm p-4">
+        <div class="glass-card w-full max-w-2xl max-h-[90vh] overflow-y-auto p-6 md:p-8 relative">
+            <button onclick="closeViewModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+            <h2 class="text-2xl font-black text-glow-yellow-lg tracking-widest uppercase mb-6 font-[Montserrat] border-b border-yellow-500/20 pb-4">
+                Registration Details
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 font-[Lato] text-sm" id="view-modal-content">
+                <!-- Populated dynamically -->
+            </div>
+            <div class="mt-8 flex justify-end">
+                <button onclick="closeViewModal()" class="px-6 py-2 admin-btn admin-btn-outline text-xs font-bold">
+                    Close
+                </button>
+            </div>
+        </div>
     </div>
 
     <!-- Firebase module scripts -->
@@ -481,11 +568,13 @@
             const tbody = document.getElementById('registrations-tbody');
             tbody.innerHTML = `
                 <tr>
-                    <td colspan="8" class="py-12 text-center text-gray-400 font-bold">
+                    <td colspan="9" class="py-12 text-center text-gray-400 font-bold">
                         Loading page ${currentPage}…
                     </td>
                 </tr>
             `;
+            const mobileLoadingEl = document.getElementById('registrations-mobile-cards');
+            if (mobileLoadingEl) mobileLoadingEl.innerHTML = `<p class="text-center text-gray-400 font-bold py-12">Loading page ${currentPage}…</p>`;
 
             try {
                 const data = await fetchPageData(currentPage);
@@ -499,11 +588,12 @@
                 }
                 tbody.innerHTML = `
                     <tr>
-                        <td colspan="8" class="py-12 text-center text-red-400 font-bold">
+                        <td colspan="9" class="py-12 text-center text-red-400 font-bold">
                             ${errMsg}
                         </td>
                     </tr>
                 `;
+                if (mobileLoadingEl) mobileLoadingEl.innerHTML = `<p class="text-center text-red-400 font-bold py-12">${errMsg}</p>`;
             }
         }
 
@@ -580,35 +670,84 @@
         // ── Render Helpers ─────────────────────────────────────────────────────
         function renderTable(data) {
             const tbody = document.getElementById('registrations-tbody');
+            const mobileCards = document.getElementById('registrations-mobile-cards');
+
             if (data.length === 0) {
-                tbody.innerHTML = `
-                    <tr>
-                        <td colspan="8" class="py-12 text-center text-gray-400 font-bold">
-                            No registration documents match the filters.
-                        </td>
-                    </tr>
-                `;
+                const emptyMsg = `<p class="py-12 text-center text-gray-400 font-bold">No registration documents match the filters.</p>`;
+                tbody.innerHTML = `<tr><td colspan="9" class="py-12 text-center text-gray-400 font-bold">No registration documents match the filters.</td></tr>`;
+                if (mobileCards) mobileCards.innerHTML = emptyMsg;
                 return;
             }
 
-            tbody.innerHTML = data.map(item => {
+            // ── Desktop table rows ─────────────────────────────────────────────
+            tbody.innerHTML = data.map((item, index) => {
                 const date = item.submittedAt && typeof item.submittedAt.toDate === 'function'
                     ? item.submittedAt.toDate().toLocaleString()
+                    : 'N/A';
+                const dateShort = item.submittedAt && typeof item.submittedAt.toDate === 'function'
+                    ? item.submittedAt.toDate().toLocaleDateString()
                     : 'N/A';
                 
                 return `
                     <tr class="hover:bg-white/[0.03] transition-colors">
-                        <td class="py-4 px-6 font-bold text-white">${escapeHtml(item.fullName)}</td>
-                        <td class="py-4 px-6 text-gray-300">${escapeHtml(item.school)}</td>
-                        <td class="py-4 px-6 text-gray-400 font-mono text-xs">${escapeHtml(item.email)}</td>
-                        <td class="py-4 px-6 text-gray-300 font-mono">${escapeHtml(item.mobilenumber || item.phone || '')}</td>
-                        <td class="py-4 px-6 text-yellow-400/90 font-bold uppercase text-xs tracking-wider">${escapeHtml(item.category)}</td>
-                        <td class="py-4 px-6 text-gray-300 uppercase text-xs">${escapeHtml(item.language || '')}</td>
-                        <td class="py-4 px-6 text-gray-300 uppercase text-xs">${escapeHtml(item.agecategory || item.ageCategory || '')}</td>
-                        <td class="py-4 px-6 text-gray-400 font-mono text-xs">${date}</td>
+                        <td class="py-3 px-4 font-bold text-white whitespace-nowrap">${escapeHtml(item.fullName)}</td>
+                        <td class="py-3 px-4 text-gray-300">${escapeHtml(item.school)}</td>
+                        <td class="py-3 px-4 text-gray-400 font-mono text-xs">${escapeHtml(item.email)}</td>
+                        <td class="py-3 px-4 text-gray-300 font-mono text-xs whitespace-nowrap">${escapeHtml(item.mobilenumber || item.phone || '')}</td>
+                        <td class="py-3 px-4 text-yellow-400/90 font-bold uppercase text-xs tracking-wider whitespace-nowrap">${escapeHtml(item.category)}</td>
+                        <td class="py-3 px-4 text-gray-300 uppercase text-xs">${escapeHtml(item.language || '')}</td>
+                        <td class="py-3 px-4 text-gray-300 uppercase text-xs whitespace-nowrap">${escapeHtml(item.agecategory || item.ageCategory || '')}</td>
+                        <td class="py-3 px-4 text-gray-400 font-mono text-xs whitespace-nowrap">${dateShort}</td>
+                        <td class="py-3 px-4 text-center">
+                            <button onclick="openViewModal(${index})" class="admin-btn admin-btn-outline px-3 py-1 text-[0.65rem] font-bold whitespace-nowrap">View</button>
+                        </td>
                     </tr>
                 `;
             }).join('');
+
+            // ── Mobile card view ───────────────────────────────────────────────
+            if (mobileCards) {
+                mobileCards.innerHTML = data.map((item, index) => {
+                    const date = item.submittedAt && typeof item.submittedAt.toDate === 'function'
+                        ? item.submittedAt.toDate().toLocaleString()
+                        : 'N/A';
+                    return `
+                        <div class="reg-mobile-card">
+                            <div class="reg-card-header">
+                                <span class="reg-card-name">${escapeHtml(item.fullName)}</span>
+                                <span class="reg-card-badge">${escapeHtml(item.category)}</span>
+                            </div>
+                            <div class="reg-card-row">
+                                <span class="reg-card-label">School</span>
+                                <span class="reg-card-value">${escapeHtml(item.school)}</span>
+                            </div>
+                            <div class="reg-card-row">
+                                <span class="reg-card-label">Email</span>
+                                <span class="reg-card-value" style="font-family:monospace;font-size:0.78rem;">${escapeHtml(item.email)}</span>
+                            </div>
+                            <div class="reg-card-row">
+                                <span class="reg-card-label">Phone</span>
+                                <span class="reg-card-value">${escapeHtml(item.mobilenumber || item.phone || '—')}</span>
+                            </div>
+                            <div class="reg-card-row">
+                                <span class="reg-card-label">Medium</span>
+                                <span class="reg-card-value" style="text-transform:uppercase;">${escapeHtml(item.language || '—')}</span>
+                            </div>
+                            <div class="reg-card-row">
+                                <span class="reg-card-label">Age</span>
+                                <span class="reg-card-value" style="text-transform:uppercase;">${escapeHtml(item.agecategory || item.ageCategory || '—')}</span>
+                            </div>
+                            <div class="reg-card-row">
+                                <span class="reg-card-label">Submitted</span>
+                                <span class="reg-card-value" style="font-size:0.75rem;color:#aaa;">${date}</span>
+                            </div>
+                            <div class="reg-card-actions">
+                                <button onclick="openViewModal(${index})" class="admin-btn admin-btn-outline px-4 py-2 text-[0.65rem] font-bold w-full">View Details</button>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            }
         }
 
         function escapeHtml(str) {
@@ -715,6 +854,123 @@
             resetPagination();
             loadCurrentPage();
         };
+
+        // ── View Modal & Export CSV ────────────────────────────────────────────
+
+        window.openViewModal = function(index) {
+            const data = pageCache[currentPage][index];
+            if (!data) return;
+
+            const date = data.submittedAt && typeof data.submittedAt.toDate === 'function'
+                ? data.submittedAt.toDate().toLocaleString()
+                : 'N/A';
+
+            const modalContent = document.getElementById('view-modal-content');
+            modalContent.innerHTML = `
+                <div class="flex flex-col">
+                    <span class="text-xs uppercase font-bold text-yellow-500/80 mb-1 font-[Montserrat] tracking-wider">Full Name</span>
+                    <span class="text-white font-bold text-base">${escapeHtml(data.fullName)}</span>
+                </div>
+                <div class="flex flex-col">
+                    <span class="text-xs uppercase font-bold text-yellow-500/80 mb-1 font-[Montserrat] tracking-wider">School</span>
+                    <span class="text-gray-300">${escapeHtml(data.school)}</span>
+                </div>
+                <div class="flex flex-col">
+                    <span class="text-xs uppercase font-bold text-yellow-500/80 mb-1 font-[Montserrat] tracking-wider">Email Address</span>
+                    <span class="text-gray-400 font-mono break-all">${escapeHtml(data.email)}</span>
+                </div>
+                <div class="flex flex-col">
+                    <span class="text-xs uppercase font-bold text-yellow-500/80 mb-1 font-[Montserrat] tracking-wider">Mobile Number</span>
+                    <span class="text-gray-300 font-mono">${escapeHtml(data.mobilenumber || data.phone || '')}</span>
+                </div>
+                <div class="flex flex-col">
+                    <span class="text-xs uppercase font-bold text-yellow-500/80 mb-1 font-[Montserrat] tracking-wider">Category</span>
+                    <span class="text-yellow-400/90 font-bold uppercase">${escapeHtml(data.category)}</span>
+                </div>
+                <div class="flex flex-col">
+                    <span class="text-xs uppercase font-bold text-yellow-500/80 mb-1 font-[Montserrat] tracking-wider">Language Medium</span>
+                    <span class="text-gray-300 uppercase">${escapeHtml(data.language || '')}</span>
+                </div>
+                <div class="flex flex-col">
+                    <span class="text-xs uppercase font-bold text-yellow-500/80 mb-1 font-[Montserrat] tracking-wider">Age Category</span>
+                    <span class="text-gray-300 uppercase">${escapeHtml(data.agecategory || data.ageCategory || '')}</span>
+                </div>
+                <div class="flex flex-col">
+                    <span class="text-xs uppercase font-bold text-yellow-500/80 mb-1 font-[Montserrat] tracking-wider">Submitted At</span>
+                    <span class="text-gray-400 font-mono">${date}</span>
+                </div>
+            `;
+            
+            const modal = document.getElementById('view-modal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        };
+
+        window.closeViewModal = function() {
+            const modal = document.getElementById('view-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        };
+
+        // Close modal when clicking outside
+        document.getElementById('view-modal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeViewModal();
+            }
+        });
+
+        window.exportCSV = async function() {
+            if (!confirm("This will fetch all registrations from the database to generate the CSV. Are you sure you want to proceed?")) return;
+            
+            const btn = document.getElementById('export-csv-btn');
+            const originalContent = btn.innerHTML;
+            btn.innerHTML = `<span class="text-xs font-bold font-[Montserrat] uppercase tracking-wider">Exporting...</span>`;
+            btn.disabled = true;
+
+            try {
+                const snapshot = await getDocs(collection(db, 'registrations'));
+                const docs = snapshot.docs;
+                
+                let csvContent = "Full Name,School,Email,Phone,Category,Language,Age Category,Submitted At\n";
+                
+                docs.forEach(doc => {
+                    const data = doc.data();
+                    const name = escapeCSV(data.fullName);
+                    const school = escapeCSV(data.school);
+                    const email = escapeCSV(data.email);
+                    const phone = escapeCSV(data.mobilenumber || data.phone || '');
+                    const category = escapeCSV(data.category);
+                    const language = escapeCSV(data.language || '');
+                    const ageCat = escapeCSV(data.agecategory || data.ageCategory || '');
+                    const date = data.submittedAt && typeof data.submittedAt.toDate === 'function' 
+                        ? escapeCSV(data.submittedAt.toDate().toLocaleString()) 
+                        : '"N/A"';
+                    
+                    csvContent += `${name},${school},${email},${phone},${category},${language},${ageCat},${date}\n`;
+                });
+
+                const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+                const url = URL.createObjectURL(blob);
+                const link = document.createElement("a");
+                link.setAttribute("href", url);
+                link.setAttribute("download", `ninnada26_registrations_${new Date().toISOString().split('T')[0]}.csv`);
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            } catch (err) {
+                console.error("Error exporting CSV:", err);
+                alert("Failed to export CSV: " + err.message);
+            } finally {
+                btn.innerHTML = originalContent;
+                btn.disabled = false;
+            }
+        };
+
+        function escapeCSV(str) {
+            if (!str) return '""';
+            let formatted = String(str).replace(/"/g, '""');
+            return `"${formatted}"`;
+        }
     </script>
 </body>
 

@@ -37,22 +37,13 @@ function showTab(tabId) {
     }
 
     // Close mobile menu on tab switch
-    const navLinks = document.getElementById('nav-links');
-    const hamburger = document.getElementById('hamburger-btn');
-    if (navLinks && hamburger) {
-        navLinks.classList.remove('open');
-        hamburger.classList.remove('open');
-        hamburger.setAttribute('aria-expanded', 'false');
-    }
+    closeMobileMenu();
 
     // Scroll to top when switching tabs (unless handled by scrollToSection)
-    window.scrollTo(0, 0);
+    window.scrollTo({ top: 0, behavior: 'instant' });
 }
 
 function scrollToSection(sectionId) {
-    // Ensure the tab is switched before scrolling
-    // (Handled by the onclick handler calling showTab first)
-
     // Small delay to allow DOM update before scrolling
     setTimeout(() => {
         const section = document.getElementById(sectionId);
@@ -60,6 +51,18 @@ function scrollToSection(sectionId) {
             section.scrollIntoView({ behavior: 'smooth' });
         }
     }, 10);
+    // Also close the mobile menu
+    closeMobileMenu();
+}
+
+function closeMobileMenu() {
+    const navLinks = document.getElementById('nav-links');
+    const hamburger = document.getElementById('hamburger-btn');
+    if (navLinks && hamburger) {
+        navLinks.classList.remove('open');
+        hamburger.classList.remove('open');
+        hamburger.setAttribute('aria-expanded', 'false');
+    }
 }
 
 // Initialize: Show Home tab or previously requested tab
@@ -68,25 +71,41 @@ document.addEventListener('DOMContentLoaded', () => {
     sessionStorage.removeItem('openTab');
     showTab(tabToOpen);
 
-    // Hamburger menu toggle
+    // ── Hamburger menu toggle ──────────────────────────────────────────────
     const hamburger = document.getElementById('hamburger-btn');
     const navLinks = document.getElementById('nav-links');
     if (hamburger && navLinks) {
-        hamburger.addEventListener('click', () => {
+        hamburger.addEventListener('click', (e) => {
+            e.stopPropagation();
             const isOpen = navLinks.classList.toggle('open');
             hamburger.classList.toggle('open', isOpen);
             hamburger.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
         });
+
+        // Close menu when clicking outside of it
+        document.addEventListener('click', (e) => {
+            if (!hamburger.contains(e.target) && !navLinks.contains(e.target)) {
+                closeMobileMenu();
+            }
+        });
+
+        // Close menu when a dropdown link is clicked on mobile
+        navLinks.querySelectorAll('.dropdown li a').forEach(link => {
+            link.addEventListener('click', () => {
+                // Small delay to let the onclick handler run first
+                setTimeout(closeMobileMenu, 50);
+            });
+        });
     }
 
-    // Scroll reveal observer for elements with .reveal-on-scroll
+    // ── Scroll reveal observer for .reveal-on-scroll ───────────────────────
     const revealObserver = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 entry.target.classList.add('revealed');
             }
         });
-    }, { threshold: 0.15 });
+    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
 
     document.querySelectorAll('.reveal-on-scroll').forEach(el => {
         revealObserver.observe(el);

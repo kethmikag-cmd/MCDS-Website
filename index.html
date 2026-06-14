@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Media Circle of D. S. Senanayake College</title>
+    <meta name="description" content="The Media Circle of D.S. Senanayake College — MCDS — is Sri Lanka's premier trilingual school media club, nurturing the next generation of media personalities.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -29,6 +30,121 @@
             }
         }
     </script>
+    <style>
+        /* ── Ninnada page responsive overrides ── */
+
+        /* Stats section: fluid card sizing */
+        .ninnada-stat-card {
+            width: clamp(160px, 40vw, 256px);
+            height: clamp(160px, 40vw, 256px);
+            flex: 0 0 auto;
+        }
+
+        /* Ninnada registration section */
+        #ninnada-registrations {
+            padding: clamp(3rem, 8vw, 6rem) clamp(1rem, 4vw, 2rem);
+        }
+
+        /* Ninnada hero h1 fluid scaling */
+        .ninnada-hero-title {
+            font-size: clamp(2.2rem, 10vw, 6rem);
+            letter-spacing: clamp(2px, 1vw, 8px);
+            line-height: 1.1;
+            word-break: break-word;
+        }
+
+        /* Ninnada subtitle scaling */
+        .ninnada-hero-subtitle {
+            font-size: clamp(0.9rem, 2.5vw, 1.5rem);
+            max-width: min(48rem, 90vw);
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Register Now button — full width on smallest phones */
+        .ninnada-register-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 52px;
+            padding: clamp(0.75rem, 2vw, 1.25rem) clamp(1.5rem, 5vw, 2.5rem);
+            font-size: clamp(0.85rem, 2vw, 1.125rem);
+        }
+
+        @media (max-width: 480px) {
+            .ninnada-register-btn {
+                width: 100%;
+                max-width: 320px;
+            }
+        }
+
+        /* Info card responsive */
+        .ninnada-info-card-inner {
+            font-size: clamp(0.7rem, 2vw, 0.875rem);
+            padding: clamp(0.75rem, 2vw, 1rem) clamp(1rem, 3vw, 2rem);
+            text-align: center;
+            letter-spacing: clamp(1px, 0.3vw, 3px);
+        }
+
+        /* Stats section flex wrapping */
+        #ninnada-stats {
+            flex-wrap: wrap;
+            gap: clamp(1rem, 4vw, 4rem);
+            padding: clamp(2rem, 6vw, 4rem) clamp(1rem, 4vw, 2rem);
+        }
+
+        /* Category grid — ensure no overflow */
+        #ninnada-categories .category-box {
+            word-break: break-word;
+        }
+
+        /* About ninnada section padding */
+        #ninnada-about {
+            padding: clamp(2rem, 6vw, 5rem) clamp(1rem, 4vw, 2rem);
+        }
+
+        /* Section 4 categories */
+        #ninnada-categories {
+            padding: clamp(2rem, 6vw, 6rem) clamp(1rem, 4vw, 2rem);
+        }
+
+        /* Category grid heading scaling */
+        .ninnada-section-title {
+            font-size: clamp(1.5rem, 5vw, 3rem);
+            letter-spacing: clamp(1px, 0.3vw, 4px);
+        }
+
+        /* Category subtitle */
+        .ninnada-section-subtitle {
+            font-size: clamp(0.82rem, 2vw, 1rem);
+            margin-bottom: clamp(2rem, 6vw, 4rem);
+        }
+
+        @media (max-width: 767px) {
+            .ninnada-hero-title {
+                font-size: clamp(2rem, 12vw, 3.5rem);
+                letter-spacing: 2px;
+            }
+
+            .ninnada-stat-card {
+                width: min(200px, 70vw);
+                height: min(200px, 70vw);
+            }
+        }
+
+        @media (max-width: 375px) {
+            .ninnada-hero-title {
+                font-size: 1.9rem;
+            }
+
+            .ninnada-stat-card {
+                width: 85vw;
+                height: 85vw;
+                max-width: 220px;
+                max-height: 220px;
+            }
+        }
+    </style>
 </head>
 
 <body>
@@ -110,7 +226,7 @@
                 </div>
 
                 <div class="container hero-content">
-                    <img src="Images/DS Media both.png" alt="MCDS Logo" class="hero-logo">
+                    <img src="Images/DS Media both.png" alt="MCDS Logo" class="hero-logo" loading="eager">
                     <h1>Media Circle of D.S.Senanayake College</h1>
                     <p>WE LEAD THE AUDIENCE</p>
                     <a href="#" onclick="showTab('about'); return false;" class="hero-cta">Discover More</a>
@@ -215,32 +331,31 @@
             <div class="relative z-10">
                 <!-- SECTION 1: Registrations -->
                 <section id="ninnada-registrations"
-                    class="flex flex-col items-center justify-center text-center py-24 px-4">
+                    class="flex flex-col items-center justify-center text-center">
                     <h1
-                        class="text-6xl md:text-8xl font-black text-glow-yellow-lg tracking-widest uppercase mb-6 font-[Montserrat]">
+                        class="ninnada-hero-title font-black text-glow-yellow-lg uppercase mb-6 font-[Montserrat]">
                         NINNADA'26</h1>
                     <h3
-                        class="text-lg md:text-2xl font-bold text-gray-300 max-w-3xl mb-12 font-[Montserrat] leading-relaxed">
+                        class="ninnada-hero-subtitle font-bold text-gray-300 mb-10 font-[Montserrat] leading-relaxed px-2">
                         School Registrations are now open for the largest all-island trillingual media competition in
-                        Sri
-                        Lanka</h3>
+                        Sri Lanka</h3>
 
                     <a href="registration.html" onclick="window.location.href='registration.html'; return false;"
-                        class="inline-block px-10 py-5 rounded-full text-lg font-bold ninnada-btn-glow mb-12">Register
+                        class="ninnada-register-btn rounded-full font-bold ninnada-btn-glow mb-10">Register
                         Now</a>
 
                     <div
-                        class="px-8 py-4 rounded-xl ninnada-info-card text-yellow-400 font-bold tracking-wider text-sm md:text-base border border-yellow-400/30 uppercase font-[Montserrat]">
+                        class="ninnada-info-card ninnada-info-card-inner rounded-xl text-yellow-400 font-bold tracking-wider uppercase font-[Montserrat]">
                         25TH JULY 2026 | D.S.Senanayake College
                     </div>
                 </section>
 
                 <!-- SECTION 2: Stats (reveal-on-scroll) -->
                 <section id="ninnada-stats"
-                    class="reveal-on-scroll flex flex-col md:flex-row justify-center items-center gap-8 md:gap-16 py-16 px-4">
+                    class="reveal-on-scroll flex flex-col md:flex-row justify-center items-center">
                     <!-- Card 1 -->
                     <div
-                        class="w-64 h-64 flex flex-col justify-center items-center bg-black/60 backdrop-blur-md border border-yellow-400/25 rounded-2xl shadow-[0_0_15px_rgba(255,255,0,0.05)] transition-all duration-300 hover:scale-105 hover:shadow-[0_0_25px_rgba(255,255,0,0.25)] hover:border-yellow-400/50">
+                        class="ninnada-stat-card flex flex-col justify-center items-center bg-black/60 backdrop-blur-md border border-yellow-400/25 rounded-2xl shadow-[0_0_15px_rgba(255,255,0,0.05)] transition-all duration-300 hover:scale-105 hover:shadow-[0_0_25px_rgba(255,255,0,0.25)] hover:border-yellow-400/50">
                         <span
                             class="text-5xl md:text-6xl font-black bg-gradient-to-r from-yellow-300 via-yellow-400 to-yellow-500 bg-clip-text text-transparent drop-shadow-[0_0_8px_rgba(255,255,0,0.4)]">2500+</span>
                         <span
@@ -248,7 +363,7 @@
                     </div>
                     <!-- Card 2 -->
                     <div
-                        class="w-64 h-64 flex flex-col justify-center items-center bg-black/60 backdrop-blur-md border border-yellow-400/25 rounded-2xl shadow-[0_0_15px_rgba(255,255,0,0.05)] transition-all duration-300 hover:scale-105 hover:shadow-[0_0_25px_rgba(255,255,0,0.25)] hover:border-yellow-400/50">
+                        class="ninnada-stat-card flex flex-col justify-center items-center bg-black/60 backdrop-blur-md border border-yellow-400/25 rounded-2xl shadow-[0_0_15px_rgba(255,255,0,0.05)] transition-all duration-300 hover:scale-105 hover:shadow-[0_0_25px_rgba(255,255,0,0.25)] hover:border-yellow-400/50">
                         <span
                             class="text-5xl md:text-6xl font-black bg-gradient-to-r from-yellow-300 via-yellow-400 to-yellow-500 bg-clip-text text-transparent drop-shadow-[0_0_8px_rgba(255,255,0,0.4)]">250+</span>
                         <span
@@ -257,10 +372,10 @@
                 </section>
 
                 <!-- SECTION 3: About Ninnada'26 -->
-                <section id="ninnada-about" class="py-20 px-4 border-t border-b border-white/5 bg-black/40">
+                <section id="ninnada-about" class="border-t border-b border-white/5 bg-black/40">
                     <div class="container max-w-4xl mx-auto">
                         <h2
-                            class="text-3xl md:text-5xl font-extrabold text-glow-yellow mb-8 text-center font-[Montserrat] uppercase tracking-wider">
+                            class="ninnada-section-title font-extrabold text-glow-yellow mb-8 text-center font-[Montserrat] uppercase">
                             What is Ninnada'26?</h2>
                         <p class="text-base md:text-lg leading-relaxed text-gray-200 text-center font-[Lato]">
                             Ninnada is the trademark event of the Media Circle of D.S.Senanayake College. It is the
@@ -281,60 +396,60 @@
                 </section>
 
                 <!-- SECTION 4: Contestant Categories (reveal-on-scroll) -->
-                <section id="ninnada-categories" class="reveal-on-scroll py-24 px-4 bg-black/10">
+                <section id="ninnada-categories" class="reveal-on-scroll bg-black/10">
                     <div class="container max-w-6xl mx-auto">
                         <h2
-                            class="text-3xl md:text-5xl font-extrabold text-glow-yellow mb-4 text-center font-[Montserrat] uppercase tracking-wider">
+                            class="ninnada-section-title font-extrabold text-glow-yellow mb-4 text-center font-[Montserrat] uppercase">
                             CONTESTANT CATEGORIES</h2>
                         <h4
-                            class="text-center text-gray-300 text-sm md:text-base max-w-2xl mx-auto mb-16 font-[Lato] tracking-wide">
+                            class="ninnada-section-subtitle text-center text-gray-300 max-w-2xl mx-auto font-[Lato] tracking-wide">
                             Here's an outlook on all the competition categories contestants can take part in!
                         </h4>
 
                         <!-- Categories Grid -->
-                        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
                             <!-- Category 1 -->
-                            <div class="category-box rounded-xl p-6 flex flex-col">
-                                <h3 class="text-xl font-bold text-yellow-400 mb-3 font-[Montserrat] tracking-wide">News
+                            <div class="category-box rounded-xl p-5 md:p-6 flex flex-col">
+                                <h3 class="text-lg md:text-xl font-bold text-yellow-400 mb-3 font-[Montserrat] tracking-wide">News
                                     Presenting</h3>
                                 <p class="text-gray-400 text-sm leading-relaxed font-[Lato]">Deliver breaking news with
                                     professional poise and clarity in Sinhala, Tamil, or English.</p>
                             </div>
                             <!-- Category 2 -->
-                            <div class="category-box rounded-xl p-6 flex flex-col">
-                                <h3 class="text-xl font-bold text-yellow-400 mb-3 font-[Montserrat] tracking-wide">News
+                            <div class="category-box rounded-xl p-5 md:p-6 flex flex-col">
+                                <h3 class="text-lg md:text-xl font-bold text-yellow-400 mb-3 font-[Montserrat] tracking-wide">News
                                     Editing</h3>
                                 <p class="text-gray-400 text-sm leading-relaxed font-[Lato]">Edit and compile news
                                     stories
                                     under tight deadlines with technical precision.</p>
                             </div>
                             <!-- Category 3 -->
-                            <div class="category-box rounded-xl p-6 flex flex-col">
-                                <h3 class="text-xl font-bold text-yellow-400 mb-3 font-[Montserrat] tracking-wide">
+                            <div class="category-box rounded-xl p-5 md:p-6 flex flex-col">
+                                <h3 class="text-lg md:text-xl font-bold text-yellow-400 mb-3 font-[Montserrat] tracking-wide">
                                     Program
                                     Presenting</h3>
                                 <p class="text-gray-400 text-sm leading-relaxed font-[Lato]">Engage audiences with
                                     compelling hosting styles across diverse program genres.</p>
                             </div>
                             <!-- Category 4 -->
-                            <div class="category-box rounded-xl p-6 flex flex-col">
-                                <h3 class="text-xl font-bold text-yellow-400 mb-3 font-[Montserrat] tracking-wide">Radio
+                            <div class="category-box rounded-xl p-5 md:p-6 flex flex-col">
+                                <h3 class="text-lg md:text-xl font-bold text-yellow-400 mb-3 font-[Montserrat] tracking-wide">Radio
                                     Presenting</h3>
                                 <p class="text-gray-400 text-sm leading-relaxed font-[Lato]">Capture listeners' minds
                                     with
                                     vocal charm, seamless transitions, and radio hosting skills.</p>
                             </div>
                             <!-- Category 5 -->
-                            <div class="category-box rounded-xl p-6 flex flex-col">
-                                <h3 class="text-xl font-bold text-yellow-400 mb-3 font-[Montserrat] tracking-wide">
+                            <div class="category-box rounded-xl p-5 md:p-6 flex flex-col">
+                                <h3 class="text-lg md:text-xl font-bold text-yellow-400 mb-3 font-[Montserrat] tracking-wide">
                                     Sports
                                     Commentary</h3>
                                 <p class="text-gray-400 text-sm leading-relaxed font-[Lato]">Provide high-energy live
                                     commentary for fast-paced sporting events.</p>
                             </div>
                             <!-- Category 6 -->
-                            <div class="category-box rounded-xl p-6 flex flex-col">
-                                <h3 class="text-xl font-bold text-yellow-400 mb-3 font-[Montserrat] tracking-wide">
+                            <div class="category-box rounded-xl p-5 md:p-6 flex flex-col">
+                                <h3 class="text-lg md:text-xl font-bold text-yellow-400 mb-3 font-[Montserrat] tracking-wide">
                                     Dubbing
                                 </h3>
                                 <p class="text-gray-400 text-sm leading-relaxed font-[Lato]">Synchronize voice acting
@@ -342,8 +457,8 @@
                                     video clips to bring animated and live characters to life.</p>
                             </div>
                             <!-- Category 7 -->
-                            <div class="category-box rounded-xl p-6 flex flex-col">
-                                <h3 class="text-xl font-bold text-yellow-400 mb-3 font-[Montserrat] tracking-wide">
+                            <div class="category-box rounded-xl p-5 md:p-6 flex flex-col">
+                                <h3 class="text-lg md:text-xl font-bold text-yellow-400 mb-3 font-[Montserrat] tracking-wide">
                                     Cartoon
                                     Drawing</h3>
                                 <p class="text-gray-400 text-sm leading-relaxed font-[Lato]">Illustrate creative
@@ -351,23 +466,23 @@
                                     conveying powerful messages and stories.</p>
                             </div>
                             <!-- Category 8 -->
-                            <div class="category-box rounded-xl p-6 flex flex-col">
-                                <h3 class="text-xl font-bold text-yellow-400 mb-3 font-[Montserrat] tracking-wide">
+                            <div class="category-box rounded-xl p-5 md:p-6 flex flex-col">
+                                <h3 class="text-lg md:text-xl font-bold text-yellow-400 mb-3 font-[Montserrat] tracking-wide">
                                     Photography</h3>
                                 <p class="text-gray-400 text-sm leading-relaxed font-[Lato]">Capture stunning moments
                                     and
                                     stories through the camera lens.</p>
                             </div>
                             <!-- Category 9 -->
-                            <div class="category-box rounded-xl p-6 flex flex-col">
-                                <h3 class="text-xl font-bold text-yellow-400 mb-3 font-[Montserrat] tracking-wide">
+                            <div class="category-box rounded-xl p-5 md:p-6 flex flex-col">
+                                <h3 class="text-lg md:text-xl font-bold text-yellow-400 mb-3 font-[Montserrat] tracking-wide">
                                     Videography</h3>
                                 <p class="text-gray-400 text-sm leading-relaxed font-[Lato]">Shoot high-definition video
                                     sequences with cinematic storytelling techniques.</p>
                             </div>
                             <!-- Category 10 -->
-                            <div class="category-box rounded-xl p-6 flex flex-col">
-                                <h3 class="text-xl font-bold text-yellow-400 mb-3 font-[Montserrat] tracking-wide">
+                            <div class="category-box rounded-xl p-5 md:p-6 flex flex-col">
+                                <h3 class="text-lg md:text-xl font-bold text-yellow-400 mb-3 font-[Montserrat] tracking-wide">
                                     Graphic
                                     Designing</h3>
                                 <p class="text-gray-400 text-sm leading-relaxed font-[Lato]">Design visually striking
@@ -375,8 +490,8 @@
                                     artwork and digital assets.</p>
                             </div>
                             <!-- Category 11 -->
-                            <div class="category-box rounded-xl p-6 flex flex-col">
-                                <h3 class="text-xl font-bold text-yellow-400 mb-3 font-[Montserrat] tracking-wide">Short
+                            <div class="category-box rounded-xl p-5 md:p-6 flex flex-col">
+                                <h3 class="text-lg md:text-xl font-bold text-yellow-400 mb-3 font-[Montserrat] tracking-wide">Short
                                     Film</h3>
                                 <p class="text-gray-400 text-sm leading-relaxed font-[Lato]">Create compelling cinematic
                                     narratives and short films with artistic vision.</p>

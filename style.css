@@ -113,6 +113,14 @@ header {
     border-bottom-color: var(--color-gold);
 }
 
+.nav-link:focus-visible,
+.hero-cta:focus-visible,
+.submit-btn:focus-visible,
+.hamburger:focus-visible {
+    outline: 2px solid var(--color-gold);
+    outline-offset: 3px;
+}
+
 /* Dropdown Menu */
 .dropdown {
     position: absolute;
@@ -829,5 +837,20 @@ footer {
 
     100% {
         transform: translate(0, 0) scale(0.95);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
     }
 }

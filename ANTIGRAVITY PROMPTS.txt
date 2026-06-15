@@ -261,25 +261,18 @@ Audit all Firestore code and identify:
 Goal:
 Design the application so it can comfortably handle 2500+ registrations on the Firebase Spark free plan with minimal Firestore read consumption.
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-On the Ninnada Registration page hero section, replace the current large glowing H1 heading "NINNADA'26" with the attached official Ninnada logo.
+On the Ninnada Registration page hero section, replace the current large glowing H1 heading "NINNADA'26" with the attached official Ninnada logo in the file "Ninnada Logo.png" in folder "Images".
 
 Design Requirements:
 - Remove the existing H1 text completely.
 - Use the attached logo as the primary hero element.
-- Preserve the premium futuristic cinematic aesthetic of the page.
 - The logo file is transparent with a white design; keep its original colors and transparency.
 - The glow should be elegant and restrained, not overly bright or neon.
 - Center the logo horizontally in the hero section.
-- Scale the logo proportionally and make it visually equivalent in prominence to the current H1 heading.(dont make it too large like the former text, maintain a medium, suitable size.)
+- Scale the logo proportionally and make it visually equivalent in prominence to the current H1 heading.(dont make it too large like the former text, maintain a medium, suitable size, and the logo should be optimized for mobile screen display as well like the rest of the website is)
 - Ensure the logo remains crisp and responsive across desktop, tablet, and mobile devices.
 - Maintain the existing hero layout, spacing, subtitle text, Register Now button, and date panel beneath the logo.
 - Do not stretch, distort, crop, recolor, or modify the logo artwork.
 - Add a smooth fade-in animation when the page loads.
-
-Visual Direction:
-- Premium event branding.
-- Modern cinematic look.
-- Dark background with floating golden ambient light effects.
-- Soft glow similar to illuminated signage in light fog.
 
 The logo should feel like the centerpiece of a high-end event landing page rather than a standard website image.

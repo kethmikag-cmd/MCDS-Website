@@ -16,3 +16,5 @@ The project is deployed and hosted online through Netlify. (Go to https://mcdssc
 
 ## License
 This project was developed for the Media Circle of D.S. Senanayake College and is intended for educational and organizational purposes. No replication of the features of this site allowed without the permission of the site owner.
+
+Created by: Aditha Geeganage & Senath Sethmika 

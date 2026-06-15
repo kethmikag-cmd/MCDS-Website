@@ -53,6 +53,13 @@
             word-break: break-word;
         }
 
+        /* Ninnada hero logo fluid scaling */
+        .ninnada-hero-logo {
+            width: clamp(250px, 50vw, 500px);
+            height: auto;
+            object-fit: contain;
+        }
+
         /* Ninnada subtitle scaling */
         .ninnada-hero-subtitle {
             font-size: clamp(0.9rem, 2.5vw, 1.5rem);
@@ -332,9 +339,7 @@
                 <!-- SECTION 1: Registrations -->
                 <section id="ninnada-registrations"
                     class="flex flex-col items-center justify-center text-center">
-                    <h1
-                        class="ninnada-hero-title font-black text-glow-yellow-lg uppercase mb-6 font-[Montserrat]">
-                        NINNADA'26</h1>
+                    <img src="Images/Ninnada26.png" alt="Ninnada'26 Official Logo" class="ninnada-hero-logo mb-6 mx-auto drop-shadow-[0_0_8px_rgba(255,255,0,0.3)]">
                     <h3
                         class="ninnada-hero-subtitle font-bold text-gray-300 mb-10 font-[Montserrat] leading-relaxed px-2">
                         School Registrations are now open for the largest all-island trillingual media competition in

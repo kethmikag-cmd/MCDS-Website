@@ -564,6 +564,83 @@ footer {
     font-size: clamp(0.8rem, 2vw, 0.9rem);
 }
 
+/* ─── Footer Social Section ─────────────────────────────────────────────── */
+.footer-social-section {
+    margin-bottom: var(--spacing-md);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.footer-social-title {
+    color: var(--color-white);
+    font-family: 'Montserrat', sans-serif;
+    font-size: clamp(0.8rem, 2vw, 0.9rem);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: var(--spacing-md);
+}
+
+.footer-social-links {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: var(--spacing-md);
+    flex-wrap: wrap; /* responsive wrap on mobile */
+}
+
+/* Glassmorphism circular button with gold border */
+.social-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px; /* touch-friendly */
+    height: 44px; /* touch-friendly */
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(212, 175, 55, 0.3); /* thin gold border */
+    color: var(--color-gold);
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    outline: none;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.social-btn:hover {
+    transform: scale(1.1);
+    background: rgba(212, 175, 55, 0.1);
+    border-color: var(--color-gold-light);
+    color: var(--color-white);
+    box-shadow: 0 0 15px rgba(212, 175, 55, 0.5); /* soft golden glow */
+}
+
+/* Focus styles for keyboard accessibility */
+.social-btn:focus-visible {
+    outline: 2px solid var(--color-gold-light);
+    outline-offset: 3px;
+    background: rgba(212, 175, 55, 0.15);
+}
+
+.social-icon {
+    display: block;
+    transition: transform 0.3s ease;
+}
+
+.social-btn:hover .social-icon {
+    transform: scale(1.05);
+}
+
+/* Developer credit */
+.footer-credit {
+    margin-top: 6px;
+    font-size: clamp(0.75rem, 1.8vw, 0.8rem);
+    color: rgba(212, 175, 55, 0.6);
+    letter-spacing: 1px;
+}
+
 /* ─── Ninnada Futuristic Neon Yellow Theme ───────────────────────────────── */
 .ninnada-page-bg {
     background: linear-gradient(180deg, #000000 0%, #020713 40%, #081125 80%, #000000 100%);

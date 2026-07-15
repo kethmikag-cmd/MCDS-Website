@@ -1,4 +1,15 @@
 function showTab(tabId) {
+    // Check if we are on index.html (or root / empty path which is index.html)
+    const isIndexPage = window.location.pathname.endsWith('index.html') || 
+                        window.location.pathname.endsWith('/') || 
+                        (!window.location.pathname.endsWith('.html') && !window.location.pathname.includes('ninnada') && !window.location.pathname.includes('admin') && !window.location.pathname.includes('registration'));
+                        
+    if (!isIndexPage) {
+        sessionStorage.setItem('openTab', tabId);
+        window.location.href = 'index.html';
+        return;
+    }
+
     // Hide all tab content
     const tabs = document.querySelectorAll('.tab-content');
     tabs.forEach(tab => {
@@ -44,6 +55,15 @@ function showTab(tabId) {
 }
 
 function scrollToSection(sectionId) {
+    const isIndexPage = window.location.pathname.endsWith('index.html') || 
+                        window.location.pathname.endsWith('/') || 
+                        (!window.location.pathname.endsWith('.html') && !window.location.pathname.includes('ninnada') && !window.location.pathname.includes('admin') && !window.location.pathname.includes('registration'));
+                        
+    if (!isIndexPage) {
+        sessionStorage.setItem('scrollToSection', sectionId);
+        return;
+    }
+
     // Small delay to allow DOM update before scrolling
     setTimeout(() => {
         const section = document.getElementById(sectionId);
@@ -67,9 +87,22 @@ function closeMobileMenu() {
 
 // Initialize: Show Home tab or previously requested tab
 document.addEventListener('DOMContentLoaded', () => {
-    const tabToOpen = sessionStorage.getItem('openTab') || 'home';
-    sessionStorage.removeItem('openTab');
-    showTab(tabToOpen);
+    const isIndexPage = window.location.pathname.endsWith('index.html') || 
+                        window.location.pathname.endsWith('/') || 
+                        (!window.location.pathname.endsWith('.html') && !window.location.pathname.includes('ninnada') && !window.location.pathname.includes('admin') && !window.location.pathname.includes('registration'));
+
+    if (isIndexPage) {
+        const tabToOpen = sessionStorage.getItem('openTab') || 'home';
+        sessionStorage.removeItem('openTab');
+        showTab(tabToOpen);
+
+        // Check if we need to scroll to a section
+        const sectionToScroll = sessionStorage.getItem('scrollToSection');
+        if (sectionToScroll) {
+            sessionStorage.removeItem('scrollToSection');
+            scrollToSection(sectionToScroll);
+        }
+    }
 
     // ── Hamburger menu toggle ──────────────────────────────────────────────
     const hamburger = document.getElementById('hamburger-btn');
@@ -89,8 +122,8 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
-        // Close menu when a dropdown link is clicked on mobile
-        navLinks.querySelectorAll('.dropdown li a').forEach(link => {
+        // Close menu when any link is clicked on mobile
+        navLinks.querySelectorAll('a').forEach(link => {
             link.addEventListener('click', () => {
                 // Small delay to let the onclick handler run first
                 setTimeout(closeMobileMenu, 50);

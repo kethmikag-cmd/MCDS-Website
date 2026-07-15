@@ -1,21 +1,53 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-    
-    // Registrations collection:
-    // - Public users can create registrations (anonymously).
-    // - Public users cannot read, update, or delete registrations.
-    // - Authenticated admin users retain full access.
+
+    // ── Registrations collection ──────────────────────────────────────────────
+    // Anyone can create a registration (public contest entry form).
+    // Only authenticated users can read, update, or delete entries.
     match /registrations/{registrationId} {
       allow create: if true;
       allow read, update, delete: if request.auth != null;
     }
-    
-    // Stats collection:
-    // - Anyone can read stats (to display on the homepage).
-    // - Anyone can update/write stats (to increment counts atomically during registration).
+
+    // ── Stats collection ──────────────────────────────────────────────────────
+    // Publicly readable (displayed on homepage).
+    // Publicly writable for atomic counter increments during registration.
     match /stats/{docId} {
       allow read, write: if true;
+    }
+
+    // ── Schools collection ────────────────────────────────────────────────────
+    //
+    // LIST (collection query): Allowed publicly so that the registration form
+    //   can query for duplicate school names BEFORE a Firebase Auth account
+    //   has been created. The query only checks normalizedSchoolName; no
+    //   sensitive data is returned at this step.
+    //
+    // GET (single document read): Requires authentication. Coordinators may
+    //   only fetch their own document via the dashboard query.
+    //
+    // CREATE: Requires authentication AND the document's firebaseUID must
+    //   match the authenticated user's UID. This fires immediately after
+    //   createUserWithEmailAndPassword() returns, so request.auth is set.
+    //
+    // UPDATE: Only the owning coordinator (resource.data.firebaseUID == uid).
+    //
+    // DELETE: Only the owning coordinator.
+    match /schools/{schoolId} {
+      allow list:   if true;
+
+      allow get:    if request.auth != null
+                    && resource.data.firebaseUID == request.auth.uid;
+
+      allow create: if request.auth != null
+                    && request.resource.data.firebaseUID == request.auth.uid;
+
+      allow update: if request.auth != null
+                    && resource.data.firebaseUID == request.auth.uid;
+
+      allow delete: if request.auth != null
+                    && resource.data.firebaseUID == request.auth.uid;
     }
   }
 }

@@ -1,36 +1,32 @@
-// Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
-import { getDatabase } from "firebase/database";
-import { getFirestore, doc, getDoc } from "firebase/firestore";
+// firebase-config.js — Single source of truth for Firebase initialization.
+// Only initializes: Firebase App, Firebase Authentication, Firestore.
+// Analytics and Realtime Database are NOT used in this project.
 
-// Your web app's Firebase configuration
+import { initializeApp, getApps } from "firebase/app";
+import { getFirestore, doc, getDoc } from "firebase/firestore";
+import { getAuth } from "firebase/auth";
+
 const firebaseConfig = {
     apiKey: "AIzaSyChk85PHMlKF5SFGwXSITg0u2QoE2azkws",
     authDomain: "aditha-ca321.firebaseapp.com",
-    databaseURL: "https://aditha-ca321.firebaseio.com",
     projectId: "aditha-ca321",
     storageBucket: "aditha-ca321.firebasestorage.app",
     messagingSenderId: "359615698823",
-    appId: "1:359615698823:web:359465a9f94fdb3caee522",
-    measurementId: "G-1QZQK8F8EZ"
+    appId: "1:359615698823:web:359465a9f94fdb3caee522"
 };
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
+// Guard against duplicate initialization (e.g. when multiple modules import this file)
+const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApps()[0];
 
-// Initialize Realtime Database and get a reference to the service
-const database = getDatabase(app);
+// Single instances — imported and shared across all pages
+const db  = getFirestore(app);
+const auth = getAuth(app);
 
-// Initialize Firestore
-const db = getFirestore(app);
-
-// Auto-load stats for the homepage
+// Auto-load stats for the homepage (only runs when the stat elements exist)
 (async function loadHomepageStats() {
     try {
         const contestantsEl = document.getElementById("stat-contestants");
-        const schoolsEl = document.getElementById("stat-schools");
+        const schoolsEl     = document.getElementById("stat-schools");
 
         if (contestantsEl || schoolsEl) {
             const statsDoc = await getDoc(doc(db, "stats", "overview"));
@@ -49,6 +45,4 @@ const db = getFirestore(app);
     }
 })();
 
-// Export the instances
-export { app, analytics, database, db };
-
+export { app, db, auth };

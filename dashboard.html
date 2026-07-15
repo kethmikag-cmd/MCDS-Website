@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coordinator Dashboard — Ninnada'26 | MCDS</title>
+    <meta name="description" content="Coordinator Dashboard for Ninnada'26 — manage your school's contestant entries.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Lato:wght@400;700&family=Montserrat:wght@400;700;900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    
+    <!-- External jsPDF & autoTable Libraries for PDF Generation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
+
+    <!-- Firebase SDK importmap -->
+    <script type="importmap">
+    {
+        "imports": {
+            "firebase/app": "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js",
+            "firebase/firestore": "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js",
+            "firebase/auth": "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js"
+        }
+    }
+    </script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            corePlugins: {
+                preflight: false,
+                container: false,
+            }
+        }
+    </script>
+    <style>
+        .dashboard-page {
+            min-height: 100vh;
+            min-height: 100svh;
+            background: linear-gradient(180deg, #000000 0%, #020713 40%, #081125 80%, #000000 100%);
+            position: relative;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .glass-panel {
+            background: rgba(5, 5, 10, 0.75);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(218, 165, 32, 0.2);
+            box-shadow: 0 0 30px rgba(218, 165, 32, 0.05);
+            border-radius: 20px;
+        }
+
+        .metadata-card {
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(218, 165, 32, 0.15);
+            border-radius: 12px;
+            padding: 16px 20px;
+        }
+
+        .action-btn {
+            padding: 12px 24px;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-radius: 50px;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            font-size: 0.85rem;
+            min-height: 46px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-gold {
+            background-color: #ffff00;
+            color: #3e2723;
+            box-shadow: 0 0 15px rgba(255, 255, 0, 0.4);
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-gold:hover {
+            transform: scale(1.03);
+            background-color: #ffff33;
+            box-shadow: 0 0 25px rgba(255, 255, 0, 0.7);
+        }
+
+        .btn-glass {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(218, 165, 32, 0.4);
+            color: #ffff00;
+            cursor: pointer;
+        }
+
+        .btn-glass:hover {
+            transform: scale(1.03);
+            background: rgba(218, 165, 32, 0.1);
+            border-color: #ffff00;
+            box-shadow: 0 0 15px rgba(218, 165, 32, 0.2);
+        }
+
+        .search-input {
+            padding: 10px 16px;
+            background: rgba(0, 0, 0, 0.6);
+            border: 1px solid rgba(218, 165, 32, 0.2);
+            border-radius: 50px;
+            color: #ffffff;
+            font-size: 0.95rem;
+            outline: none;
+            transition: all 0.3s ease;
+            width: 100%;
+            max-width: 320px;
+            min-height: 44px;
+        }
+
+        .search-input:focus {
+            border-color: rgba(255, 255, 0, 0.7);
+            box-shadow: 0 0 12px rgba(255, 255, 0, 0.15);
+        }
+
+        /* Table styles */
+        .contestant-table-container {
+            overflow-x: auto;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .contestant-table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        .contestant-table th {
+            background: rgba(218, 165, 32, 0.1);
+            color: #ffff00;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 14px 16px;
+            border-bottom: 2px solid rgba(218, 165, 32, 0.2);
+        }
+
+        .contestant-table td {
+            padding: 14px 16px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            color: #e5e7eb;
+            font-size: 0.9rem;
+        }
+
+        .contestant-table tr:hover td {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        /* Modal popup */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal-overlay.open {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-card {
+            background: rgba(10, 10, 15, 0.95);
+            border: 1px solid rgba(218, 165, 32, 0.3);
+            box-shadow: 0 0 40px rgba(218, 165, 32, 0.1);
+            border-radius: 20px;
+            width: 100%;
+            max-width: 580px;
+            padding: 32px 24px;
+            transform: translateY(20px);
+            transition: transform 0.3s ease;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-overlay.open .modal-card {
+            transform: translateY(0);
+        }
+
+        .reg-input, .reg-select {
+            width: 100%;
+            padding: 12px 14px;
+            background: rgba(0, 0, 0, 0.55);
+            border: 1px solid rgba(218, 165, 32, 0.2);
+            border-radius: 8px;
+            color: #ffffff;
+            font-size: 15px;
+            outline: none;
+            min-height: 46px;
+        }
+
+        .reg-input:focus, .reg-select:focus {
+            border-color: rgba(218, 165, 32, 0.7);
+        }
+
+        .reg-select option {
+            background-color: #0a0a0a;
+            color: #ffffff;
+        }
+
+        .reg-label {
+            display: block;
+            color: rgba(218, 165, 32, 0.85);
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            font-size: 0.75rem;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            margin-bottom: 6px;
+        }
+
+        .delete-btn {
+            color: rgba(255, 80, 80, 0.7);
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 4px 8px;
+            border-radius: 4px;
+            transition: all 0.2s ease;
+        }
+
+        .delete-btn:hover {
+            color: rgba(255, 80, 80, 1);
+            background: rgba(255, 80, 80, 0.1);
+        }
+
+        .ninnada-orb { filter: blur(70px); }
+        .orb-sm { filter: blur(50px); }
+        .orb-lg { filter: blur(100px); }
+
+        .orb-container {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            overflow: hidden;
+            z-index: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container header-container">
+            <div class="header-left-group">
+                <a href="ninnada.html" class="logo logo-ninnada">Ninnada'26</a>
+                <div id="header-auth" class="header-auth-left"></div>
+            </div>
+            <nav>
+                <ul class="nav-links">
+                    <li class="nav-item"><a href="ninnada.html" class="nav-link">← Back to Ninnada</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Page -->
+    <div class="dashboard-page flex-1">
+        <!-- Animated Glowing Orbs Background -->
+        <div class="orb-container">
+            <div class="ninnada-orb orb-lg" style="width:min(600px,90vw);height:min(600px,90vw);top:-150px;left:-200px;"></div>
+            <div class="ninnada-orb" style="width:min(420px,70vw);height:min(420px,70vw);top:30%;right:-120px;background:radial-gradient(circle, rgba(255,215,0,0.5) 0%, rgba(218,165,32,0.1) 50%, transparent 80%);"></div>
+            <div class="ninnada-orb orb-lg" style="width:min(580px,90vw);height:min(580px,90vw);bottom:0;left:-150px;"></div>
+        </div>
+
+        <!-- Dashboard Content -->
+        <main class="relative z-10 flex-1 py-10 md:py-16 px-4">
+            <div class="container max-w-6xl">
+                <!-- Page Loader -->
+                <div id="dashboard-loader" class="text-center py-20">
+                    <p class="text-yellow-400 font-bold font-[Montserrat] text-lg tracking-widest animate-pulse">
+                        LOADING DASHBOARD...
+                    </p>
+                </div>
+
+                <!-- Dashboard Content Area (Hidden during load) -->
+                <div id="dashboard-content" class="hidden">
+                    <!-- Dashboard Greeting -->
+                    <div class="mb-10 text-center md:text-left flex flex-col md:flex-row md:items-end md:justify-between gap-6">
+                        <div>
+                            <h1 style="font-size:clamp(1.8rem,6vw,3.2rem);" class="font-black text-glow-yellow-lg tracking-widest uppercase mb-3 font-[Montserrat]">
+                                Portal Dashboard
+                            </h1>
+                            <p class="text-gray-400 text-sm md:text-base font-[Lato] tracking-wide">
+                                School Coordinator Contestant Registration Panel
+                            </p>
+                        </div>
+                        <div class="w-20 h-px md:hidden mx-auto bg-gradient-to-r from-transparent via-yellow-500 to-transparent opacity-60"></div>
+                    </div>
+
+                    <!-- Metadata Grid -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+                        <div class="metadata-card glass-panel flex flex-col">
+                            <span class="text-xs uppercase tracking-widest text-yellow-500 font-bold font-[Montserrat] mb-1">School Registered</span>
+                            <span id="meta-school-name" class="text-white font-bold text-lg font-[Lato]">Loading...</span>
+                        </div>
+                        <div class="metadata-card glass-panel flex flex-col">
+                            <span class="text-xs uppercase tracking-widest text-yellow-500 font-bold font-[Montserrat] mb-1">Coordinator Name</span>
+                            <span id="meta-coordinator-name" class="text-white font-bold text-lg font-[Lato]">Loading...</span>
+                        </div>
+                        <div class="metadata-card glass-panel flex flex-col">
+                            <span class="text-xs uppercase tracking-widest text-yellow-500 font-bold font-[Montserrat] mb-1">Registration Date</span>
+                            <span id="meta-reg-date" class="text-white font-bold text-lg font-[Lato]">Loading...</span>
+                        </div>
+                    </div>
+
+                    <!-- Main Portal Panel -->
+                    <div class="glass-panel p-6 md:p-8">
+                        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
+                            <h2 class="text-xl md:text-2xl font-extrabold text-glow-yellow font-[Montserrat] uppercase tracking-wider mb-0">
+                                Contestant Entries
+                            </h2>
+                            <div class="flex flex-wrap gap-3">
+                                <input type="text" id="contestant-search" class="search-input" placeholder="Search contestants..." oninput="handleSearch(this.value)">
+                                <button class="action-btn btn-gold" onclick="openAddModal()">
+                                    <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+                                    Add Contestant
+                                </button>
+                                <button class="action-btn btn-glass" onclick="exportToPDF()">
+                                    <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM17 13l-5 5-5-5h3V9h4v4h3z"/></svg>
+                                    Export PDF
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Table Area -->
+                        <div id="table-container" class="contestant-table-container">
+                            <table class="contestant-table">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Full Name</th>
+                                        <th>Email</th>
+                                        <th>Mobile</th>
+                                        <th>Category</th>
+                                        <th>Language</th>
+                                        <th>Age Category</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="contestants-tbody">
+                                    <!-- Rows populated dynamically -->
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- Empty state -->
+                        <div id="table-empty-state" class="text-center py-16 hidden">
+                            <p class="text-gray-400 font-[Lato] text-base mb-4">No contestants registered yet.</p>
+                            <p class="text-yellow-400 font-bold font-[Montserrat] text-sm uppercase cursor-pointer hover:underline" onclick="openAddModal()">
+                                Click here to add your first contestant
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="relative z-10">
+            <div class="container text-center">
+                <p>&copy; 2026 Media Circle of D. S. Senanayake College. All Rights Reserved.</p>
+                <p class="footer-credit">Developed by: Aditha Geeganage & Senath Sethmika</p>
+            </div>
+        </footer>
+    </div>
+
+    <!-- ── Add Contestant Modal Overlay ─────────── -->
+    <div id="add-modal" class="modal-overlay" onclick="closeAddModal(event)">
+        <div class="modal-card" onclick="event.stopPropagation()">
+            <div class="flex items-center justify-between border-b border-yellow-400/20 pb-4 mb-6">
+                <h3 class="text-lg md:text-xl font-bold text-yellow-400 font-[Montserrat] uppercase tracking-wider mb-0">
+                    Add New Contestant
+                </h3>
+                <button class="bg-none border-none text-gray-400 hover:text-white text-xl cursor-pointer" onclick="closeAddModal()">
+                    &times;
+                </button>
+            </div>
+
+            <form id="add-contestant-form" onsubmit="handleAddContestant(event)" novalidate>
+                <!-- Full Name -->
+                <div class="mb-4">
+                    <label for="c-fullName" class="reg-label">Full Name</label>
+                    <input type="text" id="c-fullName" class="reg-input" placeholder="Contestant's full name" required>
+                </div>
+
+                <!-- Email -->
+                <div class="mb-4">
+                    <label for="c-email" class="reg-label">Email Address</label>
+                    <input type="email" id="c-email" class="reg-input" placeholder="contestant@email.com" required>
+                </div>
+
+                <!-- Mobile Number -->
+                <div class="mb-4">
+                    <label for="c-mobileNumber" class="reg-label">Mobile Number</label>
+                    <input type="tel" id="c-mobileNumber" class="reg-input" placeholder="e.g. +94 7X XXX XXXX" required>
+                </div>
+
+                <!-- Category -->
+                <div class="mb-4">
+                    <label for="c-category" class="reg-label">Competition Category</label>
+                    <select id="c-category" class="reg-select" required>
+                        <option value="" disabled selected>Select category</option>
+                        <option value="News Presenting">News Presenting</option>
+                        <option value="News Editing">News Editing</option>
+                        <option value="Program Presenting">Program Presenting</option>
+                        <option value="Radio Presenting">Radio Presenting</option>
+                        <option value="Sports Commentary">Sports Commentary</option>
+                        <option value="Dubbing">Dubbing</option>
+                        <option value="Cartoon Drawing">Cartoon Drawing</option>
+                        <option value="Photography">Photography</option>
+                        <option value="Videography">Videography</option>
+                        <option value="Graphic Designing">Graphic Designing</option>
+                        <option value="Short Film">Short Film</option>
+                    </select>
+                </div>
+
+                <!-- Language -->
+                <div class="mb-4">
+                    <label for="c-language" class="reg-label">Language Medium</label>
+                    <select id="c-language" class="reg-select" required>
+                        <option value="" disabled selected>Select language medium</option>
+                        <option value="Sinhala">Sinhala</option>
+                        <option value="English">English</option>
+                        <option value="Tamil">Tamil</option>
+                    </select>
+                </div>
+
+                <!-- Age Category -->
+                <div class="mb-6">
+                    <label for="c-ageCategory" class="reg-label">Age Category</label>
+                    <select id="c-ageCategory" class="reg-select" required>
+                        <option value="" disabled selected>Select age category</option>
+                        <option value="Junior (Under 13)">Junior (Under 13)</option>
+                        <option value="Intermediate (13–15)">Intermediate (13–15)</option>
+                        <option value="Senior (16–19)">Senior (16–19)</option>
+                    </select>
+                </div>
+
+                <!-- Buttons -->
+                <div class="flex justify-end gap-3 pt-4 border-t border-yellow-400/20">
+                    <button type="button" class="action-btn btn-glass" onclick="closeAddModal()">
+                        Cancel
+                    </button>
+                    <button type="submit" id="modal-submit-btn" class="action-btn btn-gold">
+                        Save Contestant
+                    </button>
+                </div>
+
+                <p id="modal-status" class="text-center mt-3 text-sm font-[Montserrat] font-bold text-red-400 hidden"></p>
+            </form>
+        </div>
+    </div>
+
+    <script type="module">
+        import { db, auth } from './firebase-config.js';
+        import { collection, query, where, getDocs, doc, updateDoc } from 'firebase/firestore';
+        import { onAuthStateChanged } from 'firebase/auth';
+
+        let schoolDocId = null;
+        let schoolData  = null;
+        let activeContestants = []; // Local in-memory cache — never re-fetched from Firestore
+
+        // ── Verify authentication and load school data ──────────────────────────
+        onAuthStateChanged(auth, async (user) => {
+            if (!user) {
+                // Not authenticated — clear cache and redirect
+                sessionStorage.removeItem('cached_school_name');
+                sessionStorage.removeItem('cached_coordinator_name');
+                window.location.href = 'login.html';
+                return;
+            }
+
+            try {
+                // Query school document by firebaseUID (NOT by document ID)
+                console.log('[Dashboard] Query started for UID:', user.uid);
+                const q = query(
+                    collection(db, 'schools'),
+                    where('firebaseUID', '==', user.uid)
+                );
+                const querySnapshot = await getDocs(q);
+
+                if (querySnapshot.empty) {
+                    console.error('[Dashboard] No school document found for UID:', user.uid);
+                    alert('Account configuration error: school details not found. Please contact administration.');
+                    return;
+                }
+
+                const schoolDoc = querySnapshot.docs[0];
+                schoolDocId = schoolDoc.id; // normalizedSchoolName is the doc ID
+                schoolData  = schoolDoc.data();
+                console.log('[Dashboard] Loaded school:', schoolData.schoolName);
+
+                // Cache for header display
+                sessionStorage.setItem('cached_school_name',       schoolData.schoolName);
+                sessionStorage.setItem('cached_coordinator_name',  schoolData.coordinatorName);
+
+                // Format registration date
+                let regDateStr = 'N/A';
+                if (schoolData.createdAt) {
+                    const regDate = schoolData.createdAt.toDate();
+                    regDateStr = regDate.toLocaleDateString('en-US', {
+                        year: 'numeric', month: 'long', day: 'numeric'
+                    });
+                }
+
+                // Populate metadata cards
+                document.getElementById('meta-school-name').textContent      = schoolData.schoolName;
+                document.getElementById('meta-coordinator-name').textContent = schoolData.coordinatorName;
+                document.getElementById('meta-reg-date').textContent         = regDateStr;
+
+                // Load contestants from Firestore data into local cache
+                activeContestants = schoolData.contestants || [];
+
+                // Reveal dashboard, hide loader
+                document.getElementById('dashboard-loader').classList.add('hidden');
+                document.getElementById('dashboard-content').classList.remove('hidden');
+
+                // Render contestant table
+                renderContestantsTable(activeContestants);
+                console.log('[Dashboard] Dashboard loaded successfully.');
+
+            } catch (err) {
+                console.error('[Dashboard] Error loading dashboard data:', err);
+                alert('An error occurred loading the dashboard: ' + err.message);
+            }
+        });
+
+        // Populate contestants table dynamically
+        function renderContestantsTable(list) {
+            const tbody = document.getElementById('contestants-tbody');
+            const tableContainer = document.getElementById('table-container');
+            const emptyState = document.getElementById('table-empty-state');
+
+            tbody.innerHTML = '';
+
+            if (list.length === 0) {
+                tableContainer.classList.add('hidden');
+                emptyState.classList.remove('hidden');
+                return;
+            }
+
+            tableContainer.classList.remove('hidden');
+            emptyState.classList.add('hidden');
+
+            list.forEach((contestant, index) => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${index + 1}</td>
+                    <td class="font-bold">${escapeHtml(contestant.fullName)}</td>
+                    <td>${escapeHtml(contestant.email)}</td>
+                    <td>${escapeHtml(contestant.mobileNumber)}</td>
+                    <td><span class="px-2 py-1 bg-yellow-400/10 text-yellow-400 border border-yellow-400/20 rounded-md text-xs font-bold font-[Montserrat]">${escapeHtml(contestant.category)}</span></td>
+                    <td>${escapeHtml(contestant.language)}</td>
+                    <td>${escapeHtml(contestant.ageCategory)}</td>
+                    <td>
+                        <button class="delete-btn" onclick="deleteContestant(${index})">Delete</button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        // Search functionality (filtering client-side cache strictly)
+        window.handleSearch = function(queryStr) {
+            const filtered = activeContestants.filter(c => {
+                const q = queryStr.toLowerCase();
+                return c.fullName.toLowerCase().includes(q) ||
+                       c.email.toLowerCase().includes(q) ||
+                       c.category.toLowerCase().includes(q) ||
+                       c.language.toLowerCase().includes(q) ||
+                       c.ageCategory.toLowerCase().includes(q);
+            });
+            renderContestantsTable(filtered);
+        };
+
+        // Modal Operations
+        window.openAddModal = function() {
+            document.getElementById('add-contestant-form').reset();
+            const status = document.getElementById('modal-status');
+            status.textContent = '';
+            status.classList.add('hidden');
+            document.getElementById('add-modal').classList.add('open');
+        };
+
+        window.closeAddModal = function(e) {
+            document.getElementById('add-modal').classList.remove('open');
+        };
+
+        // Adding contestant locally and committing to Firestore
+        window.handleAddContestant = async function(e) {
+            e.preventDefault();
+
+            const fullName    = document.getElementById('c-fullName').value.trim();
+            const email       = document.getElementById('c-email').value.trim();
+            const mobileNumber = document.getElementById('c-mobileNumber').value.trim();
+            const category    = document.getElementById('c-category').value;
+            const language    = document.getElementById('c-language').value;
+            const ageCategory = document.getElementById('c-ageCategory').value;
+            const status      = document.getElementById('modal-status');
+            const submitBtn   = document.getElementById('modal-submit-btn');
+
+            status.textContent = '';
+            status.classList.add('hidden');
+
+            if (!fullName || !email || !mobileNumber || !category || !language || !ageCategory) {
+                status.textContent = 'Please fill in all fields.';
+                status.classList.remove('hidden');
+                return;
+            }
+
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                status.textContent = 'Please enter a valid email address.';
+                status.classList.remove('hidden');
+                return;
+            }
+
+            submitBtn.textContent = 'Saving...';
+            submitBtn.disabled    = true;
+
+            const newContestant = { fullName, email, mobileNumber, category, language, ageCategory };
+            const updatedContestants = [...activeContestants, newContestant];
+
+            try {
+                // Use updateDoc to only touch the contestants field, preserving createdAt serverTimestamp
+                const docRef = doc(db, 'schools', schoolDocId);
+                await updateDoc(docRef, { contestants: updatedContestants });
+
+                // Update local state
+                activeContestants      = updatedContestants;
+                schoolData.contestants = updatedContestants;
+
+                renderContestantsTable(activeContestants);
+                closeAddModal();
+            } catch (err) {
+                console.error('[Dashboard] Error saving contestant:', err);
+                status.textContent = 'Error saving contestant. Please try again.';
+                status.classList.remove('hidden');
+            } finally {
+                submitBtn.textContent = 'Save Contestant';
+                submitBtn.disabled    = false;
+            }
+        };
+
+        // Deleting contestant locally and committing to Firestore
+        window.deleteContestant = async function(index) {
+            if (!confirm('Are you sure you want to delete this contestant?')) return;
+
+            const updatedContestants = activeContestants.filter((_, i) => i !== index);
+
+            try {
+                // Use updateDoc to only touch the contestants field
+                const docRef = doc(db, 'schools', schoolDocId);
+                await updateDoc(docRef, { contestants: updatedContestants });
+
+                activeContestants      = updatedContestants;
+                schoolData.contestants = updatedContestants;
+
+                renderContestantsTable(activeContestants);
+            } catch (err) {
+                console.error('[Dashboard] Error deleting contestant:', err);
+                alert('Error deleting contestant: ' + err.message);
+            }
+        };
+
+        // Generate PDF report client-side using jsPDF
+        window.exportToPDF = function() {
+            if (!schoolData) return;
+
+            try {
+                const { jsPDF } = window.jspdf;
+                const docPdf = new jsPDF();
+
+                // Custom Styling variables (Matching Brand Identity)
+                const primaryColor = [212, 175, 55]; // Golden
+                const darkColor = [26, 26, 26];
+
+                // PDF Headers
+                docPdf.setFont("helvetica", "bold");
+                docPdf.setFontSize(22);
+                docPdf.setTextColor(primaryColor[0], primaryColor[1], primaryColor[2]);
+                docPdf.text("NINNADA '26 - SCHOOL ENTRIES REPORT", 14, 20);
+
+                // Divider line
+                docPdf.setDrawColor(primaryColor[0], primaryColor[1], primaryColor[2]);
+                docPdf.setLineWidth(0.5);
+                docPdf.line(14, 24, 196, 24);
+
+                // School details info
+                docPdf.setFont("helvetica", "bold");
+                docPdf.setFontSize(11);
+                docPdf.setTextColor(darkColor[0], darkColor[1], darkColor[2]);
+                docPdf.text("School Profile Info:", 14, 32);
+
+                docPdf.setFont("helvetica", "normal");
+                docPdf.setFontSize(10);
+                docPdf.text(`School Name: ${schoolData.schoolName}`, 14, 38);
+                docPdf.text(`Coordinator Name: ${schoolData.coordinatorName} (${schoolData.coordinatorEmail || ''})`, 14, 44);
+                docPdf.text(`TIC Name: ${schoolData.ticName} (${schoolData.ticPhone})`, 14, 50);
+                docPdf.text(`Date Generated: ${new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' })}`, 14, 56);
+
+                // Registered Contestants Table
+                const headers = [["#", "Contestant Full Name", "Email Address", "Mobile No", "Category", "Language", "Age Category"]];
+                const body = activeContestants.map((c, i) => [
+                    i + 1,
+                    c.fullName,
+                    c.email,
+                    c.mobileNumber,
+                    c.category,
+                    c.language,
+                    c.ageCategory
+                ]);
+
+                docPdf.autoTable({
+                    startY: 64,
+                    head: headers,
+                    body: body,
+                    theme: 'grid',
+                    headStyles: { 
+                        fillColor: primaryColor,
+                        textColor: [0, 0, 0],
+                        fontStyle: 'bold',
+                        fontSize: 8.5
+                    },
+                    styles: { 
+                        font: "helvetica", 
+                        fontSize: 8,
+                        textColor: [50, 50, 50],
+                        cellPadding: 3
+                    },
+                    columnStyles: {
+                        0: { cellWidth: 8 },
+                        1: { cellWidth: 40 },
+                        2: { cellWidth: 40 },
+                        3: { cellWidth: 24 },
+                        4: { cellWidth: 32 },
+                        5: { cellWidth: 20 },
+                        6: { cellWidth: 24 }
+                    }
+                });
+
+                // Save filename using school name
+                const sanitizedName = schoolData.schoolName.replace(/[^a-zA-Z0-9]/g, "_");
+                docPdf.save(`Ninnada26_${sanitizedName}_Contestants.pdf`);
+
+            } catch (err) {
+                console.error("PDF generation failed:", err);
+                alert("Failed to export PDF: " + err.message);
+            }
+        };
+
+        // Utility to escape HTML strings
+        function escapeHtml(unsafe) {
+            return unsafe
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+    </script>
+    <script type="module" src="auth-handler.js"></script>
+</body>
+
+</html>

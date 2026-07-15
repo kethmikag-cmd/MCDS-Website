@@ -26,9 +26,8 @@
         {
             "imports": {
                 "firebase/app": "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js",
-                "firebase/analytics": "https://www.gstatic.com/firebasejs/10.12.2/firebase-analytics.js",
-                "firebase/database": "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js",
-                "firebase/firestore": "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js"
+                "firebase/firestore": "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js",
+                "firebase/auth": "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js"
             }
         }
     </script>
@@ -176,7 +175,10 @@
 <body>
     <header>
         <div class="container header-container">
-            <a href="ninnada.html" class="logo logo-ninnada">Ninnada'26</a>
+            <div class="header-left-group">
+                <a href="ninnada.html" class="logo logo-ninnada">Ninnada'26</a>
+                <div id="header-auth" class="header-auth-left"></div>
+            </div>
             <nav>
                 <button class="hamburger" id="hamburger-btn" aria-label="Toggle navigation" aria-expanded="false">
                     <span></span>
@@ -480,6 +482,7 @@
 
     <script src="script.js"></script>
     <script type="module" src="firebase-config.js"></script>
+    <script type="module" src="auth-handler.js"></script>
 </body>
 
 </html>

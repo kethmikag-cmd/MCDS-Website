@@ -17,7 +17,8 @@
     {
         "imports": {
             "firebase/app": "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js",
-            "firebase/firestore": "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js"
+            "firebase/firestore": "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js",
+            "firebase/auth": "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js"
         }
     }
     </script>
@@ -298,7 +299,10 @@
     <!-- Header -->
     <header>
         <div class="container header-container">
-            <a href="ninnada.html" class="logo logo-ninnada" id="reg-logo">Ninnada'26</a>
+            <div class="header-left-group">
+                <a href="ninnada.html" class="logo logo-ninnada" id="reg-logo">Ninnada'26</a>
+                <div id="header-auth" class="header-auth-left"></div>
+            </div>
             <nav>
                 <ul class="nav-links">
                     <li class="nav-item"><a href="ninnada.html" class="nav-link">← Back to Ninnada</a></li>
@@ -327,10 +331,10 @@
                 <!-- Page Title -->
                 <div class="text-center mb-8 md:mb-12">
                     <h1 style="font-size:clamp(1.8rem,7vw,3.5rem);" class="font-black text-glow-yellow-lg tracking-widest uppercase mb-4 font-[Montserrat]">
-                        Registration Form
+                        School Registration
                     </h1>
                     <p class="text-gray-400 text-sm md:text-lg font-[Lato] tracking-wide">
-                        Complete your registration for <span class="text-yellow-400 font-bold">Ninnada'26</span>
+                        Create an account for your school's coordinator for <span class="text-yellow-400 font-bold">Ninnada'26</span>
                     </p>
                     <div class="mt-4 w-20 h-px mx-auto bg-gradient-to-r from-transparent via-yellow-500 to-transparent opacity-60"></div>
                 </div>
@@ -339,80 +343,76 @@
                 <div class="glass-form px-4 sm:px-8 md:px-12 py-8 md:py-10">
                     <form id="registration-form" onsubmit="handleSubmit(event)" novalidate>
 
-                        <!-- Full Name -->
+                        <!-- School Name -->
                         <div class="mb-6">
-                            <label for="fullName" class="reg-label">Full Name</label>
-                            <input type="text" id="fullName" name="fullName" class="reg-input"
-                                placeholder="Enter your full name" required>
+                            <label for="schoolName" class="reg-label">School Name</label>
+                            <input type="text" id="schoolName" name="schoolName" class="reg-input"
+                                placeholder="Enter the full school name" required>
                         </div>
 
-                        <!-- School -->
+                        <!-- School Address -->
                         <div class="mb-6">
-                            <label for="school" class="reg-label">School</label>
-                            <input type="text" id="school" name="school" class="reg-input"
-                                placeholder="Name of your school" required>
-                        </div>
-
-                        <!-- Email -->
-                        <div class="mb-6">
-                            <label for="email" class="reg-label">Email Address</label>
-                            <input type="email" id="email" name="email" class="reg-input"
-                                placeholder="your@email.com" required>
-                        </div>
-
-                        <!-- Mobile Number -->
-                        <div class="mb-6">
-                            <label for="mobileNumber" class="reg-label">Mobile Number</label>
-                            <input type="tel" id="mobileNumber" name="mobileNumber" class="reg-input"
-                                placeholder="+94 7X XXX XXXX" required>
+                            <label for="schoolAddress" class="reg-label">School Address</label>
+                            <input type="text" id="schoolAddress" name="schoolAddress" class="reg-input"
+                                placeholder="Enter school physical address" required>
                         </div>
 
                         <hr class="form-divider mb-6">
 
-                        <!-- Category -->
+                        <!-- Teacher-in-Charge Full Name -->
                         <div class="mb-6">
-                            <label for="category" class="reg-label">Competition Category</label>
-                            <select id="category" name="category" class="reg-select" required>
-                                <option value="" disabled selected>Select your category</option>
-                                <option value="news-presenting">News Presenting</option>
-                                <option value="news-editing">News Editing</option>
-                                <option value="program-presenting">Program Presenting</option>
-                                <option value="radio-presenting">Radio Presenting</option>
-                                <option value="sports-commentary">Sports Commentary</option>
-                                <option value="dubbing">Dubbing</option>
-                                <option value="cartoon-drawing">Cartoon Drawing</option>
-                                <option value="photography">Photography</option>
-                                <option value="videography">Videography</option>
-                                <option value="graphic-designing">Graphic Designing</option>
-                                <option value="short-film">Short Film</option>
-                            </select>
+                            <label for="ticName" class="reg-label">Teacher-in-Charge Full Name</label>
+                            <input type="text" id="ticName" name="ticName" class="reg-input"
+                                placeholder="TIC full name" required>
                         </div>
 
-                        <!-- Language -->
+                        <!-- Teacher-in-Charge Contact Number -->
                         <div class="mb-6">
-                            <label for="language" class="reg-label">Language Medium</label>
-                            <select id="language" name="language" class="reg-select" required>
-                                <option value="" disabled selected>Select your language</option>
-                                <option value="sinhala">Sinhala</option>
-                                <option value="english">English</option>
-                                <option value="tamil">Tamil</option>
-                            </select>
+                            <label for="ticPhone" class="reg-label">Teacher-in-Charge Contact Number</label>
+                            <input type="tel" id="ticPhone" name="ticPhone" class="reg-input"
+                                placeholder="e.g. +94 7X XXX XXXX" required>
                         </div>
 
-                        <!-- Age Category -->
+                        <hr class="form-divider mb-6">
+
+                        <!-- Coordinator Full Name -->
+                        <div class="mb-6">
+                            <label for="coordinatorName" class="reg-label">Coordinator Full Name</label>
+                            <input type="text" id="coordinatorName" name="coordinatorName" class="reg-input"
+                                placeholder="Coordinator full name" required>
+                        </div>
+
+                        <!-- Coordinator Email Address -->
+                        <div class="mb-6">
+                            <label for="coordinatoremail" class="reg-label">Coordinator Email Address</label>
+                            <input type="email" id="coordinatoremail" name="coordinatoremail" class="reg-input"
+                                placeholder="coordinator@example.com" required>
+                        </div>
+
+                        <!-- Coordinator Contact Number -->
+                        <div class="mb-6">
+                            <label for="coordinatorphone" class="reg-label">Coordinator Contact Number</label>
+                            <input type="tel" id="coordinatorphone" name="coordinatorphone" class="reg-input"
+                                placeholder="e.g. +94 7X XXX XXXX" required>
+                        </div>
+
+                        <!-- Password -->
+                        <div class="mb-6">
+                            <label for="password" class="reg-label">Password</label>
+                            <input type="password" id="password" name="password" class="reg-input"
+                                placeholder="Create a secure password" required>
+                        </div>
+
+                        <!-- Confirm Password -->
                         <div class="mb-8">
-                            <label for="ageCategory" class="reg-label">Age Category</label>
-                            <select id="ageCategory" name="ageCategory" class="reg-select" required>
-                                <option value="" disabled selected>Select your age category</option>
-                                <option value="junior">Junior (Under 13)</option>
-                                <option value="intermediate">Intermediate (13–15)</option>
-                                <option value="senior">Senior (16–19)</option>
-                            </select>
+                            <label for="confirmPassword" class="reg-label">Confirm Password</label>
+                            <input type="password" id="confirmPassword" name="confirmPassword" class="reg-input"
+                                placeholder="Re-enter password to confirm" required>
                         </div>
 
                         <!-- Submit Button -->
                         <button type="submit" id="submit-btn" class="reg-submit-btn">
-                            Submit Registration
+                            Register School
                         </button>
 
                         <!-- Status Message -->
@@ -478,149 +478,224 @@
     <div id="success-overlay" class="hidden">
         <div class="success-card">
             <div class="success-tick">&#10003;</div>
-            <p class="success-title">Registration Recorded!</p>
-            <p class="success-msg">
-                Your registration has been recorded.<br>
-                Thank you for registering for <strong style="color:#ffff00;">Ninnada'25</strong>.
+            <p class="success-title">Registration Successful!</p>
+            <p class="success-msg" style="margin-bottom: 20px;">
+                Your coordinator account has been created successfully.
             </p>
-            <a href="ninnada.html" class="success-back-btn">
-                Back to Ninnada
+            <div class="credentials-card" style="background: rgba(0,0,0,0.5); padding: 20px; border-radius: 12px; border: 1px solid rgba(255,255,0,0.25); text-align: left; margin-bottom: 28px; font-family: 'Lato', sans-serif;">
+                <p style="font-weight: 700; color: #ffff00; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 1px; margin-bottom: 6px;">Login Credentials</p>
+                <div style="margin-bottom: 12px;">
+                    <span style="display: block; color: rgba(255,255,255,0.6); font-size: 0.85rem;">Email:</span>
+                    <strong id="success-email" style="color: #ffffff; font-size: 1rem; word-break: break-all;">coordinator@example.com</strong>
+                </div>
+                <div>
+                    <span style="display: block; color: rgba(255,255,255,0.6); font-size: 0.85rem;">Password:</span>
+                    <strong id="success-password" style="color: #ffffff; font-size: 1rem; font-family: monospace; letter-spacing: 1px;">********</strong>
+                </div>
+            </div>
+            <a href="login.html" class="success-back-btn">
+                Go to Coordinator Login
             </a>
         </div>
     </div>
 
 
-    <!-- Firebase Firestore module script -->
+    <!-- Firebase module script — School Registration Logic -->
     <script type="module">
-        import { initializeApp } from 'firebase/app';
-        import { getFirestore, collection, doc, runTransaction, serverTimestamp } from 'firebase/firestore';
-
-        // ── Firebase config for Ninnada registrations (project: aditha-ca321) ──
-        const firebaseConfig = {
-            apiKey: "AIzaSyChk85PHMlKF5SFGwXSITg0u2QoE2azkws",
-            authDomain: "aditha-ca321.firebaseapp.com",
-            databaseURL: "https://aditha-ca321.firebaseio.com",
-            projectId: "aditha-ca321",
-            storageBucket: "aditha-ca321.firebasestorage.app",
-            messagingSenderId: "359615698823",
-            appId: "1:359615698823:web:359465a9f94fdb3caee522",
-            measurementId: "G-1QZQK8F8EZ"
-        };
-
-        const app = initializeApp(firebaseConfig);
-        const db  = getFirestore(app);
+        import { db, auth } from './firebase-config.js';
+        import { collection, query, where, getDocs, doc, setDoc, serverTimestamp } from 'firebase/firestore';
+        import { createUserWithEmailAndPassword, deleteUser } from 'firebase/auth';
 
         // Expose handleSubmit globally so the form's onsubmit attribute can call it
         window.handleSubmit = async function(e) {
-            e.preventDefault();
+            e.preventDefault(); // Always prevent default — registration is 100% JS-driven
+
+            console.log('[Registration] Started.');
 
             const form       = document.getElementById('registration-form');
             const status     = document.getElementById('form-status');
             const btn        = document.getElementById('submit-btn');
             const successBox = document.getElementById('success-overlay');
 
-            // ── Validate required fields ──────────────────────────────────────────
+            // Reset field highlight styles
             const fields = form.querySelectorAll('[required]');
+            fields.forEach(f => {
+                f.style.borderColor = '';
+                f.style.boxShadow   = '';
+            });
+
+            // ── Validate: all required fields must be non-empty ──────────────────
             let valid = true;
             fields.forEach(f => {
                 if (!f.value.trim()) {
                     f.style.borderColor = 'rgba(255,80,80,0.7)';
                     f.style.boxShadow   = '0 0 0 3px rgba(255,80,80,0.1)';
                     valid = false;
-                } else {
-                    f.style.borderColor = '';
-                    f.style.boxShadow   = '';
                 }
             });
 
             if (!valid) {
-                status.textContent  = 'Please fill in all required fields.';
-                status.className    = 'text-center mt-4 text-sm font-[Montserrat] font-bold tracking-wide text-red-400';
+                status.textContent = 'Please fill in all required fields.';
+                status.className   = 'text-center mt-4 text-sm font-[Montserrat] font-bold tracking-wide text-red-400';
+                status.classList.remove('hidden');
                 return;
             }
 
-            // ── Collect field values ──────────────────────────────────────────────
-            const fullName     = document.getElementById('fullName').value.trim();
-            const school       = document.getElementById('school').value.trim();
-            const email        = document.getElementById('email').value.trim();
-            const mobilenumber = document.getElementById('mobileNumber').value.trim();
-            const category     = document.getElementById('category').value;
-            const language     = document.getElementById('language').value;
-            const agecategory  = document.getElementById('ageCategory').value;
+            // ── Collect field values ─────────────────────────────────────────────
+            const schoolName      = document.getElementById('schoolName').value.trim();
+            const schoolAddress   = document.getElementById('schoolAddress').value.trim();
+            const ticName         = document.getElementById('ticName').value.trim();
+            const ticPhone        = document.getElementById('ticPhone').value.trim();
+            const coordinatorName = document.getElementById('coordinatorName').value.trim();
+            const coordinatorEmail = document.getElementById('coordinatoremail').value.trim();
+            const coordinatorPhone = document.getElementById('coordinatorphone').value.trim();
+            const password        = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
 
-            // ── Loading state ─────────────────────────────────────────────────────
-            btn.textContent  = 'Submitting…';
-            btn.disabled     = true;
+            // ── Validate: email format ───────────────────────────────────────────
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(coordinatorEmail)) {
+                const el = document.getElementById('coordinatoremail');
+                el.style.borderColor = 'rgba(255,80,80,0.7)';
+                el.style.boxShadow   = '0 0 0 3px rgba(255,80,80,0.1)';
+                status.textContent = 'Please enter a valid email address.';
+                status.className   = 'text-center mt-4 text-sm font-[Montserrat] font-bold tracking-wide text-red-400';
+                status.classList.remove('hidden');
+                return;
+            }
+
+            // ── Validate: passwords match ────────────────────────────────────────
+            if (password !== confirmPassword) {
+                document.getElementById('password').style.borderColor     = 'rgba(255,80,80,0.7)';
+                document.getElementById('confirmPassword').style.borderColor = 'rgba(255,80,80,0.7)';
+                status.textContent = 'Passwords do not match.';
+                status.className   = 'text-center mt-4 text-sm font-[Montserrat] font-bold tracking-wide text-red-400';
+                status.classList.remove('hidden');
+                return;
+            }
+
+            // ── Validate: password minimum length ────────────────────────────────
+            if (password.length < 6) {
+                document.getElementById('password').style.borderColor = 'rgba(255,80,80,0.7)';
+                status.textContent = 'Password must be at least 6 characters.';
+                status.className   = 'text-center mt-4 text-sm font-[Montserrat] font-bold tracking-wide text-red-400';
+                status.classList.remove('hidden');
+                return;
+            }
+
+            // ── Loading state ────────────────────────────────────────────────────
+            btn.textContent   = 'Registering…';
+            btn.disabled      = true;
             btn.style.opacity = '0.7';
             status.textContent = '';
+            status.classList.add('hidden');
+
+            // Normalise school name for duplicate checking and document ID
+            const normalizedSchoolName = schoolName.trim().toLowerCase();
 
             try {
-                // Generate a document reference with auto-ID
-                const regDocRef = doc(collection(db, 'registrations'));
-                const statsRef = doc(db, 'stats', 'overview');
+                // ── Step 1: Duplicate school check (queries Firestore, no Auth yet) ──
+                console.log('[Registration] Checking for duplicate school:', normalizedSchoolName);
+                const q = query(
+                    collection(db, 'schools'),
+                    where('normalizedSchoolName', '==', normalizedSchoolName)
+                );
+                const querySnapshot = await getDocs(q);
 
-                // Run atomic transaction to save registration and update stats/overview
-                await runTransaction(db, async (transaction) => {
-                    const statsDoc = await transaction.get(statsRef);
-                    let schools = [];
-                    let contestantCount = 0;
-                    let schoolCount = 0;
+                if (!querySnapshot.empty) {
+                    console.warn('[Registration] Duplicate school detected — aborting.');
+                    btn.textContent   = 'Register School';
+                    btn.disabled      = false;
+                    btn.style.opacity = '1';
+                    status.textContent = 'This school has already been registered.';
+                    status.className   = 'text-center mt-4 text-sm font-[Montserrat] font-bold tracking-wide text-red-400';
+                    status.classList.remove('hidden');
+                    return;
+                }
+                console.log('[Registration] No duplicate found. Proceeding.');
 
-                    if (statsDoc.exists()) {
-                        const data = statsDoc.data();
-                        schools = data.schools || [];
-                        contestantCount = data.contestantCount || 0;
-                        schoolCount = data.schoolCount || 0;
-                    }
+                // ── Step 2: Create Firebase Authentication account ────────────────
+                let userCredential;
+                try {
+                    console.log('[Registration] Creating Firebase Auth account...');
+                    userCredential = await createUserWithEmailAndPassword(auth, coordinatorEmail, password);
+                    console.log('[Registration] Authentication account created. UID:', userCredential.user.uid);
+                } catch (authErr) {
+                    console.error('[Registration] Firebase Auth error:', authErr);
+                    btn.textContent   = 'Register School';
+                    btn.disabled      = false;
+                    btn.style.opacity = '1';
+                    let errorMsg = 'Failed to create coordinator account. Please try again.';
+                    if (authErr.code === 'auth/email-already-in-use') errorMsg = 'This email address is already registered.';
+                    else if (authErr.code === 'auth/invalid-email')    errorMsg = 'Invalid email address.';
+                    else if (authErr.code === 'auth/weak-password')    errorMsg = 'Password is too weak (minimum 6 characters).';
+                    status.textContent = errorMsg;
+                    status.className   = 'text-center mt-4 text-sm font-[Montserrat] font-bold tracking-wide text-red-400';
+                    status.classList.remove('hidden');
+                    return;
+                }
 
-                    // Increment stats
-                    contestantCount += 1;
-                    const normalizedSchool = school.trim().toLowerCase();
-                    const hasSchool = schools.some(s => s.trim().toLowerCase() === normalizedSchool);
-                    
-                    if (!hasSchool) {
-                        schools.push(school.trim());
-                        schoolCount += 1;
-                    }
+                // Use UID from the credential, NOT from auth.currentUser
+                const firebaseUID = userCredential.user.uid;
 
-                    // Save registration record (satisfying phone, mobilenumber, agecategory, ageCategory)
-                    transaction.set(regDocRef, {
-                        fullName,
-                        school,
-                        email,
-                        mobilenumber,
-                        phone: mobilenumber,
-                        category,
-                        language,
-                        agecategory,
-                        ageCategory: agecategory,
-                        submittedAt: serverTimestamp()
+                // ── Step 3: Write school document to Firestore ────────────────────
+                try {
+                    console.log('[Registration] Writing Firestore school document...');
+                    const docRef = doc(db, 'schools', normalizedSchoolName);
+                    await setDoc(docRef, {
+                        schoolName,
+                        normalizedSchoolName,
+                        schoolAddress,
+                        ticName,
+                        ticPhone,
+                        coordinatorName,
+                        coordinatorEmail,
+                        coordinatorPhone,
+                        firebaseUID,
+                        createdAt: serverTimestamp(),
+                        registrationStatus: 'Registered',
+                        contestants: []
                     });
+                    console.log('[Registration] Firestore document written successfully.');
 
-                    // Save stats document
-                    transaction.set(statsRef, {
-                        contestantCount,
-                        schoolCount,
-                        schools,
-                        lastUpdated: serverTimestamp()
-                    }, { merge: true });
-                });
+                    // Populate success overlay with credentials
+                    document.getElementById('success-email').textContent    = coordinatorEmail;
+                    document.getElementById('success-password').textContent = password;
 
-                // ── Show success overlay ──────────────────────────────────────────
-                form.reset();
-                successBox.classList.remove('hidden');
-                successBox.classList.add('flex');
+                    // Show success overlay — NO page reload
+                    form.reset();
+                    successBox.classList.remove('hidden');
+                    successBox.classList.add('flex');
+
+                } catch (dbErr) {
+                    // Firestore write failed — delete the newly-created Auth account to avoid orphans
+                    console.error('[Registration] Firestore write failed:', dbErr);
+                    try {
+                        await deleteUser(userCredential.user);
+                        console.log('[Registration] Orphaned Auth account cleaned up.');
+                    } catch (cleanupErr) {
+                        console.error('[Registration] Failed to clean up Auth account:', cleanupErr);
+                    }
+                    btn.textContent   = 'Register School';
+                    btn.disabled      = false;
+                    btn.style.opacity = '1';
+                    status.textContent = 'Registration failed (database error). Please try again.';
+                    status.className   = 'text-center mt-4 text-sm font-[Montserrat] font-bold tracking-wide text-red-400';
+                    status.classList.remove('hidden');
+                }
 
             } catch (err) {
-                console.error('Firestore transaction error:', err);
-                btn.textContent   = 'Submit Registration';
+                console.error('[Registration] Unexpected error:', err);
+                btn.textContent   = 'Register School';
                 btn.disabled      = false;
                 btn.style.opacity = '1';
-                status.textContent = 'Something went wrong. Please try again.';
+                status.textContent = 'An unexpected error occurred. Please try again.';
                 status.className   = 'text-center mt-4 text-sm font-[Montserrat] font-bold tracking-wide text-red-400';
+                status.classList.remove('hidden');
             }
         };
     </script>
+    <script type="module" src="auth-handler.js"></script>
 </body>
 
 </html>

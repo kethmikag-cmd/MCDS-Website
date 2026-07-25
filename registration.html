@@ -183,7 +183,7 @@
         }
 
         /* ── Success overlay ── */
-        #success-overlay {
+        #success-overlay, #already-registered-overlay {
             position: fixed;
             inset: 0;
             z-index: 9999;
@@ -299,15 +299,15 @@
     <!-- Header -->
     <header>
         <div class="container header-container">
-            <div class="header-left-group">
-                <a href="ninnada.html" class="logo logo-ninnada" id="reg-logo">Ninnada'26</a>
-                <div id="header-auth" class="header-auth-left"></div>
+            <a href="ninnada.html" class="logo logo-ninnada" id="reg-logo">Ninnada'26</a>
+            <div class="header-right-group">
+                <nav>
+                    <ul class="nav-links">
+                        <li class="nav-item"><a href="ninnada.html" class="nav-link">← Back to Ninnada</a></li>
+                    </ul>
+                </nav>
+                <div id="header-auth" class="header-auth-right"></div>
             </div>
-            <nav>
-                <ul class="nav-links">
-                    <li class="nav-item"><a href="ninnada.html" class="nav-link">← Back to Ninnada</a></li>
-                </ul>
-            </nav>
         </div>
     </header>
 
@@ -499,12 +499,39 @@
         </div>
     </div>
 
+    <!-- ── Already Registered Overlay ─────────── -->
+    <div id="already-registered-overlay" class="hidden">
+        <div class="success-card">
+            <p class="success-title">Your school has already been registered.</p>
+            <p class="success-msg" style="margin-bottom: 28px;">
+                Please proceed to the Coordinator Dashboard to manage your entries.
+            </p>
+            <a href="dashboard.html" class="success-back-btn" style="width: 100%;">
+                Go to Coordinator Dashboard
+            </a>
+        </div>
+    </div>
+
 
     <!-- Firebase module script — School Registration Logic -->
     <script type="module">
         import { db, auth } from './firebase-config.js';
         import { collection, query, where, getDocs, doc, setDoc, serverTimestamp } from 'firebase/firestore';
-        import { createUserWithEmailAndPassword, deleteUser } from 'firebase/auth';
+        import { createUserWithEmailAndPassword, deleteUser, onAuthStateChanged } from 'firebase/auth';
+
+        // ── Auth State Check for existing coordinators ───────────────────────
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                // Coordinator is already logged in, show blocking modal
+                const regForm = document.getElementById('registration-form');
+                if (regForm) regForm.style.pointerEvents = 'none'; // disable form interaction behind modal
+                const alreadyRegOverlay = document.getElementById('already-registered-overlay');
+                if (alreadyRegOverlay) {
+                    alreadyRegOverlay.classList.remove('hidden');
+                    alreadyRegOverlay.classList.add('flex');
+                }
+            }
+        });
 
         // Expose handleSubmit globally so the form's onsubmit attribute can call it
         window.handleSubmit = async function(e) {

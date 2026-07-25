@@ -1,9 +1,9 @@
 function showTab(tabId) {
     // Check if we are on index.html (or root / empty path which is index.html)
-    const isIndexPage = window.location.pathname.endsWith('index.html') || 
-                        window.location.pathname.endsWith('/') || 
-                        (!window.location.pathname.endsWith('.html') && !window.location.pathname.includes('ninnada') && !window.location.pathname.includes('admin') && !window.location.pathname.includes('registration'));
-                        
+    const isIndexPage = window.location.pathname.endsWith('index.html') ||
+        window.location.pathname.endsWith('/') ||
+        (!window.location.pathname.endsWith('.html') && !window.location.pathname.includes('ninnada') && !window.location.pathname.includes('admin') && !window.location.pathname.includes('registration'));
+
     if (!isIndexPage) {
         sessionStorage.setItem('openTab', tabId);
         window.location.href = 'index.html';
@@ -41,7 +41,7 @@ function showTab(tabId) {
             logo.className = "logo logo-ninnada";
             logo.setAttribute('onclick', "showTab('ninnada'); return false;");
         } else {
-            logo.textContent = "MCDS";
+            logo.textContent = "MCDSSC";
             logo.className = "logo";
             logo.setAttribute('onclick', "showTab('home'); return false;");
         }
@@ -55,10 +55,10 @@ function showTab(tabId) {
 }
 
 function scrollToSection(sectionId) {
-    const isIndexPage = window.location.pathname.endsWith('index.html') || 
-                        window.location.pathname.endsWith('/') || 
-                        (!window.location.pathname.endsWith('.html') && !window.location.pathname.includes('ninnada') && !window.location.pathname.includes('admin') && !window.location.pathname.includes('registration'));
-                        
+    const isIndexPage = window.location.pathname.endsWith('index.html') ||
+        window.location.pathname.endsWith('/') ||
+        (!window.location.pathname.endsWith('.html') && !window.location.pathname.includes('ninnada') && !window.location.pathname.includes('admin') && !window.location.pathname.includes('registration'));
+
     if (!isIndexPage) {
         sessionStorage.setItem('scrollToSection', sectionId);
         return;
@@ -87,9 +87,9 @@ function closeMobileMenu() {
 
 // Initialize: Show Home tab or previously requested tab
 document.addEventListener('DOMContentLoaded', () => {
-    const isIndexPage = window.location.pathname.endsWith('index.html') || 
-                        window.location.pathname.endsWith('/') || 
-                        (!window.location.pathname.endsWith('.html') && !window.location.pathname.includes('ninnada') && !window.location.pathname.includes('admin') && !window.location.pathname.includes('registration'));
+    const isIndexPage = window.location.pathname.endsWith('index.html') ||
+        window.location.pathname.endsWith('/') ||
+        (!window.location.pathname.endsWith('.html') && !window.location.pathname.includes('ninnada') && !window.location.pathname.includes('admin') && !window.location.pathname.includes('registration'));
 
     if (isIndexPage) {
         const tabToOpen = sessionStorage.getItem('openTab') || 'home';

@@ -1253,7 +1253,8 @@ footer {
 
 /* ─── Coordinator Auth & Dashboard Custom Styles ─────────────────────────── */
 
-.header-left-group {
+.header-left-group,
+.header-right-group {
     display: flex;
     align-items: center;
     gap: var(--spacing-md);

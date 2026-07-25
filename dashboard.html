@@ -12,7 +12,7 @@
         href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Lato:wght@400;700&family=Montserrat:wght@400;700;900&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="style.css">
-    
+
     <!-- External jsPDF & autoTable Libraries for PDF Generation -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
@@ -202,7 +202,8 @@
             transform: translateY(0);
         }
 
-        .reg-input, .reg-select {
+        .reg-input,
+        .reg-select {
             width: 100%;
             padding: 12px 14px;
             background: rgba(0, 0, 0, 0.55);
@@ -214,7 +215,8 @@
             min-height: 46px;
         }
 
-        .reg-input:focus, .reg-select:focus {
+        .reg-input:focus,
+        .reg-select:focus {
             border-color: rgba(218, 165, 32, 0.7);
         }
 
@@ -254,9 +256,17 @@
             background: rgba(255, 80, 80, 0.1);
         }
 
-        .ninnada-orb { filter: blur(70px); }
-        .orb-sm { filter: blur(50px); }
-        .orb-lg { filter: blur(100px); }
+        .ninnada-orb {
+            filter: blur(70px);
+        }
+
+        .orb-sm {
+            filter: blur(50px);
+        }
+
+        .orb-lg {
+            filter: blur(100px);
+        }
 
         .orb-container {
             position: absolute;
@@ -272,15 +282,15 @@
     <!-- Header -->
     <header>
         <div class="container header-container">
-            <div class="header-left-group">
-                <a href="ninnada.html" class="logo logo-ninnada">Ninnada'26</a>
-                <div id="header-auth" class="header-auth-left"></div>
+            <a href="ninnada.html" class="logo logo-ninnada">Ninnada'26</a>
+            <div class="header-right-group">
+                <nav>
+                    <ul class="nav-links">
+                        <li class="nav-item"><a href="ninnada.html" class="nav-link">← Back to Ninnada</a></li>
+                    </ul>
+                </nav>
+                <div id="header-auth" class="header-auth-right"></div>
             </div>
-            <nav>
-                <ul class="nav-links">
-                    <li class="nav-item"><a href="ninnada.html" class="nav-link">← Back to Ninnada</a></li>
-                </ul>
-            </nav>
         </div>
     </header>
 
@@ -288,9 +298,13 @@
     <div class="dashboard-page flex-1">
         <!-- Animated Glowing Orbs Background -->
         <div class="orb-container">
-            <div class="ninnada-orb orb-lg" style="width:min(600px,90vw);height:min(600px,90vw);top:-150px;left:-200px;"></div>
-            <div class="ninnada-orb" style="width:min(420px,70vw);height:min(420px,70vw);top:30%;right:-120px;background:radial-gradient(circle, rgba(255,215,0,0.5) 0%, rgba(218,165,32,0.1) 50%, transparent 80%);"></div>
-            <div class="ninnada-orb orb-lg" style="width:min(580px,90vw);height:min(580px,90vw);bottom:0;left:-150px;"></div>
+            <div class="ninnada-orb orb-lg"
+                style="width:min(600px,90vw);height:min(600px,90vw);top:-150px;left:-200px;"></div>
+            <div class="ninnada-orb"
+                style="width:min(420px,70vw);height:min(420px,70vw);top:30%;right:-120px;background:radial-gradient(circle, rgba(255,215,0,0.5) 0%, rgba(218,165,32,0.1) 50%, transparent 80%);">
+            </div>
+            <div class="ninnada-orb orb-lg" style="width:min(580px,90vw);height:min(580px,90vw);bottom:0;left:-150px;">
+            </div>
         </div>
 
         <!-- Dashboard Content -->
@@ -306,30 +320,42 @@
                 <!-- Dashboard Content Area (Hidden during load) -->
                 <div id="dashboard-content" class="hidden">
                     <!-- Dashboard Greeting -->
-                    <div class="mb-10 text-center md:text-left flex flex-col md:flex-row md:items-end md:justify-between gap-6">
+                    <div
+                        class="mb-10 text-center md:text-left flex flex-col md:flex-row md:items-end md:justify-between gap-6">
                         <div>
-                            <h1 style="font-size:clamp(1.8rem,6vw,3.2rem);" class="font-black text-glow-yellow-lg tracking-widest uppercase mb-3 font-[Montserrat]">
+                            <h1 style="font-size:clamp(1.8rem,6vw,3.2rem);"
+                                class="font-black text-glow-yellow-lg tracking-widest uppercase mb-3 font-[Montserrat]">
                                 Portal Dashboard
                             </h1>
                             <p class="text-gray-400 text-sm md:text-base font-[Lato] tracking-wide">
                                 School Coordinator Contestant Registration Panel
                             </p>
                         </div>
-                        <div class="w-20 h-px md:hidden mx-auto bg-gradient-to-r from-transparent via-yellow-500 to-transparent opacity-60"></div>
+                        <div
+                            class="w-20 h-px md:hidden mx-auto bg-gradient-to-r from-transparent via-yellow-500 to-transparent opacity-60">
+                        </div>
                     </div>
 
                     <!-- Metadata Grid -->
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
                         <div class="metadata-card glass-panel flex flex-col">
-                            <span class="text-xs uppercase tracking-widest text-yellow-500 font-bold font-[Montserrat] mb-1">School Registered</span>
-                            <span id="meta-school-name" class="text-white font-bold text-lg font-[Lato]">Loading...</span>
+                            <span
+                                class="text-xs uppercase tracking-widest text-yellow-500 font-bold font-[Montserrat] mb-1">School
+                                Registered</span>
+                            <span id="meta-school-name"
+                                class="text-white font-bold text-lg font-[Lato]">Loading...</span>
                         </div>
                         <div class="metadata-card glass-panel flex flex-col">
-                            <span class="text-xs uppercase tracking-widest text-yellow-500 font-bold font-[Montserrat] mb-1">Coordinator Name</span>
-                            <span id="meta-coordinator-name" class="text-white font-bold text-lg font-[Lato]">Loading...</span>
+                            <span
+                                class="text-xs uppercase tracking-widest text-yellow-500 font-bold font-[Montserrat] mb-1">Coordinator
+                                Name</span>
+                            <span id="meta-coordinator-name"
+                                class="text-white font-bold text-lg font-[Lato]">Loading...</span>
                         </div>
                         <div class="metadata-card glass-panel flex flex-col">
-                            <span class="text-xs uppercase tracking-widest text-yellow-500 font-bold font-[Montserrat] mb-1">Registration Date</span>
+                            <span
+                                class="text-xs uppercase tracking-widest text-yellow-500 font-bold font-[Montserrat] mb-1">Registration
+                                Date</span>
                             <span id="meta-reg-date" class="text-white font-bold text-lg font-[Lato]">Loading...</span>
                         </div>
                     </div>
@@ -337,17 +363,24 @@
                     <!-- Main Portal Panel -->
                     <div class="glass-panel p-6 md:p-8">
                         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
-                            <h2 class="text-xl md:text-2xl font-extrabold text-glow-yellow font-[Montserrat] uppercase tracking-wider mb-0">
+                            <h2
+                                class="text-xl md:text-2xl font-extrabold text-glow-yellow font-[Montserrat] uppercase tracking-wider mb-0">
                                 Contestant Entries
                             </h2>
                             <div class="flex flex-wrap gap-3">
-                                <input type="text" id="contestant-search" class="search-input" placeholder="Search contestants..." oninput="handleSearch(this.value)">
+                                <input type="text" id="contestant-search" class="search-input"
+                                    placeholder="Search contestants..." oninput="handleSearch(this.value)">
                                 <button class="action-btn btn-gold" onclick="openAddModal()">
-                                    <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+                                    <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+                                        <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" />
+                                    </svg>
                                     Add Contestant
                                 </button>
                                 <button class="action-btn btn-glass" onclick="exportToPDF()">
-                                    <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM17 13l-5 5-5-5h3V9h4v4h3z"/></svg>
+                                    <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+                                        <path
+                                            d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM17 13l-5 5-5-5h3V9h4v4h3z" />
+                                    </svg>
                                     Export PDF
                                 </button>
                             </div>
@@ -360,8 +393,8 @@
                                     <tr>
                                         <th>#</th>
                                         <th>Full Name</th>
-                                        <th>Email</th>
                                         <th>Mobile</th>
+                                        <th>DOB</th>
                                         <th>Category</th>
                                         <th>Language</th>
                                         <th>Age Category</th>
@@ -377,8 +410,15 @@
                         <!-- Empty state -->
                         <div id="table-empty-state" class="text-center py-16 hidden">
                             <p class="text-gray-400 font-[Lato] text-base mb-4">No contestants registered yet.</p>
-                            <p class="text-yellow-400 font-bold font-[Montserrat] text-sm uppercase cursor-pointer hover:underline" onclick="openAddModal()">
+                            <p class="text-yellow-400 font-bold font-[Montserrat] text-sm uppercase cursor-pointer hover:underline"
+                                onclick="openAddModal()">
                                 Click here to add your first contestant
+                            </p>
+                        </div>
+                        <!-- Search Empty State -->
+                        <div id="search-empty-state" class="text-center py-16 hidden">
+                            <p class="text-gray-400 font-[Lato] text-base">
+                                Couldn't find any contestant matching your search.
                             </p>
                         </div>
                     </div>
@@ -399,10 +439,12 @@
     <div id="add-modal" class="modal-overlay" onclick="closeAddModal(event)">
         <div class="modal-card" onclick="event.stopPropagation()">
             <div class="flex items-center justify-between border-b border-yellow-400/20 pb-4 mb-6">
-                <h3 class="text-lg md:text-xl font-bold text-yellow-400 font-[Montserrat] uppercase tracking-wider mb-0">
+                <h3
+                    class="text-lg md:text-xl font-bold text-yellow-400 font-[Montserrat] uppercase tracking-wider mb-0">
                     Add New Contestant
                 </h3>
-                <button class="bg-none border-none text-gray-400 hover:text-white text-xl cursor-pointer" onclick="closeAddModal()">
+                <button class="bg-none border-none text-gray-400 hover:text-white text-xl cursor-pointer"
+                    onclick="closeAddModal()">
                     &times;
                 </button>
             </div>
@@ -414,16 +456,16 @@
                     <input type="text" id="c-fullName" class="reg-input" placeholder="Contestant's full name" required>
                 </div>
 
-                <!-- Email -->
-                <div class="mb-4">
-                    <label for="c-email" class="reg-label">Email Address</label>
-                    <input type="email" id="c-email" class="reg-input" placeholder="contestant@email.com" required>
-                </div>
-
                 <!-- Mobile Number -->
                 <div class="mb-4">
                     <label for="c-mobileNumber" class="reg-label">Mobile Number</label>
                     <input type="tel" id="c-mobileNumber" class="reg-input" placeholder="e.g. +94 7X XXX XXXX" required>
+                </div>
+
+                <!-- Date of Birth -->
+                <div class="mb-4">
+                    <label for="c-dob" class="reg-label">Date of Birth</label>
+                    <input type="date" id="c-dob" class="reg-input" required>
                 </div>
 
                 <!-- Category -->
@@ -431,17 +473,17 @@
                     <label for="c-category" class="reg-label">Competition Category</label>
                     <select id="c-category" class="reg-select" required>
                         <option value="" disabled selected>Select category</option>
-                        <option value="News Presenting">News Presenting</option>
+                        <option value="Announcing">Announcing</option>
                         <option value="News Editing">News Editing</option>
                         <option value="Program Presenting">Program Presenting</option>
-                        <option value="Radio Presenting">Radio Presenting</option>
-                        <option value="Sports Commentary">Sports Commentary</option>
                         <option value="Dubbing">Dubbing</option>
+                        <option value="Sports Commentary">Sports Commentary</option>
                         <option value="Cartoon Drawing">Cartoon Drawing</option>
                         <option value="Photography">Photography</option>
-                        <option value="Videography">Videography</option>
                         <option value="Graphic Designing">Graphic Designing</option>
-                        <option value="Short Film">Short Film</option>
+                        <option value="Technical">Technical</option>
+                        <option value="AI Short Film">AI Short Film</option>
+
                     </select>
                 </div>
 
@@ -453,18 +495,16 @@
                         <option value="Sinhala">Sinhala</option>
                         <option value="English">English</option>
                         <option value="Tamil">Tamil</option>
+                        <option value="N/A">N/A</option>
                     </select>
                 </div>
 
                 <!-- Age Category -->
                 <div class="mb-6">
                     <label for="c-ageCategory" class="reg-label">Age Category</label>
-                    <select id="c-ageCategory" class="reg-select" required>
-                        <option value="" disabled selected>Select age category</option>
-                        <option value="Junior (Under 13)">Junior (Under 13)</option>
-                        <option value="Intermediate (13–15)">Intermediate (13–15)</option>
-                        <option value="Senior (16–19)">Senior (16–19)</option>
-                    </select>
+                    <input type="text" id="c-ageCategory" class="reg-input" placeholder="Auto-calculated" readonly
+                        required
+                        style="background: rgba(0,0,0,0.3); color: rgba(255,255,255,0.7); cursor: not-allowed;">
                 </div>
 
                 <!-- Buttons -->
@@ -477,7 +517,8 @@
                     </button>
                 </div>
 
-                <p id="modal-status" class="text-center mt-3 text-sm font-[Montserrat] font-bold text-red-400 hidden"></p>
+                <p id="modal-status" class="text-center mt-3 text-sm font-[Montserrat] font-bold text-red-400 hidden">
+                </p>
             </form>
         </div>
     </div>
@@ -488,8 +529,149 @@
         import { onAuthStateChanged } from 'firebase/auth';
 
         let schoolDocId = null;
-        let schoolData  = null;
+        let schoolData = null;
         let activeContestants = []; // Local in-memory cache — never re-fetched from Firestore
+
+        // ── Centralized Competition Rules ──────────────────────────────────────────
+        const COMPETITION_RULES = {
+            "Announcing": { type: "STANDARD" },
+            "News Editing": { type: "STANDARD" },
+            "Program Presenting": {
+                "Sinhala": { type: "JR_SR", ranges: { Senior: ["2008-02-01", "2012-01-31"], Junior: ["2012-02-01", "2016-01-31"] } },
+                "English": { type: "JR_SR", ranges: { Senior: ["2008-02-01", "2012-01-31"], Junior: ["2012-02-01", "2016-01-31"] } },
+                "Tamil": { type: "OPEN" },
+                "default": { type: "STANDARD" }
+            },
+            "Dubbing": {
+                "English": { type: "JR_SR", ranges: { Senior: ["2008-02-01", "2012-01-31"], Junior: ["2012-02-01", "2016-01-31"] } },
+                "Tamil": { type: "OPEN" },
+                "default": { type: "STANDARD" }
+            },
+            "Sports Commentary": {
+                "Sinhala": { type: "JR_SR", ranges: { Senior: ["2008-02-01", "2012-01-31"], Junior: ["2012-02-01", "2016-01-31"] } },
+                "English": { type: "JR_SR", ranges: { Senior: ["2008-02-01", "2012-01-31"], Junior: ["2012-02-01", "2016-01-31"] } },
+                "Tamil": { type: "OPEN" },
+                "default": { type: "STANDARD" }
+            },
+            "Cartoon Drawing": { type: "OPEN", noLanguage: true },
+            "Photography": { type: "OPEN", noLanguage: true },
+            "Graphic Designing": { type: "OPEN", noLanguage: true },
+            "Technical": { type: "OPEN", allowedLanguages: ["Sinhala", "English"] },
+            "AI Short Film": { type: "OPEN", noLanguage: true },
+            "R. I. T. Alles Memorial Shield": { type: "SENIOR_ONLY", allowedLanguages: ["Sinhala"], ranges: { Senior: ["2008-02-01", "2010-01-31"] } }
+        };
+
+        const STANDARD_RANGES = {
+            Senior: ["2008-02-01", "2010-01-31"],
+            Intermediate: ["2010-02-01", "2013-01-31"],
+            Junior: ["2013-02-01", "2016-01-31"]
+        };
+
+        function isDateInRange(dateStr, startStr, endStr) {
+            if (!dateStr) return false;
+            const date = new Date(dateStr);
+            const start = new Date(startStr);
+            const end = new Date(endStr);
+            return date >= start && date <= end;
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const catSelect = document.getElementById('c-category');
+            const langSelect = document.getElementById('c-language');
+            const dobInput = document.getElementById('c-dob');
+            const ageInput = document.getElementById('c-ageCategory');
+            const status = document.getElementById('modal-status');
+            const submitBtn = document.getElementById('modal-submit-btn');
+
+            function calculateEligibility() {
+                const cat = catSelect.value;
+                const lang = langSelect.value;
+                const dob = dobInput.value;
+
+                status.textContent = '';
+                status.classList.add('hidden');
+                submitBtn.disabled = false;
+                ageInput.value = '';
+
+                if (!cat) return;
+
+                const ruleSet = COMPETITION_RULES[cat];
+
+                // Enforce Language constraints UI
+                Array.from(langSelect.options).forEach(opt => {
+                    if (opt.value === "") return;
+                    opt.disabled = false;
+                    opt.hidden = false;
+                });
+
+                if (ruleSet.noLanguage) {
+                    langSelect.value = "N/A";
+                    langSelect.disabled = true;
+                } else if (ruleSet.allowedLanguages) {
+                    langSelect.disabled = false;
+                    if (langSelect.value !== "" && !ruleSet.allowedLanguages.includes(langSelect.value)) {
+                        langSelect.value = "";
+                    }
+                    Array.from(langSelect.options).forEach(opt => {
+                        if (opt.value !== "" && !ruleSet.allowedLanguages.includes(opt.value)) {
+                            opt.disabled = true;
+                            opt.hidden = true;
+                        }
+                    });
+                } else {
+                    langSelect.disabled = false;
+                    Array.from(langSelect.options).forEach(opt => {
+                        if (opt.value === "N/A") {
+                            opt.disabled = true;
+                            opt.hidden = true;
+                        }
+                    });
+                    if (langSelect.value === "N/A") langSelect.value = "";
+                }
+
+                if (!langSelect.value || !dob) return;
+
+                let activeRule = ruleSet;
+                if (activeRule[langSelect.value]) {
+                    activeRule = activeRule[langSelect.value];
+                } else if (activeRule.default) {
+                    activeRule = activeRule.default;
+                }
+
+                if (activeRule.type === "OPEN") {
+                    ageInput.value = "Open";
+                    return;
+                }
+
+                let ranges = activeRule.ranges || STANDARD_RANGES;
+                let determinedAge = "";
+
+                for (const [ageCat, range] of Object.entries(ranges)) {
+                    if (isDateInRange(dob, range[0], range[1])) {
+                        determinedAge = ageCat;
+                        break;
+                    }
+                }
+
+                if (determinedAge) {
+                    ageInput.value = determinedAge;
+                } else {
+                    ageInput.value = "Ineligible";
+                    status.textContent = `The Date of Birth provided is not eligible for ${cat} (${langSelect.value}).`;
+                    if (activeRule.type === "SENIOR_ONLY") {
+                        status.textContent = `${cat} is only open for Senior contestants.`;
+                    }
+                    status.classList.remove('hidden');
+                    submitBtn.disabled = true;
+                }
+            }
+
+            if (catSelect && langSelect && dobInput) {
+                catSelect.addEventListener('change', calculateEligibility);
+                langSelect.addEventListener('change', calculateEligibility);
+                dobInput.addEventListener('change', calculateEligibility);
+            }
+        });
 
         // ── Verify authentication and load school data ──────────────────────────
         onAuthStateChanged(auth, async (user) => {
@@ -518,12 +700,12 @@
 
                 const schoolDoc = querySnapshot.docs[0];
                 schoolDocId = schoolDoc.id; // normalizedSchoolName is the doc ID
-                schoolData  = schoolDoc.data();
+                schoolData = schoolDoc.data();
                 console.log('[Dashboard] Loaded school:', schoolData.schoolName);
 
                 // Cache for header display
-                sessionStorage.setItem('cached_school_name',       schoolData.schoolName);
-                sessionStorage.setItem('cached_coordinator_name',  schoolData.coordinatorName);
+                sessionStorage.setItem('cached_school_name', schoolData.schoolName);
+                sessionStorage.setItem('cached_coordinator_name', schoolData.coordinatorName);
 
                 // Format registration date
                 let regDateStr = 'N/A';
@@ -535,9 +717,9 @@
                 }
 
                 // Populate metadata cards
-                document.getElementById('meta-school-name').textContent      = schoolData.schoolName;
+                document.getElementById('meta-school-name').textContent = schoolData.schoolName;
                 document.getElementById('meta-coordinator-name').textContent = schoolData.coordinatorName;
-                document.getElementById('meta-reg-date').textContent         = regDateStr;
+                document.getElementById('meta-reg-date').textContent = regDateStr;
 
                 // Load contestants from Firestore data into local cache
                 activeContestants = schoolData.contestants || [];
@@ -557,29 +739,39 @@
         });
 
         // Populate contestants table dynamically
-        function renderContestantsTable(list) {
+        function renderContestantsTable(list, isSearching = false) {
             const tbody = document.getElementById('contestants-tbody');
             const tableContainer = document.getElementById('table-container');
             const emptyState = document.getElementById('table-empty-state');
+            const searchEmptyState = document.getElementById('search-empty-state');
 
             tbody.innerHTML = '';
 
             if (list.length === 0) {
                 tableContainer.classList.add('hidden');
-                emptyState.classList.remove('hidden');
+
+                if (isSearching) {
+                    emptyState.classList.add('hidden');
+                    searchEmptyState.classList.remove('hidden');
+                } else {
+                    searchEmptyState.classList.add('hidden');
+                    emptyState.classList.remove('hidden');
+                }
+
                 return;
             }
 
             tableContainer.classList.remove('hidden');
             emptyState.classList.add('hidden');
+            searchEmptyState.classList.add('hidden');
 
             list.forEach((contestant, index) => {
                 const tr = document.createElement('tr');
                 tr.innerHTML = `
                     <td>${index + 1}</td>
                     <td class="font-bold">${escapeHtml(contestant.fullName)}</td>
-                    <td>${escapeHtml(contestant.email)}</td>
                     <td>${escapeHtml(contestant.mobileNumber)}</td>
+                    <td>${escapeHtml(contestant.dob)}</td>
                     <td><span class="px-2 py-1 bg-yellow-400/10 text-yellow-400 border border-yellow-400/20 rounded-md text-xs font-bold font-[Montserrat]">${escapeHtml(contestant.category)}</span></td>
                     <td>${escapeHtml(contestant.language)}</td>
                     <td>${escapeHtml(contestant.ageCategory)}</td>
@@ -592,65 +784,82 @@
         }
 
         // Search functionality (filtering client-side cache strictly)
-        window.handleSearch = function(queryStr) {
-            const filtered = activeContestants.filter(c => {
-                const q = queryStr.toLowerCase();
-                return c.fullName.toLowerCase().includes(q) ||
-                       c.email.toLowerCase().includes(q) ||
-                       c.category.toLowerCase().includes(q) ||
-                       c.language.toLowerCase().includes(q) ||
-                       c.ageCategory.toLowerCase().includes(q);
-            });
-            renderContestantsTable(filtered);
+        window.handleSearch = function (queryStr) {
+            const q = queryStr.trim().toLowerCase();
+
+            if (q === "") {
+                renderContestantsTable(activeContestants);
+                return;
+            }
+
+            const filtered = activeContestants.filter(c =>
+                c.fullName.toLowerCase().includes(q) ||
+                c.mobileNumber.toLowerCase().includes(q) ||
+                c.dob.toLowerCase().includes(q) ||
+                c.category.toLowerCase().includes(q) ||
+                c.language.toLowerCase().includes(q) ||
+                c.ageCategory.toLowerCase().includes(q)
+            );
+
+            renderContestantsTable(filtered, true);
         };
 
         // Modal Operations
-        window.openAddModal = function() {
+        window.openAddModal = function () {
             document.getElementById('add-contestant-form').reset();
             const status = document.getElementById('modal-status');
             status.textContent = '';
             status.classList.add('hidden');
+
+            // Reset language disabled state
+            const langSelect = document.getElementById('c-language');
+            langSelect.disabled = false;
+            Array.from(langSelect.options).forEach(opt => {
+                opt.disabled = false;
+                opt.hidden = false;
+            });
+            document.getElementById('c-ageCategory').value = '';
+            document.getElementById('modal-submit-btn').disabled = false;
+
             document.getElementById('add-modal').classList.add('open');
         };
 
-        window.closeAddModal = function(e) {
+        window.closeAddModal = function (e) {
             document.getElementById('add-modal').classList.remove('open');
         };
 
         // Adding contestant locally and committing to Firestore
-        window.handleAddContestant = async function(e) {
+        window.handleAddContestant = async function (e) {
             e.preventDefault();
 
-            const fullName    = document.getElementById('c-fullName').value.trim();
-            const email       = document.getElementById('c-email').value.trim();
+            const fullName = document.getElementById('c-fullName').value.trim();
             const mobileNumber = document.getElementById('c-mobileNumber').value.trim();
-            const category    = document.getElementById('c-category').value;
-            const language    = document.getElementById('c-language').value;
+            const category = document.getElementById('c-category').value;
+            const language = document.getElementById('c-language').value;
+            const dob = document.getElementById('c-dob').value;
             const ageCategory = document.getElementById('c-ageCategory').value;
-            const status      = document.getElementById('modal-status');
-            const submitBtn   = document.getElementById('modal-submit-btn');
+            const status = document.getElementById('modal-status');
+            const submitBtn = document.getElementById('modal-submit-btn');
 
             status.textContent = '';
             status.classList.add('hidden');
 
-            if (!fullName || !email || !mobileNumber || !category || !language || !ageCategory) {
+            if (!fullName || !mobileNumber || !category || !language || !ageCategory || !dob) {
                 status.textContent = 'Please fill in all fields.';
                 status.classList.remove('hidden');
                 return;
             }
 
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            if (!emailRegex.test(email)) {
-                status.textContent = 'Please enter a valid email address.';
-                status.classList.remove('hidden');
-                return;
+            if (ageCategory === "Ineligible") {
+                return; // Guard in case submit was somehow triggered
             }
 
             submitBtn.textContent = 'Saving...';
-            submitBtn.disabled    = true;
+            submitBtn.disabled = true;
 
-            const newContestant = { fullName, email, mobileNumber, category, language, ageCategory };
+            const newContestant = { fullName, mobileNumber, category, language, ageCategory, dob };
             const updatedContestants = [...activeContestants, newContestant];
+            console.log(newContestant);
 
             try {
                 // Use updateDoc to only touch the contestants field, preserving createdAt serverTimestamp
@@ -658,7 +867,7 @@
                 await updateDoc(docRef, { contestants: updatedContestants });
 
                 // Update local state
-                activeContestants      = updatedContestants;
+                activeContestants = updatedContestants;
                 schoolData.contestants = updatedContestants;
 
                 renderContestantsTable(activeContestants);
@@ -669,12 +878,12 @@
                 status.classList.remove('hidden');
             } finally {
                 submitBtn.textContent = 'Save Contestant';
-                submitBtn.disabled    = false;
+                submitBtn.disabled = false;
             }
         };
 
         // Deleting contestant locally and committing to Firestore
-        window.deleteContestant = async function(index) {
+        window.deleteContestant = async function (index) {
             if (!confirm('Are you sure you want to delete this contestant?')) return;
 
             const updatedContestants = activeContestants.filter((_, i) => i !== index);
@@ -684,7 +893,7 @@
                 const docRef = doc(db, 'schools', schoolDocId);
                 await updateDoc(docRef, { contestants: updatedContestants });
 
-                activeContestants      = updatedContestants;
+                activeContestants = updatedContestants;
                 schoolData.contestants = updatedContestants;
 
                 renderContestantsTable(activeContestants);
@@ -695,7 +904,7 @@
         };
 
         // Generate PDF report client-side using jsPDF
-        window.exportToPDF = function() {
+        window.exportToPDF = function () {
             if (!schoolData) return;
 
             try {
@@ -731,12 +940,12 @@
                 docPdf.text(`Date Generated: ${new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' })}`, 14, 56);
 
                 // Registered Contestants Table
-                const headers = [["#", "Contestant Full Name", "Email Address", "Mobile No", "Category", "Language", "Age Category"]];
+                const headers = [["#", "Contestant Full Name", "Mobile No", "Date of Birth", "Category", "Language", "Age Category"]];
                 const body = activeContestants.map((c, i) => [
                     i + 1,
                     c.fullName,
-                    c.email,
                     c.mobileNumber,
+                    c.dob,
                     c.category,
                     c.language,
                     c.ageCategory
@@ -747,14 +956,14 @@
                     head: headers,
                     body: body,
                     theme: 'grid',
-                    headStyles: { 
+                    headStyles: {
                         fillColor: primaryColor,
                         textColor: [0, 0, 0],
                         fontStyle: 'bold',
                         fontSize: 8.5
                     },
-                    styles: { 
-                        font: "helvetica", 
+                    styles: {
+                        font: "helvetica",
                         fontSize: 8,
                         textColor: [50, 50, 50],
                         cellPadding: 3
@@ -782,7 +991,8 @@
 
         // Utility to escape HTML strings
         function escapeHtml(unsafe) {
-            return unsafe
+            if (unsafe == null) return "";
+            return String(unsafe)
                 .replace(/&/g, "&amp;")
                 .replace(/</g, "&lt;")
                 .replace(/>/g, "&gt;")

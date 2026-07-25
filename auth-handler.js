@@ -32,9 +32,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
             }
 
-            const initial = coordinatorName ? coordinatorName[0].toUpperCase() : "C";
+            const initial = schoolName ? schoolName[0].toUpperCase() : "S";
 
-            // Render profile circle and dropdown
+            // Render profile circle and dropdown with school name only
             authContainer.innerHTML = `
                 <div class="profile-container" id="profile-container">
                     <button class="profile-circle" id="profile-btn" aria-label="Toggle profile menu">
@@ -43,7 +43,6 @@ document.addEventListener("DOMContentLoaded", () => {
                     <div class="profile-dropdown" id="profile-dropdown">
                         <div class="profile-dropdown-info">
                             <div class="profile-school-name" title="${schoolName || 'School'}">${schoolName || "My School"}</div>
-                            <div class="profile-coordinator-name" title="${coordinatorName || 'Coordinator'}">${coordinatorName || "Coordinator"}</div>
                         </div>
                         <div class="profile-dropdown-divider"></div>
                         <a href="dashboard.html" class="profile-dropdown-item">Dashboard</a>

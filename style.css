@@ -400,6 +400,10 @@ header {
     word-spacing: 2px;
 }
 
+.old-english-text {
+    font-family: 'UnifrakturCook', cursive;
+}
+
 .hero p {
     font-size: clamp(0.85rem, 2.5vw, 1.2rem);
     letter-spacing: clamp(2px, 1vw, 4px);

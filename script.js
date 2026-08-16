@@ -1,10 +1,22 @@
-function showTab(tabId) {
-    // Check if we are on index.html (or root / empty path which is index.html)
-    const isIndexPage = window.location.pathname.endsWith('index.html') ||
+// ── Shared helper: is the current page index.html? ────────────────────────
+function isIndexPage() {
+    return window.location.pathname.endsWith('index.html') ||
         window.location.pathname.endsWith('/') ||
-        (!window.location.pathname.endsWith('.html') && !window.location.pathname.includes('ninnada') && !window.location.pathname.includes('admin') && !window.location.pathname.includes('registration'));
+        (!window.location.pathname.endsWith('.html') &&
+            !window.location.pathname.includes('ninnada') &&
+            !window.location.pathname.includes('admin') &&
+            !window.location.pathname.includes('registration'));
+}
 
-    if (!isIndexPage) {
+// ── Tab switching (Publications, Contact, Home, Ninnada) ──────────────────
+function showTab(tabId) {
+    // 'about' is now embedded in the Home page — delegate to goToAbout()
+    if (tabId === 'about') {
+        goToAbout();
+        return;
+    }
+
+    if (!isIndexPage()) {
         sessionStorage.setItem('openTab', tabId);
         window.location.href = 'index.html';
         return;
@@ -54,12 +66,29 @@ function showTab(tabId) {
     window.scrollTo({ top: 0, behavior: 'instant' });
 }
 
-function scrollToSection(sectionId) {
-    const isIndexPage = window.location.pathname.endsWith('index.html') ||
-        window.location.pathname.endsWith('/') ||
-        (!window.location.pathname.endsWith('.html') && !window.location.pathname.includes('ninnada') && !window.location.pathname.includes('admin') && !window.location.pathname.includes('registration'));
+// ── About Us navigation: scroll on Home, or navigate then scroll ──────────
+function goToAbout(sectionId) {
+    const target = sectionId || 'about-us-anchor';
 
-    if (!isIndexPage) {
+    if (!isIndexPage()) {
+        // Store intent and navigate to index
+        sessionStorage.setItem('openTab', 'home');
+        sessionStorage.setItem('scrollToSection', target);
+        window.location.href = 'index.html';
+        return;
+    }
+
+    // Already on Home — ensure home tab is visible, then smooth-scroll
+    showTab('home');
+    setTimeout(() => {
+        const el = document.getElementById(target);
+        if (el) el.scrollIntoView({ behavior: 'smooth' });
+    }, 50);
+}
+
+// ── Scroll to a section by ID (used by Publications dropdown etc.) ─────────
+function scrollToSection(sectionId) {
+    if (!isIndexPage()) {
         sessionStorage.setItem('scrollToSection', sectionId);
         return;
     }
@@ -85,18 +114,24 @@ function closeMobileMenu() {
     }
 }
 
-// Initialize: Show Home tab or previously requested tab
+// ── Initialize: Show Home tab or previously requested tab ─────────────────
 document.addEventListener('DOMContentLoaded', () => {
-    const isIndexPage = window.location.pathname.endsWith('index.html') ||
-        window.location.pathname.endsWith('/') ||
-        (!window.location.pathname.endsWith('.html') && !window.location.pathname.includes('ninnada') && !window.location.pathname.includes('admin') && !window.location.pathname.includes('registration'));
-
-    if (isIndexPage) {
-        const tabToOpen = sessionStorage.getItem('openTab') || 'home';
+    if (isIndexPage()) {
+        let tabToOpen = sessionStorage.getItem('openTab') || 'home';
         sessionStorage.removeItem('openTab');
+
+        // 'about' is now part of Home — treat it as 'home' and scroll after
+        if (tabToOpen === 'about') {
+            tabToOpen = 'home';
+            // Only set scroll target if none is already pending
+            if (!sessionStorage.getItem('scrollToSection')) {
+                sessionStorage.setItem('scrollToSection', 'about-us-anchor');
+            }
+        }
+
         showTab(tabToOpen);
 
-        // Check if we need to scroll to a section
+        // Check if we need to scroll to a specific section
         const sectionToScroll = sessionStorage.getItem('scrollToSection');
         if (sectionToScroll) {
             sessionStorage.removeItem('scrollToSection');
@@ -138,9 +173,26 @@ document.addEventListener('DOMContentLoaded', () => {
                 entry.target.classList.add('revealed');
             }
         });
-    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+    }, { threshold: 0.01, rootMargin: '0px 0px -80px 0px' });
 
     document.querySelectorAll('.reveal-on-scroll').forEach(el => {
         revealObserver.observe(el);
+    });
+
+    window.addEventListener("load", () => {
+
+        const preloader = document.getElementById("preloader");
+
+        // Wait a little so the animation completes
+        setTimeout(() => {
+
+            preloader.classList.add("hidden");
+
+            setTimeout(() => {
+                preloader.remove();
+            }, 800);
+
+        }, 2200);
+
     });
 });

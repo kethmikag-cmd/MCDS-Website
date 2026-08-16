@@ -204,6 +204,7 @@ header {
 
 .page-title-section h1 {
     font-size: clamp(1.8rem, 5vw, 3rem);
+    text-align: center;
     color: var(--color-white);
     margin-bottom: 0;
     text-transform: uppercase;
@@ -308,7 +309,7 @@ header {
     opacity: 0;
     will-change: opacity;
     /* GPU hint */
-    animation: fadeAnim 50s linear infinite;
+    animation: fadeAnim 40s linear infinite;
 }
 
 @keyframes fadeAnim {
@@ -316,15 +317,15 @@ header {
         opacity: 0;
     }
 
-    3% {
+    2.5% {
         opacity: 1;
     }
 
-    9% {
+    10% {
         opacity: 1;
     }
 
-    12% {
+    12.5% {
         opacity: 0;
     }
 
@@ -364,14 +365,6 @@ header {
 
 .hero-slideshow .slide:nth-child(8) {
     animation-delay: 35s;
-}
-
-.hero-slideshow .slide:nth-child(9) {
-    animation-delay: 40s;
-}
-
-.hero-slideshow .slide:nth-child(10) {
-    animation-delay: 45s;
 }
 
 
@@ -753,6 +746,33 @@ footer {
 .reveal-on-scroll.revealed {
     opacity: 1;
     transform: translateY(0);
+}
+
+/* ─── About Us scroll-reveal stagger (embedded in Home page) ─────────────── */
+/* The title banner reveals first, then each section with a slight delay      */
+#home-content .page-title-section.reveal-on-scroll {
+    transition-delay: 0ms;
+}
+
+#home-content #who-are-we.reveal-on-scroll {
+    transition-delay: 40ms;
+}
+
+#home-content #vision.reveal-on-scroll {
+    transition-delay: 80ms;
+}
+
+#home-content #mission.reveal-on-scroll {
+    transition-delay: 120ms;
+}
+
+#home-content #history.reveal-on-scroll {
+    transition-delay: 320ms;
+}
+
+/* Reset delay once revealed so re-entry stays snappy */
+#home-content .reveal-on-scroll.revealed {
+    transition-delay: 0ms;
 }
 
 .ninnada-page-bg h2::after {
@@ -1410,5 +1430,458 @@ footer {
 @media (max-width: 767px) {
     .header-left-group {
         gap: var(--spacing-sm);
+    }
+}
+
+/* ─── Leadership ─────────────────────────────────────────────────────────── */
+.leadership-section {
+    padding: var(--spacing-xl) 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.leadership-header {
+    background-color: var(--color-dark-gray);
+    border-bottom: 2px solid var(--color-gold);
+    padding: var(--spacing-lg) 0;
+    margin-bottom: var(--spacing-xl);
+}
+
+.leadership-header h1 {
+    font-size: clamp(1.8rem, 5vw, 3rem);
+    color: var(--color-white);
+    margin: 0;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    word-spacing: 2.2px;
+    text-align: center;
+}
+
+.leadership-subsection-title {
+    font-family: var(--font-heading);
+    color: var(--color-gold);
+    font-size: clamp(1.3rem, 3.5vw, 1.8rem);
+    text-align: center;
+    font-weight: 700;
+    letter-spacing: 1px;
+    margin-top: clamp(2.5rem, 6vw, 4rem);
+    margin-bottom: clamp(1.5rem, 3vw, 2rem);
+}
+
+.leadership-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: clamp(1.5rem, 3vw, 2.25rem);
+}
+
+/* Reusable Official Profile Card */
+.official-card {
+    background: rgba(26, 26, 26, 0.7);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(212, 175, 55, 0.3);
+    border-radius: 16px;
+    padding: clamp(24px, 4vw, 32px) clamp(20px, 4vw, 28px);
+    text-align: center;
+    width: 100%;
+    max-width: 380px;
+    margin: 0 auto;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4), 0 0 10px rgba(212, 175, 55, 0.05);
+    transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.official-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(212, 175, 55, 0.6);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6), 0 0 20px rgba(212, 175, 55, 0.3);
+}
+
+.official-photo {
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    object-fit: cover;
+    object-position: center;
+    border: 3px solid var(--color-gold);
+    display: block;
+    margin: 0 auto;
+    background-color: var(--color-dark-gray);
+}
+
+.official-name {
+    font-family: var(--font-body);
+    color: var(--color-white);
+    font-size: clamp(1.15rem, 2.5vw, 1.35rem);
+    font-weight: 700;
+    margin-top: var(--spacing-md);
+    margin-bottom: 6px;
+    letter-spacing: 0.5px;
+}
+
+.official-position {
+    font-family: 'Montserrat', sans-serif;
+    color: var(--color-gold);
+    font-size: clamp(0.85rem, 2vw, 0.95rem);
+    font-weight: 600;
+    letter-spacing: 1px;
+    margin: 0;
+}
+
+/* Reusable Leadership List Block */
+.leadership-list-block {
+    background: rgba(26, 26, 26, 0.7);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(212, 175, 55, 0.3);
+    border-radius: 16px;
+    padding: clamp(20px, 3.5vw, 28px) clamp(20px, 3.5vw, 36px);
+    text-align: center;
+    width: 100%;
+    max-width: 520px;
+    margin: 0 auto;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4), 0 0 10px rgba(212, 175, 55, 0.05);
+    transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.leadership-list-block:hover {
+    transform: translateY(-3px);
+    border-color: rgba(212, 175, 55, 0.6);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6), 0 0 20px rgba(212, 175, 55, 0.3);
+}
+
+.position-title {
+    font-family: 'Montserrat', sans-serif;
+    color: var(--color-gold);
+    font-size: clamp(1rem, 2.5vw, 1.15rem);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: var(--spacing-md);
+}
+
+.member-list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px 45px;
+    justify-items: center;
+    align-items: center;
+}
+
+.member-list .member-name {
+    font-family: var(--font-body);
+    color: var(--color-white);
+    font-size: clamp(0.95rem, 2vw, 1.05rem);
+    margin-bottom: 0;
+    line-height: 1.6;
+}
+
+.member-list .member-name:last-child:nth-child(odd) {
+    grid-column: 1 / -1;
+}
+
+@media (max-width: 767px) {
+    .member-list {
+        grid-template-columns: 1fr;
+        gap: 6px;
+    }
+
+    .member-list .member-name:last-child:nth-child(odd) {
+        grid-column: auto;
+    }
+}
+
+/* ─── Leadership Horizontal Rows ─────────────────────────────────────────── */
+/* Used for Advisory Panel (3-up) and Board of Officials rows (2-up / 3-up). */
+/* On mobile (≤767px) all rows collapse to a single centred vertical stack.  */
+.leadership-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: flex-start;
+    gap: clamp(1.25rem, 2.5vw, 2rem);
+    width: 100%;
+    margin-bottom: clamp(2rem, 4vw, 3.5rem);
+}
+
+/* Cards inside a row should not apply their own auto-centering margin */
+.leadership-row .official-card {
+    flex: 0 1 340px;
+    margin: 0;
+}
+
+/* 2-card rows: cap width so cards don't stretch too wide */
+.leadership-row-2 .official-card {
+    flex-basis: clamp(240px, 28vw, 380px);
+}
+
+/* 3-card rows: slightly narrower basis to fit comfortably side-by-side */
+.leadership-row-3 .official-card {
+    flex-basis: clamp(200px, 22vw, 340px);
+}
+
+/* On tablet and mobile: collapse every row to a centred vertical column */
+@media (max-width: 767px) {
+    .leadership-row {
+        flex-direction: column;
+        align-items: center;
+        gap: clamp(1.25rem, 3vw, 2rem);
+    }
+
+    .leadership-row .official-card,
+    .leadership-row-2 .official-card,
+    .leadership-row-3 .official-card {
+        flex-basis: auto;
+        width: 100%;
+        max-width: 380px;
+    }
+}
+
+/* ─── Leadership Position Group Grid ─────────────────────────────────────── */
+.leadership-position-group {
+    width: 100%;
+    text-align: center;
+}
+
+.leadership-card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 340px));
+    gap: clamp(1.25rem, 2.5vw, 2rem);
+    justify-content: center;
+    align-items: stretch;
+    width: 100%;
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.leadership-card-grid .official-card {
+    margin: 0 auto;
+    width: 100%;
+    max-width: 380px;
+    height: 100%;
+}
+
+@media (max-width: 600px) {
+    .leadership-card-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* 4-card grid modifier for desktop (2x2 layout) */
+@media (min-width: 768px) {
+    .leadership-card-grid.four-cards {
+        grid-template-columns: repeat(2, minmax(240px, 340px));
+        max-width: 720px;
+    }
+}
+
+/* Leadership background */
+.leadership-section {
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+}
+
+/* Background layer */
+.leadership-bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+}
+
+/* Keep content above */
+.leadership-header,
+.leadership-section>.container {
+    position: relative;
+    z-index: 2;
+}
+
+/* Floating glow patches */
+.glow-patch {
+    position: absolute;
+    filter: blur(130px);
+    opacity: .28;
+    mix-blend-mode: screen;
+    animation: floatPatch 18s ease-in-out infinite alternate;
+}
+
+.patch-1 {
+    width: 520px;
+    height: 360px;
+    background:
+        radial-gradient(ellipse at 40% 50%,
+            rgba(255, 225, 70, .38) 0%,
+            rgba(255, 210, 40, .16) 38%,
+            rgba(255, 190, 0, .05) 62%,
+            transparent 82%);
+    top: 5%;
+    left: -8%;
+}
+
+.patch-2 {
+    width: 600px;
+    height: 420px;
+    background:
+        radial-gradient(ellipse at 60% 40%,
+            rgba(255, 210, 45, .36) 0%,
+            rgba(255, 195, 20, .15) 40%,
+            rgba(255, 175, 0, .04) 65%,
+            transparent 82%);
+    right: -10%;
+    top: 35%;
+    animation-duration: 26s;
+}
+
+.patch-3 {
+    width: 700px;
+    height: 500px;
+    background:
+        radial-gradient(ellipse at 50% 50%,
+            rgba(255, 235, 90, .34) 0%,
+            rgba(255, 215, 60, .13) 42%,
+            rgba(255, 185, 0, .04) 68%,
+            transparent 84%);
+    bottom: -15%;
+    left: 25%;
+    animation-duration: 30s;
+}
+
+.patch-4 {
+    width: 480px;
+    height: 360px;
+    background:
+        radial-gradient(ellipse at 30% 60%,
+            rgba(255, 220, 55, .35) 0%,
+            rgba(255, 205, 35, .14) 42%,
+            rgba(255, 180, 0, .04) 68%,
+            transparent 82%);
+    top: 12%;
+    right: 18%;
+    animation-duration: 24s;
+    animation-delay: -8s;
+}
+
+.patch-5 {
+    width: 650px;
+    height: 420px;
+    background:
+        radial-gradient(ellipse at 70% 40%,
+            rgba(255, 240, 110, .30) 0%,
+            rgba(255, 215, 65, .12) 45%,
+            rgba(255, 190, 0, .04) 68%,
+            transparent 84%);
+    bottom: 8%;
+    left: -6%;
+    animation-duration: 32s;
+    animation-delay: -15s;
+}
+
+.patch-6 {
+    width: 560px;
+    height: 380px;
+    background:
+        radial-gradient(ellipse at 50% 50%,
+            rgba(255, 205, 20, .36) 0%,
+            rgba(255, 185, 0, .15) 40%,
+            rgba(255, 165, 0, .04) 65%,
+            transparent 82%);
+    top: 55%;
+    right: -5%;
+    animation-duration: 22s;
+    animation-delay: -4s;
+}
+
+.patch-7 {
+    width: 620px;
+    height: 420px;
+
+    background:
+        radial-gradient(circle at 40% 45%,
+            rgba(255, 220, 70, .82) 0%,
+            rgba(255, 220, 70, .30) 42%,
+            transparent 80%);
+
+    top: 22%;
+    left: 32%;
+
+    animation-duration: 30s;
+    animation-delay: -12s;
+}
+
+.patch-8 {
+    width: 520px;
+    height: 360px;
+
+    background:
+        radial-gradient(circle at 65% 40%,
+            rgba(255, 205, 30, .78) 0%,
+            rgba(255, 205, 30, .28) 40%,
+            transparent 78%);
+
+    bottom: 18%;
+    right: 28%;
+
+    animation-duration: 24s;
+    animation-delay: -6s;
+}
+
+.patch-9 {
+    width: 700px;
+    height: 480px;
+
+    background:
+        radial-gradient(circle at 50% 55%,
+            rgba(255, 235, 120, .72) 0%,
+            rgba(255, 235, 120, .26) 45%,
+            transparent 82%);
+
+    top: 68%;
+    left: 10%;
+
+    animation-duration: 34s;
+    animation-delay: -18s;
+}
+
+.patch-10 {
+    width: 560px;
+    height: 380px;
+
+    background:
+        radial-gradient(circle at 55% 50%,
+            rgba(255, 195, 40, .80) 0%,
+            rgba(255, 195, 40, .30) 42%,
+            transparent 78%);
+
+    top: 8%;
+    right: -2%;
+
+    animation-duration: 27s;
+    animation-delay: -9s;
+}
+
+@keyframes floatPatch {
+    0% {
+        transform: translate(0, 0) scale(1) rotate(0deg);
+        opacity: .14;
+    }
+
+    25% {
+        transform: translate(70px, -40px) scale(1.08) rotate(4deg);
+        opacity: .22;
+    }
+
+    50% {
+        transform: translate(-40px, 60px) scale(.95) rotate(-5deg);
+        opacity: .16;
+    }
+
+    75% {
+        transform: translate(50px, 20px) scale(1.12) rotate(3deg);
+        opacity: .24;
+    }
+
+    100% {
+        transform: translate(-20px, -30px) scale(1.05) rotate(-2deg);
+        opacity: .15;
     }
 }

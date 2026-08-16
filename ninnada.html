@@ -12,6 +12,7 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Lato:wght@400;700&family=Montserrat:wght@700&display=swap"
         rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -56,10 +57,22 @@
 
         /* Ninnada subtitle scaling */
         .ninnada-hero-subtitle {
-            font-size: clamp(0.9rem, 2.5vw, 1.5rem);
-            max-width: min(48rem, 90vw);
-            margin-left: auto;
-            margin-right: auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: .35rem;
+
+            font-size: clamp(1rem, 2vw, 1.45rem);
+            line-height: 1.6;
+            text-align: center;
+
+            max-width: min(1100px, 96vw);
+            margin-inline: auto;
+            padding-inline: clamp(.8rem, 3vw, 2rem);
+        }
+
+        .subtitle-line {
+            display: block;
         }
 
         /* Ninnada hero logo — fluid scaling, centred
@@ -169,10 +182,219 @@
                 max-height: 220px;
             }
         }
+
+        .highlight-font {
+            display: block;
+            font-family: "Cinzel Decorative", serif;
+            font-weight: 700;
+            color: #facc15;
+            font-size: inherit;
+            letter-spacing: clamp(1px, .25vw, 2px);
+        }
+
+        @media (min-width: 1024px) {
+            .highlight-font {
+                font-size: clamp(1rem, 2.8vw, 1.8rem);
+                letter-spacing: 2px;
+            }
+
+            .ninnada-hero-logo {
+                margin-bottom: clamp(2rem, 4vw, 3.5rem);
+            }
+
+            .ninnada-hero-subtitle {
+                margin-bottom: clamp(2.5rem, 5vw, 4rem);
+            }
+
+            .ninnada-register-btn {
+                margin-bottom: clamp(2rem, 5vw, 3.5rem);
+            }
+        }
+
+        /* ==========================
+   MEDIA CIRCLE PRELOADER
+========================== */
+
+        .preloader {
+            position: fixed;
+            inset: 0;
+            background: #070707;
+            /* Match hero background */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 99999;
+            transition: opacity .8s ease, visibility .8s ease;
+        }
+
+        .preloader.hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        .preloader-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        /* Logo */
+
+        .preloader-logo {
+
+            width: clamp(180px, 20vw, 320px);
+            height: auto;
+
+            opacity: 0;
+
+            animation:
+                logoReveal 2.2s ease forwards;
+
+            filter:
+                drop-shadow(0 0 10px rgba(255, 210, 70, .25)) drop-shadow(0 0 25px rgba(255, 210, 70, .18));
+        }
+
+        @media (min-width: 1024px) {
+            .preloader-logo {
+                width: clamp(300px, 24vw, 460px);
+            }
+
+            .loading-line {
+                width: clamp(240px, 22vw, 360px);
+            }
+        }
+
+        /* Loading line */
+
+        .loading-line {
+
+            width: clamp(180px, 24vw, 300px);
+            height: 2px;
+
+            background: rgba(255, 255, 255, .08);
+
+            overflow: hidden;
+            border-radius: 100px;
+        }
+
+        .loading-line span {
+
+            display: block;
+
+            width: 0%;
+
+            height: 100%;
+
+            background: linear-gradient(90deg,
+                    transparent,
+                    #D6B25E,
+                    #FFD54A,
+                    #D6B25E,
+                    transparent);
+
+            animation: loadingBar 2.3s ease forwards;
+        }
+
+        /* Logo Animation */
+
+        @keyframes logoReveal {
+
+            0% {
+                opacity: 0;
+                transform: scale(.92);
+            }
+
+            20% {
+                opacity: 1;
+                transform: scale(1);
+            }
+
+            75% {
+                opacity: 1;
+                transform: scale(1);
+            }
+
+            100% {
+                opacity: 0;
+                transform: scale(1.03);
+            }
+
+        }
+
+        /* Loading animation */
+
+        @keyframes loadingBar {
+
+            from {
+                width: 0%;
+            }
+
+            to {
+                width: 100%;
+            }
+
+        }
+
+        /* Tablet */
+        @media (max-width:992px) {
+
+            .ninnada-hero-subtitle {
+                font-size: clamp(1rem, 2.7vw, 1.25rem);
+                gap: .3rem;
+            }
+
+            .highlight-font {
+                font-size: 1.08em;
+            }
+
+        }
+
+        /* Mobile */
+        @media (max-width:768px) {
+
+            .ninnada-hero-subtitle {
+                font-size: clamp(.95rem, 4vw, 1.08rem);
+                line-height: 1.5;
+                gap: .45rem;
+            }
+
+            .highlight-font {
+                font-size: 1.12em;
+                max-width: 95%;
+            }
+
+        }
+
+        /* Small phones */
+        @media (max-width:480px) {
+
+            .ninnada-hero-subtitle {
+                font-size: .9rem;
+            }
+
+            .highlight-font {
+                font-size: 1.15em;
+            }
+
+        }
     </style>
 </head>
 
 <body>
+    <!-- Preloader -->
+    <div id="preloader" class="preloader">
+        <div class="preloader-content">
+
+            <img src="Images/Ninnada26.png" alt="Media Circle" class="preloader-logo">
+
+            <div class="loading-line">
+                <span></span>
+            </div>
+
+        </div>
+    </div>
     <header>
         <div class="container header-container">
             <div class="header-left-group">
@@ -247,19 +469,30 @@
                 <!-- SECTION 1: Registrations -->
                 <section id="ninnada-registrations" class="flex flex-col items-center justify-center text-center">
                     <img src="Images/Ninnada26.png" alt="Ninnada'26 Official Logo"
-                        class="ninnada-hero-logo mb-6 mx-auto drop-shadow-[0_0_8px_rgba(255,255,0,0.3)]">
-                    <h3
-                        class="ninnada-hero-subtitle font-bold text-gray-300 mb-10 font-[Montserrat] leading-relaxed px-2">
-                        School Registrations are now open for the largest all-island trillingual media competition in
-                        Sri Lanka</h3>
+                        class="ninnada-hero-logo mx-auto drop-shadow-[0_0_8px_rgba(255,255,0,0.3)]">
+                    <h3 class="ninnada-hero-subtitle font-bold text-gray-300 font-[Montserrat]">
+
+                        <span class="subtitle-line">
+                            SCHOOL REGISTRATIONS ARE NOW OPEN FOR
+                        </span>
+
+                        <span class="highlight-font">
+                            The Largest All-Island Trilingual Media Competition
+                        </span>
+
+                        <span class="subtitle-line">
+                            IN SRI LANKA
+                        </span>
+
+                    </h3>
 
                     <a href="registration.html"
-                        class="ninnada-register-btn rounded-full font-bold ninnada-btn-glow mb-10">Register
+                        class="ninnada-register-btn rounded-full font-bold ninnada-btn-glow">Register
                         Now</a>
 
                     <div
                         class="ninnada-info-card ninnada-info-card-inner rounded-xl text-yellow-400 font-bold tracking-wider uppercase font-[Montserrat]">
-                        25TH JULY 2026 | D.S.Senanayake College
+                        12TH SEPTEMBER 2026 | D.S.Senanayake College
                     </div>
                 </section>
 
@@ -298,17 +531,17 @@
                         <p class="text-base md:text-lg leading-relaxed text-gray-200 text-center font-[Lato]">
                             Ninnada is the trademark event of the Media Circle of D.S.Senanayake College. It is the
                             largest
-                            and most prestigious all-island trillingual media competition and day in Sri Lanka, and its
+                            and most prestigious all-island trillingual media competition and day in Sri Lanka,
                             well-recognized for representing the most talented young media enthusiasts across the
                             country.
                             The judging panel will feature renowned media personalities to ensure a high-quality
                             competitive
-                            experience and fair evaluations. The overall champions of Ninnada will receive the <b>Hon.
-                                D.S.
-                                Senanayake Memorial Shield</b>, while the Best School Student Media Personality will be
+                            experience and fair evaluations. The Overall Champions of Ninnada will receive the
+                            <b>Ninnada'26 Championship Trophy</b>, while the Best School Student Media Personality will
+                            be
                             awarded
                             the
-                            prestigious <b>R.I.T. Alles Memorial Trophy.</b>
+                            prestigious <b>R.I.T. Alles Memorial Shield.</b>
                         </p>
                     </div>
                 </section>

@@ -852,6 +852,20 @@
                 return; // Guard in case submit was somehow triggered
             }
 
+            // ── Slot-limit check: max 2 contestants per Language+Category+AgeCategory ──
+            const combinationKey = `${language}|${category}|${ageCategory}`;
+            const existingCount = activeContestants.filter(c =>
+                c.language === language &&
+                c.category === category &&
+                c.ageCategory === ageCategory
+            ).length;
+
+            if (existingCount >= 2) {
+                status.textContent = 'You have reached the maximum contestant count for this category.';
+                status.classList.remove('hidden');
+                return;
+            }
+
             submitBtn.textContent = 'Saving...';
             submitBtn.disabled = true;
 

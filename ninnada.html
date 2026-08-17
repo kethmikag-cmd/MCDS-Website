@@ -44,7 +44,8 @@
 
         /* Ninnada registration section */
         #ninnada-registrations {
-            padding: clamp(3rem, 8vw, 6rem) clamp(1rem, 4vw, 2rem);
+            padding: clamp(2rem, 6vw, 5rem) clamp(1rem, 4vw, 2rem);
+            min-height: 90vh;
         }
 
         /* Ninnada hero h1 fluid scaling */
@@ -79,7 +80,7 @@
            Desktop: up to 380px | Tablet: up to 300px | Mobile: up to 260px
            (Preserves the original index.html clamp approach, adjusted for standalone page) */
         .ninnada-hero-logo {
-            width: clamp(220px, 45vw, 460px);
+            width: clamp(180px, 40vw, 380px);
             height: auto;
             object-fit: contain;
             display: block;
@@ -104,8 +105,8 @@
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            min-height: 52px;
-            padding: clamp(0.75rem, 2vw, 1.25rem) clamp(1.5rem, 5vw, 2.5rem);
+            min-height: 56px;
+            padding: 0.9rem 1.8rem;
             font-size: clamp(0.85rem, 2vw, 1.125rem);
         }
 
@@ -379,6 +380,64 @@
             }
 
         }
+
+        /* ==========================
+   MOBILE HERO
+========================== */
+
+        @media (max-width:768px) {
+
+            #ninnada-registrations {
+                min-height: auto;
+                padding: 2.5rem 1.25rem 2rem;
+                display: flex;
+                justify-content: center;
+                gap: 1.7rem;
+            }
+
+            .ninnada-hero-logo {
+                width: min(72vw, 260px);
+                margin-bottom: 0.4rem;
+            }
+
+            .ninnada-hero-subtitle {
+                max-width: 440px;
+                font-size: .95rem;
+                line-height: 1.55;
+                gap: .65rem;
+                margin-bottom: 0.3rem;
+            }
+
+            .subtitle-top {
+                white-space: nowrap;
+                font-size: 0.88rem;
+            }
+
+            .highlight-font {
+                font-size: 1.18em;
+                line-height: 1.3;
+            }
+
+            .ninnada-register-btn {
+                width: min(100%, 330px);
+                min-height: 58px;
+                font-size: 1rem;
+                margin: 0;
+            }
+
+            .ninnada-info-card-inner {
+                width: min(100%, 340px);
+                padding: 1rem 1.2rem;
+                font-size: .8rem;
+                line-height: 1.5;
+            }
+
+            #ninnada-stats {
+                padding-top: 0.5rem;
+                gap: 1.8rem;
+            }
+
+        }
     </style>
 </head>
 
@@ -472,8 +531,8 @@
                         class="ninnada-hero-logo mx-auto drop-shadow-[0_0_8px_rgba(255,255,0,0.3)]">
                     <h3 class="ninnada-hero-subtitle font-bold text-gray-300 font-[Montserrat]">
 
-                        <span class="subtitle-line">
-                            SCHOOL REGISTRATIONS ARE NOW OPEN FOR
+                        <span class="subtitle-line subtitle-top">
+                            SCHOOL REGISTRATIONS ARE NOW OPEN
                         </span>
 
                         <span class="highlight-font">

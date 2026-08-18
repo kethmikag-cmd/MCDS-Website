@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registered Schools' Details — Ninnada'26 | MCDS</title>
+    <meta name="description" content="Administrator portal for viewing, searching, filtering, and exporting Teacher-in-Charge and Coordinator contact details.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Lato:wght@400;700&family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="contacts.css">
+
+    <!-- Firebase SDK importmap -->
+    <script type="importmap">
+    {
+        "imports": {
+            "firebase/app": "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js",
+            "firebase/auth": "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js",
+            "firebase/firestore": "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js"
+        }
+    }
+    </script>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            corePlugins: {
+                preflight: false,
+                container: false,
+            }
+        }
+    </script>
+
+    <!-- Export Libraries: SheetJS for CSV/Excel & jsPDF/autoTable for PDF -->
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
+</head>
+
+<body>
+    <!-- Header Navigation -->
+    <header>
+        <div class="container header-container">
+            <a href="ninnada.html" class="logo logo-ninnada">Ninnada'26</a>
+            <div class="header-right-group">
+                <nav>
+                    <ul class="nav-links">
+                        <li class="nav-item">
+                            <a href="admin.html" class="nav-link">← Admin Panel</a>
+                        </li>
+                        <li class="nav-item">
+                            <button id="logout-btn" class="nav-link hidden bg-transparent border-none cursor-pointer text-red-400 hover:text-red-300">Logout</button>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="contacts-page flex-1">
+        <!-- Glowing Orbs Background -->
+        <div class="orb-container-admin">
+            <div class="ninnada-orb absolute opacity-30" style="width:min(500px,80vw);height:min(500px,80vw);top:-100px;left:-150px;background:radial-gradient(circle, rgba(212,175,55,0.4) 0%, rgba(212,175,55,0.05) 50%, transparent 80%);"></div>
+            <div class="ninnada-orb absolute opacity-30" style="width:min(500px,80vw);height:min(500px,80vw);bottom:0;right:-150px;background:radial-gradient(circle, rgba(212,175,55,0.35) 0%, rgba(212,175,55,0.05) 50%, transparent 80%);"></div>
+        </div>
+
+        <main class="relative z-10 flex-1 flex flex-col items-center justify-start py-8 px-4 md:px-8">
+            
+            <!-- ── LOGIN CONTAINER ─────────────────────────────────────────────── -->
+            <div id="login-container" class="w-full max-w-md my-auto">
+                <div class="text-center mb-8">
+                    <h1 class="text-3xl md:text-4xl font-black text-glow-yellow-lg tracking-widest uppercase mb-3 font-[Montserrat]">
+                        Admin Login
+                    </h1>
+                    <p class="text-gray-400 text-sm font-[Lato]">
+                        Authenticate to access the Registered Schools' Details portal
+                    </p>
+                </div>
+
+                <div class="glass-card p-8">
+                    <form id="login-form">
+                        <div class="mb-5 flex flex-col">
+                            <label class="text-xs uppercase font-bold text-yellow-500/90 mb-2 font-[Montserrat] tracking-wider">Email Address</label>
+                            <input type="email" id="login-email" class="admin-input" placeholder="admin@mcds.lk" required autocomplete="username">
+                        </div>
+                        <div class="mb-6 flex flex-col">
+                            <label class="text-xs uppercase font-bold text-yellow-500/90 mb-2 font-[Montserrat] tracking-wider">Password</label>
+                            <div class="password-toggle-wrapper">
+                                <input type="password" id="login-password" class="admin-input" placeholder="••••••••" required autocomplete="current-password">
+                                <button type="button" class="password-toggle-btn" aria-label="Show password" title="Show password" onclick="togglePasswordVisibility('login-password', this)">
+                                    <svg class="eye-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                    </svg>
+                                    <svg class="eye-slash-icon hidden" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858-5.908a10.025 10.025 0 013.122-.442c4.478 0 8.268 2.943 9.542 7a9.97 9.97 0 01-4.132 5.411m0 0L21 21M3 3l18 18" />
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                        <button type="submit" id="login-submit-btn" class="w-full admin-btn admin-btn-gold text-sm">
+                            Sign In
+                        </button>
+                        <p id="login-error" class="text-red-400 text-center text-xs font-bold font-[Montserrat] mt-4 hidden"></p>
+                    </form>
+                </div>
+            </div>
+
+            <!-- ── DASHBOARD CONTAINER ─────────────────────────────────────────── -->
+            <div id="dashboard-container" class="w-full max-w-7xl hidden flex flex-col gap-6 md:gap-8">
+                
+                <!-- Page Title & Metrics Overview -->
+                <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+                    <div>
+                        <h1 style="font-size:clamp(1.6rem,4vw,2.5rem);" class="font-black text-glow-yellow-lg tracking-widest uppercase font-[Montserrat] leading-tight">
+                            REGISTERED SCHOOLS' DETAILS
+                        </h1>
+                        <p class="text-gray-400 text-sm font-[Lato] mt-1">
+                            Administrator Contact Directory — Teacher-in-Charge & Coordinator Details
+                        </p>
+                    </div>
+
+                    <!-- Actions & Overview -->
+                    <div class="flex flex-wrap items-center gap-3">
+                        <div class="glass-card px-5 py-3 flex flex-col justify-center flex-1 min-w-[130px] border-yellow-500/30">
+                            <span class="text-gray-400 uppercase tracking-widest text-[0.65rem] font-bold font-[Montserrat] mb-1">Total Schools</span>
+                            <span id="metric-total-schools" class="text-2xl font-black text-yellow-400 text-glow-yellow">…</span>
+                        </div>
+                        <div class="glass-card px-5 py-3 flex flex-col justify-center flex-1 min-w-[130px] border-yellow-500/30">
+                            <span class="text-gray-400 uppercase tracking-widest text-[0.65rem] font-bold font-[Montserrat] mb-1">Filtered Count</span>
+                            <span id="metric-filtered-schools" class="text-2xl font-black text-white">…</span>
+                        </div>
+                        
+                        <!-- Refresh Database Button -->
+                        <button id="btn-refresh" class="admin-btn admin-btn-outline text-xs" title="Reload Firestore data without refreshing page">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 1121.21 7.89M9 11l3 3L22 4" />
+                            </svg>
+                            Refresh Database
+                        </button>
+                        
+                        <!-- Generate Export Button -->
+                        <button id="btn-open-export" class="admin-btn admin-btn-gold text-xs">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                            </svg>
+                            Generate Export
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Filters & Live Search Bar -->
+                <div class="glass-card p-6 flex flex-col md:flex-row items-center justify-between gap-4">
+                    <div class="w-full md:w-1/2 flex flex-col">
+                        <label class="text-[0.65rem] uppercase font-bold text-yellow-500/90 mb-1.5 font-[Montserrat] tracking-wider">Search Records</label>
+                        <div class="relative">
+                            <input type="text" id="filter-search" class="admin-input pr-10" placeholder="Search across school, teacher, coordinator, phone or email…">
+                            <button id="btn-clear-search" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white hidden border-none bg-transparent cursor-pointer text-sm">✕</button>
+                        </div>
+                    </div>
+                    <div class="text-xs text-gray-400 font-[Lato] self-end md:self-center">
+                        Header checkboxes <span class="text-yellow-400 font-bold">☑</span> select columns for export.
+                    </div>
+                </div>
+
+                <!-- Contacts Directory Table Card -->
+                <div class="glass-card overflow-hidden flex flex-col relative">
+                    
+                    <!-- Desktop Sticky Table -->
+                    <div class="desktop-contact-table table-container overflow-x-auto w-full">
+                        <table class="w-full text-left border-collapse" style="min-width: 900px;">
+                            <thead>
+                                <tr class="sticky-table-header border-b border-yellow-500/20 text-[0.72rem] uppercase font-bold text-yellow-400 font-[Montserrat] tracking-wider">
+                                    
+                                    <!-- Column 1: School -->
+                                    <th class="py-4 px-4">
+                                        <div class="flex items-center">
+                                            <input type="checkbox" id="export-col-schoolName" class="export-col-checkbox" checked title="Include School in Export">
+                                            <span class="sortable-header flex items-center" data-sort-key="schoolName">
+                                                School <span class="sort-icon" id="sort-icon-schoolName">▲</span>
+                                            </span>
+                                        </div>
+                                    </th>
+
+                                    <!-- Column 2: Teacher-in-Charge -->
+                                    <th class="py-4 px-4">
+                                        <div class="flex items-center">
+                                            <input type="checkbox" id="export-col-ticName" class="export-col-checkbox" checked title="Include Teacher-in-Charge in Export">
+                                            <span class="sortable-header flex items-center" data-sort-key="ticName">
+                                                Teacher-in-Charge <span class="sort-icon" id="sort-icon-ticName">↕</span>
+                                            </span>
+                                        </div>
+                                    </th>
+
+                                    <!-- Column 3: TIC Contact (Non-sortable) -->
+                                    <th class="py-4 px-4">
+                                        <div class="flex items-center">
+                                            <input type="checkbox" id="export-col-ticPhone" class="export-col-checkbox" checked title="Include TIC Contact in Export">
+                                            <span>TIC Contact</span>
+                                        </div>
+                                    </th>
+
+                                    <!-- Column 4: Coordinator -->
+                                    <th class="py-4 px-4">
+                                        <div class="flex items-center">
+                                            <input type="checkbox" id="export-col-coordinatorName" class="export-col-checkbox" checked title="Include Coordinator in Export">
+                                            <span class="sortable-header flex items-center" data-sort-key="coordinatorName">
+                                                Coordinator <span class="sort-icon" id="sort-icon-coordinatorName">↕</span>
+                                            </span>
+                                        </div>
+                                    </th>
+
+                                    <!-- Column 5: Coordinator Contact (Non-sortable) -->
+                                    <th class="py-4 px-4">
+                                        <div class="flex items-center">
+                                            <input type="checkbox" id="export-col-coordinatorPhone" class="export-col-checkbox" checked title="Include Coordinator Contact in Export">
+                                            <span>Coordinator Contact</span>
+                                        </div>
+                                    </th>
+
+                                    <!-- Column 6: Coordinator Email -->
+                                    <th class="py-4 px-4">
+                                        <div class="flex items-center">
+                                            <input type="checkbox" id="export-col-coordinatorEmail" class="export-col-checkbox" checked title="Include Coordinator Email in Export">
+                                            <span class="sortable-header flex items-center" data-sort-key="coordinatorEmail">
+                                                Coordinator Email <span class="sort-icon" id="sort-icon-coordinatorEmail">↕</span>
+                                            </span>
+                                        </div>
+                                    </th>
+
+                                </tr>
+                            </thead>
+                            <tbody id="contacts-tbody" class="divide-y divide-white/5 font-[Lato] text-sm text-gray-200">
+                                <tr>
+                                    <td colspan="6" class="py-12 text-center text-gray-400 font-bold font-[Montserrat]">
+                                        <div class="spinner-container">
+                                            <div class="spinner"></div>
+                                            <span>Loading school contact records…</span>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Mobile Card View -->
+                    <div class="mobile-contact-cards p-4">
+                        <div id="contacts-mobile-cards" class="flex flex-col gap-3">
+                            <div class="spinner-container">
+                                <div class="spinner"></div>
+                                <span>Loading school contact records…</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Pagination Controls -->
+                    <div class="flex flex-col sm:flex-row items-center justify-between gap-4 px-6 py-4 border-t border-white/10 bg-black/40">
+                        <div class="text-xs text-gray-400 font-[Lato]">
+                            Showing page <span id="current-page-num" class="text-yellow-400 font-bold">1</span> — <span id="pagination-info" class="text-gray-300 font-bold">0 records</span>
+                        </div>
+                        
+                        <div class="flex items-center gap-2">
+                            <button id="btn-prev" class="admin-btn admin-btn-outline text-xs py-1.5 px-3 min-h-[36px] disabled:opacity-30 disabled:pointer-events-none">
+                                Prev
+                            </button>
+                            <span id="page-indicator" class="text-xs font-bold text-yellow-400 font-[Montserrat] px-2">Page 1</span>
+                            <button id="btn-next" class="admin-btn admin-btn-outline text-xs py-1.5 px-3 min-h-[36px] disabled:opacity-30 disabled:pointer-events-none">
+                                Next
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer>
+            <div class="container text-center py-6 text-xs text-gray-400 font-[Lato]">
+                <p>&copy; 2026 Media Circle of D. S. Senanayake College. All Rights Reserved.</p>
+            </div>
+        </footer>
+    </div>
+
+    <!-- ── Export Modal ───────────────────────────────────────────────── -->
+    <div id="export-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/80 backdrop-blur-md p-4">
+        <div class="glass-card w-full max-w-md p-6 relative" onclick="event.stopPropagation()">
+            <button id="btn-close-export" class="absolute top-4 right-4 text-gray-400 hover:text-white transition-colors text-2xl font-bold border-none bg-transparent cursor-pointer">
+                &times;
+            </button>
+            <h2 class="text-xl font-bold text-yellow-400 font-[Montserrat] uppercase tracking-wider mb-4 border-b border-yellow-500/20 pb-3">
+                Generate Export
+            </h2>
+            
+            <div class="flex flex-col gap-4 font-[Lato] text-sm">
+                <div>
+                    <label class="text-xs uppercase font-bold text-yellow-500/90 font-[Montserrat] tracking-wider mb-1 block">Export Scope</label>
+                    <select id="export-scope" class="admin-select">
+                        <option value="filtered">Currently Filtered Rows</option>
+                        <option value="all">All School Contacts Dataset</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="text-xs uppercase font-bold text-yellow-500/90 font-[Montserrat] tracking-wider mb-1 block">File Format</label>
+                    <select id="export-format" class="admin-select">
+                        <option value="csv">CSV Spreadsheet (.csv)</option>
+                        <option value="pdf">PDF Document (.pdf)</option>
+                    </select>
+                </div>
+
+                <div class="p-3 bg-black/40 border border-yellow-500/20 rounded-lg text-xs text-gray-300">
+                    <span id="export-columns-count" class="font-bold text-yellow-400">6 of 6 columns</span> selected for export via header checkboxes.
+                </div>
+            </div>
+
+            <div class="mt-6 flex justify-end gap-3">
+                <button id="btn-cancel-export" class="admin-btn admin-btn-outline text-xs">
+                    Cancel
+                </button>
+                <button id="btn-execute-export" class="admin-btn admin-btn-gold text-xs">
+                    Download Export
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification Container -->
+    <div id="toast-container"></div>
+
+    <!-- Main Module Script -->
+    <script type="module" src="contacts.js"></script>
+    <script src="password-toggle.js"></script>
+</body>
+
+</html>

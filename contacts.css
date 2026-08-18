@@ -1,0 +1,361 @@
+/* contacts.css — Styles for NINNADA'26 Contacts Portal */
+
+.contacts-page {
+    min-height: 100vh;
+    min-height: 100svh;
+    background: linear-gradient(180deg, #000000 0%, #020713 40%, #081125 80%, #000000 100%);
+    position: relative;
+    overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.glass-card {
+    background: rgba(5, 5, 10, 0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(212, 175, 55, 0.25);
+    box-shadow:
+        0 0 40px rgba(212, 175, 55, 0.06),
+        0 0 80px rgba(212, 175, 55, 0.03),
+        inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    border-radius: 20px;
+}
+
+.admin-input,
+.admin-select {
+    width: 100%;
+    padding: 10px 14px;
+    background: rgba(0, 0, 0, 0.65);
+    border: 1px solid rgba(212, 175, 55, 0.3);
+    border-radius: 8px;
+    color: #ffffff;
+    font-family: 'Lato', sans-serif;
+    font-size: 15px;
+    transition: all 0.3s ease;
+    outline: none;
+    min-height: 44px;
+}
+
+.admin-input:focus,
+.admin-select:focus {
+    border-color: #d4af37;
+    box-shadow: 0 0 12px rgba(212, 175, 55, 0.25);
+    background: rgba(0, 0, 0, 0.85);
+}
+
+.admin-select option {
+    background-color: #0d0d0d;
+    color: #ffffff;
+}
+
+.admin-btn {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-radius: 50px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 20px;
+    border: none;
+}
+
+.admin-btn-gold {
+    background: linear-gradient(135deg, #d4af37 0%, #aa820a 100%);
+    color: #000000;
+    box-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
+}
+
+.admin-btn-gold:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 0 25px rgba(212, 175, 55, 0.6);
+    background: linear-gradient(135deg, #f3cf55 0%, #c49918 100%);
+}
+
+.admin-btn-outline {
+    background: transparent;
+    border: 1px solid rgba(212, 175, 55, 0.4);
+    color: #d4af37;
+}
+
+.admin-btn-outline:hover {
+    border-color: #d4af37;
+    color: #ffffff;
+    background: rgba(212, 175, 55, 0.1);
+}
+
+/* Sticky Header Table styling */
+.table-container {
+    max-height: 65vh;
+    overflow-y: auto;
+    overflow-x: auto;
+}
+
+.table-container::-webkit-scrollbar { width: 8px; height: 8px; }
+.table-container::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.3); }
+.table-container::-webkit-scrollbar-thumb { background: rgba(212, 175, 55, 0.3); border-radius: 4px; }
+.table-container::-webkit-scrollbar-thumb:hover { background: rgba(212, 175, 55, 0.6); }
+
+.sticky-table-header {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    background: rgba(8, 14, 28, 0.95);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+/* Sortable column headers */
+.sortable-header {
+    cursor: pointer;
+    user-select: none;
+    transition: color 0.2s ease;
+}
+
+.sortable-header:hover {
+    color: #ffffff;
+}
+
+.sort-icon {
+    display: inline-block;
+    margin-left: 4px;
+    font-size: 0.75rem;
+    opacity: 0.6;
+    transition: opacity 0.2s;
+}
+
+.sortable-header:hover .sort-icon {
+    opacity: 1;
+}
+
+.sort-icon.active {
+    opacity: 1;
+    color: #f59e0b;
+}
+
+/* Custom Export Header Checkboxes */
+.export-col-checkbox {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 16px;
+    height: 16px;
+    border: 1px solid rgba(212, 175, 55, 0.5);
+    border-radius: 4px;
+    background: rgba(0, 0, 0, 0.6);
+    cursor: pointer;
+    display: inline-grid;
+    place-content: center;
+    transition: all 0.2s ease;
+    vertical-align: middle;
+    margin-right: 6px;
+}
+
+.export-col-checkbox:checked {
+    background-color: #d4af37;
+    border-color: #f59e0b;
+}
+
+.export-col-checkbox:checked::before {
+    content: "✓";
+    font-size: 11px;
+    font-weight: bold;
+    color: #000000;
+}
+
+.export-col-checkbox:focus {
+    outline: none;
+    box-shadow: 0 0 6px rgba(212, 175, 55, 0.5);
+}
+
+/* Interactive link buttons (tel, mailto) */
+.contact-link {
+    color: #ffffff;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    border-radius: 4px;
+    padding: 2px 6px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.contact-link:hover {
+    color: #f59e0b;
+    background: rgba(212, 175, 55, 0.12);
+    border-color: rgba(212, 175, 55, 0.3);
+}
+
+.email-link {
+    color: #60a5fa;
+    text-decoration: none;
+    word-break: break-all;
+    transition: color 0.2s ease;
+}
+
+.email-link:hover {
+    color: #93c5fd;
+    text-decoration: underline;
+}
+
+/* Orb container */
+.orb-container-admin {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: 0;
+}
+.ninnada-orb { filter: blur(80px); }
+
+/* Loading Spinner */
+.spinner-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 48px 16px;
+    gap: 12px;
+}
+
+.spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid rgba(212, 175, 55, 0.2);
+    border-top-color: #d4af37;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* Toast Notifications */
+#toast-container {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    pointer-events: none;
+}
+
+.toast {
+    background: rgba(13, 20, 36, 0.95);
+    border: 1px solid rgba(212, 175, 55, 0.4);
+    color: #ffffff;
+    padding: 12px 20px;
+    border-radius: 10px;
+    font-family: 'Lato', sans-serif;
+    font-size: 14px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6), 0 0 15px rgba(212, 175, 55, 0.2);
+    backdrop-filter: blur(12px);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: toast-in 0.3s forwards ease;
+    pointer-events: auto;
+}
+
+@keyframes toast-in {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive display logic */
+@media (max-width: 767px) {
+    .mobile-contact-cards { display: flex; flex-direction: column; gap: 12px; }
+    .desktop-contact-table { display: none; }
+}
+@media (min-width: 768px) {
+    .mobile-contact-cards { display: none; }
+    .desktop-contact-table { display: block; }
+}
+
+/* ==========================================================================
+   Password Visibility Toggle Component Layout & Aesthetics
+   ========================================================================== */
+.password-toggle-wrapper {
+    position: relative !important;
+    width: 100% !important;
+    display: block !important;
+    box-sizing: border-box !important;
+}
+
+.password-toggle-wrapper input.reg-input,
+.password-toggle-wrapper input.admin-input,
+.password-toggle-wrapper input[type="password"],
+.password-toggle-wrapper input[type="text"] {
+    width: 100% !important;
+    padding-right: 48px !important;
+    box-sizing: border-box !important;
+}
+
+.password-toggle-btn {
+    position: absolute !important;
+    right: 14px !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    background: transparent !important;
+    background-color: transparent !important;
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    width: 32px !important;
+    height: 32px !important;
+    cursor: pointer !important;
+    color: rgba(218, 165, 32, 0.85) !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    border-radius: 6px !important;
+    transition: color 0.2s ease, background-color 0.2s ease !important;
+    z-index: 10 !important;
+    line-height: 1 !important;
+    -webkit-tap-highlight-color: transparent !important;
+    pointer-events: auto !important;
+}
+
+.password-toggle-btn:hover {
+    color: #ffff00 !important;
+    background: rgba(218, 165, 32, 0.15) !important;
+    background-color: rgba(218, 165, 32, 0.15) !important;
+}
+
+.password-toggle-btn:focus-visible {
+    outline: 2px solid #d4af37 !important;
+    outline-offset: 1px !important;
+    color: #ffffff !important;
+}
+
+.password-toggle-btn svg {
+    width: 20px !important;
+    height: 20px !important;
+    min-width: 20px !important;
+    min-height: 20px !important;
+    display: block !important;
+    pointer-events: none !important;
+    flex-shrink: 0 !important;
+    stroke: currentColor !important;
+    fill: none !important;
+}
+
+.password-toggle-btn svg.hidden {
+    display: none !important;
+}

@@ -172,6 +172,9 @@
                 <nav>
                     <ul class="nav-links">
                         <li class="nav-item">
+                            <a href="contacts.html" class="nav-link text-yellow-400 font-bold">School Contacts</a>
+                        </li>
+                        <li class="nav-item">
                             <a href="ninnada.html" class="nav-link">← Back to Ninnada</a>
                         </li>
                         <li class="nav-item">
@@ -212,7 +215,18 @@
                         </div>
                         <div class="mb-6 flex flex-col">
                             <label class="text-xs uppercase font-bold text-yellow-500/90 mb-2 font-[Montserrat] tracking-wider">Password</label>
-                            <input type="password" id="login-password" class="admin-input" placeholder="••••••••" required autocomplete="current-password">
+                            <div class="password-toggle-wrapper">
+                                <input type="password" id="login-password" class="admin-input" placeholder="••••••••" required autocomplete="current-password">
+                                <button type="button" class="password-toggle-btn" aria-label="Show password" title="Show password" onclick="togglePasswordVisibility('login-password', this)">
+                                    <svg class="eye-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                    </svg>
+                                    <svg class="eye-slash-icon hidden" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858-5.908a10.025 10.025 0 013.122-.442c4.478 0 8.268 2.943 9.542 7a9.97 9.97 0 01-4.132 5.411m0 0L21 21M3 3l18 18" />
+                                    </svg>
+                                </button>
+                            </div>
                         </div>
                         <button type="submit" id="login-submit-btn" class="w-full admin-btn admin-btn-gold text-sm">
                             Sign In
@@ -250,6 +264,14 @@
                             <span class="text-gray-400 uppercase tracking-widest text-[0.65rem] font-bold font-[Montserrat] mb-1">Filtered Count</span>
                             <span id="metric-filtered" class="text-2xl font-black text-white">…</span>
                         </div>
+                        
+                        <!-- School Contacts button -->
+                        <a href="contacts.html" class="admin-btn admin-btn-outline text-xs text-yellow-400 border-yellow-400/50 hover:bg-yellow-500/10">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                            </svg>
+                            School Contacts
+                        </a>
                         
                         <!-- Sync / Backfill button -->
                         <button onclick="triggerSyncDatabase()" class="admin-btn admin-btn-outline text-xs" title="Sync & Backfill missing school contestants into contestants collection">
@@ -1044,6 +1066,7 @@
                 .replace(/'/g, "&#039;");
         }
     </script>
+    <script src="password-toggle.js"></script>
 </body>
 
 </html>

@@ -293,12 +293,26 @@
                                         </div>
                                     </th>
 
+                                    <!-- Column 7: Official School Invitation -->
+                                    <th class="py-4 px-4">
+                                        <div class="flex items-center">
+                                            <input type="checkbox" id="export-col-requiresInvitation"
+                                                class="export-col-checkbox" checked
+                                                title="Include Invitation Requirement in Export">
+                                            <span class="sortable-header flex items-center"
+                                                data-sort-key="requiresInvitation">
+                                                Invitation Required
+                                                <span class="sort-icon" id="sort-icon-requiresInvitation">↕</span>
+                                            </span>
+                                        </div>
+                                    </th>
+
                                 </tr>
                             </thead>
                             <tbody id="contacts-tbody"
                                 class="divide-y divide-white/5 font-[Lato] text-sm text-gray-200">
                                 <tr>
-                                    <td colspan="6" class="py-12 text-center text-gray-400 font-bold font-[Montserrat]">
+                                    <td colspan="7" class="py-12 text-center text-gray-400 font-bold font-[Montserrat]">
                                         <div class="spinner-container">
                                             <div class="spinner"></div>
                                             <span>Loading school contact records…</span>

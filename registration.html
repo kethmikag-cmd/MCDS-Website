@@ -323,6 +323,67 @@
                 border-radius: 16px;
             }
         }
+
+        /* Contact Information Box */
+        .contact-box {
+            background: rgba(0, 0, 0, 0.45);
+            border: 1px solid rgba(218, 165, 32, 0.18);
+            border-radius: 14px;
+            padding: 18px 20px;
+            box-shadow:
+                0 0 20px rgba(218, 165, 32, 0.06),
+                inset 0 1px 0 rgba(255, 255, 255, 0.03);
+        }
+
+        .contact-title {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            font-size: .78rem;
+            color: rgba(255, 255, 0, .9);
+            margin-bottom: 14px;
+        }
+
+        .contact-person {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            padding: 10px 0;
+        }
+
+        .contact-person:not(:last-child) {
+            border-bottom: 1px solid rgba(218, 165, 32, .08);
+        }
+
+        .contact-name {
+            color: #fff;
+            font-family: 'Lato', sans-serif;
+            font-weight: 700;
+            font-size: 1rem;
+        }
+
+        .contact-role {
+            color: rgba(255, 255, 255, .65);
+            font-family: 'Lato', sans-serif;
+            font-size: .88rem;
+        }
+
+        .contact-phone {
+            margin-top: 4px;
+            color: #ffff00;
+            text-decoration: none;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            font-size: .85rem;
+            transition: all .25s ease;
+        }
+
+        .contact-phone:hover {
+            color: #fff;
+            text-shadow: 0 0 10px rgba(255, 255, 0, .6);
+            transform: translateX(2px);
+        }
     </style>
 
     <link rel="icon" href="/favicon.ico" sizes="any">
@@ -497,6 +558,53 @@
                             </div>
                         </div>
 
+                        <!-- Official School Invitation -->
+                        <div class="mb-8">
+                            <label class="reg-label">Do you require an Official School Invitation?</label>
+
+                            <div class="flex gap-6 mt-3">
+                                <label class="flex items-center gap-2 text-white cursor-pointer">
+                                    <input type="radio" name="requiresInvitation" value="Yes" class="accent-yellow-400"
+                                        required>
+                                    <span>Yes</span>
+                                </label>
+
+                                <label class="flex items-center gap-2 text-white cursor-pointer">
+                                    <input type="radio" name="requiresInvitation" value="No" class="accent-yellow-400">
+                                    <span>No</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Contact Box -->
+                        <div class="contact-box mb-8">
+                            <h3 class="contact-title">For any inquiries, feel free to contact:</h3>
+
+                            <div class="contact-person">
+                                <span class="contact-name">Mrs. Jayanga Kulathunga</span>
+                                <span class="contact-role">(Teacher-in-Charge)</span>
+                                <a href="tel:+94757361140" class="contact-phone">📞 072 410 2507</a>
+                            </div>
+
+                            <div class="contact-person">
+                                <span class="contact-name">Thinuga Perera</span>
+                                <span class="contact-role">(Vice President)</span>
+                                <a href="tel:+94757361140" class="contact-phone">📞 075 736 1140</a>
+                            </div>
+
+                            <div class="contact-person">
+                                <span class="contact-name">Maneth Pabasara</span>
+                                <span class="contact-role">(Secretary – Sinhala)</span>
+                                <a href="tel:+94741102022" class="contact-phone">📞 074 110 2022</a>
+                            </div>
+
+                            <div class="contact-person">
+                                <span class="contact-name">Ahamed Azman</span>
+                                <span class="contact-role">(Secretary – Tamil)</span>
+                                <a href="tel:+94766784496" class="contact-phone">📞 076 678 4496</a>
+                            </div>
+                        </div>
+
                         <!-- Submit Button -->
                         <button type="submit" id="submit-btn" class="reg-submit-btn">
                             Register School
@@ -579,21 +687,42 @@
                 Your coordinator account has been created successfully.
             </p>
             <div class="credentials-card"
-                style="background: rgba(0,0,0,0.5); padding: 20px; border-radius: 12px; border: 1px solid rgba(255,255,0,0.25); text-align: left; margin-bottom: 28px; font-family: 'Lato', sans-serif;">
+                style="background: rgba(0,0,0,0.5); padding: 20px; border-radius: 12px; border: 1px solid rgba(255,255,0,0.25); text-align: left; margin-bottom: 20px; font-family: 'Lato', sans-serif;">
+
                 <p
-                    style="font-weight: 700; color: #ffff00; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 1px; margin-bottom: 6px;">
-                    Login Credentials</p>
-                <div style="margin-bottom: 12px;">
-                    <span style="display: block; color: rgba(255,255,255,0.6); font-size: 0.85rem;">Email:</span>
-                    <strong id="success-email"
-                        style="color: #ffffff; font-size: 1rem; word-break: break-all;">coordinator@example.com</strong>
+                    style="font-weight:700; color:#ffff00; text-transform:uppercase; font-size:0.8rem; letter-spacing:1px; margin-bottom:6px;">
+                    Login Credentials
+                </p>
+
+                <div style="margin-bottom:12px;">
+                    <span style="display:block; color:rgba(255,255,255,0.6); font-size:0.85rem;">Email:</span>
+                    <strong id="success-email" style="color:#ffffff; font-size:1rem; word-break:break-all;">
+                        coordinator@example.com
+                    </strong>
                 </div>
+
                 <div>
-                    <span style="display: block; color: rgba(255,255,255,0.6); font-size: 0.85rem;">Password:</span>
+                    <span style="display:block; color:rgba(255,255,255,0.6); font-size:0.85rem;">Password:</span>
                     <strong id="success-password"
-                        style="color: #ffffff; font-size: 1rem; font-family: monospace; letter-spacing: 1px;">********</strong>
+                        style="color:#ffffff; font-size:1rem; font-family:monospace; letter-spacing:1px;">
+                        ********
+                    </strong>
                 </div>
             </div>
+
+            <div style="margin-bottom:28px; text-align:center;">
+                <a href="https://chat.whatsapp.com/Cj6rdXi8n8WJKdmMvkMcHd?s=cl&p=a&ilr=1" target="_blank"
+                    rel="noopener noreferrer" style="
+            color:#ffff00;
+            text-decoration:underline;
+            font-family:'Montserrat',sans-serif;
+            font-weight:700;
+            font-size:0.9rem;
+            transition:0.3s;">
+                    Join Coordinators Group
+                </a>
+            </div>
+
             <a href="login.html" class="success-back-btn">
                 Go to Coordinator Login
             </a>
@@ -683,6 +812,8 @@
             const coordinatorPhone = document.getElementById('coordinatorphone').value.trim();
             const password = document.getElementById('password').value;
             const confirmPassword = document.getElementById('confirmPassword').value;
+            const requiresInvitation =
+                document.querySelector('input[name="requiresInvitation"]:checked')?.value;
 
             // ── Validate: email format ───────────────────────────────────────────
             const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -724,6 +855,14 @@
 
             // Normalise school name for duplicate checking and document ID
             const normalizedSchoolName = schoolName.trim().toLowerCase();
+            const schoolDocId = schoolName
+                .trim()
+                .toLowerCase()
+                .replace(/[\/\\?#%\u0000-\u001F\u007F]+/g, "-")
+                .replace(/\s+/g, " ")
+                .trim();
+
+
 
             try {
                 // ── Step 1: Duplicate school check (queries Firestore, no Auth yet) ──
@@ -773,7 +912,9 @@
                 // ── Step 3: Write school document to Firestore ────────────────────
                 try {
                     console.log('[Registration] Writing Firestore school document...');
-                    const docRef = doc(db, 'schools', normalizedSchoolName);
+                    console.log("schoolName:", schoolName);
+                    console.log("schoolDocId:", schoolDocId);
+                    const docRef = doc(db, 'schools', schoolDocId);
                     await setDoc(docRef, {
                         schoolName,
                         normalizedSchoolName,
@@ -783,6 +924,7 @@
                         coordinatorName,
                         coordinatorEmail,
                         coordinatorPhone,
+                        requiresInvitation,
                         firebaseUID,
                         createdAt: serverTimestamp(),
                         registrationStatus: 'Registered',
@@ -811,7 +953,7 @@
                     btn.textContent = 'Register School';
                     btn.disabled = false;
                     btn.style.opacity = '1';
-                    status.textContent = 'Registration failed (database error). Please try again.';
+                    status.textContent = 'Registration failed. Please try again.';
                     status.className = 'text-center mt-4 text-sm font-[Montserrat] font-bold tracking-wide text-red-400';
                     status.classList.remove('hidden');
                 }

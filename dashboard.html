@@ -401,7 +401,6 @@
                                     <tr>
                                         <th>#</th>
                                         <th>Full Name</th>
-                                        <th>Mobile</th>
                                         <th>DOB</th>
                                         <th>Category</th>
                                         <th>Language</th>
@@ -427,6 +426,22 @@
                             <p class="text-gray-400 font-[Lato] text-base">
                                 Couldn't find any contestant matching your search.
                             </p>
+                        </div>
+                        <!-- Coordinators WhatsApp Group -->
+                        <div class="mt-8 pt-6 border-t border-yellow-400/15 text-center">
+                            <a href="https://chat.whatsapp.com/Cj6rdXi8n8WJKdmMvkMcHd" target="_blank"
+                                rel="noopener noreferrer"
+                                class="inline-flex items-center gap-3 text-green-400 hover:text-green-300 font-[Montserrat] font-bold uppercase tracking-wider text-sm transition-all duration-300 hover:scale-105">
+
+                                <!-- WhatsApp Icon -->
+                                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24"
+                                    fill="currentColor">
+                                    <path
+                                        d="M20.52 3.48A11.82 11.82 0 0012.04 0C5.42 0 .04 5.38.04 12c0 2.11.55 4.17 1.6 5.99L0 24l6.18-1.62A11.9 11.9 0 0012.04 24c6.62 0 12-5.38 12-12 0-3.2-1.25-6.22-3.52-8.52zm-8.48 18.5c-1.81 0-3.58-.49-5.12-1.42l-.37-.22-3.67.96.98-3.58-.24-.37A9.92 9.92 0 012.04 12c0-5.51 4.49-10 10-10s10 4.49 10 10-4.49 9.98-10 9.98zm5.49-7.48c-.3-.15-1.78-.88-2.06-.98-.27-.1-.47-.15-.67.15-.2.3-.77.98-.95 1.18-.17.2-.35.22-.65.07-.3-.15-1.28-.47-2.43-1.49-.9-.8-1.5-1.79-1.68-2.09-.18-.3-.02-.46.13-.61.14-.14.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.67-1.62-.92-2.22-.24-.58-.48-.5-.67-.51h-.57c-.2 0-.52.08-.8.37-.27.3-1.05 1.03-1.05 2.52s1.08 2.92 1.23 3.12c.15.2 2.13 3.25 5.16 4.56.72.31 1.28.49 1.72.63.72.23 1.37.2 1.89.12.58-.09 1.78-.73 2.03-1.43.25-.69.25-1.29.18-1.42-.08-.13-.28-.2-.58-.35z" />
+                                </svg>
+
+                                Join Coordinators' Group
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -461,12 +476,6 @@
                 <div class="mb-4">
                     <label for="c-fullName" class="reg-label">Full Name</label>
                     <input type="text" id="c-fullName" class="reg-input" placeholder="Contestant's full name" required>
-                </div>
-
-                <!-- Mobile Number -->
-                <div class="mb-4">
-                    <label for="c-mobileNumber" class="reg-label">Mobile Number</label>
-                    <input type="tel" id="c-mobileNumber" class="reg-input" placeholder="e.g. +94 7X XXX XXXX" required>
                 </div>
 
                 <!-- Date of Birth -->
@@ -546,7 +555,7 @@
             "Program Presenting": {
                 "Sinhala": { type: "JR_SR", ranges: { Senior: ["2008-02-01", "2012-01-31"], Junior: ["2012-02-01", "2016-01-31"] } },
                 "English": { type: "JR_SR", ranges: { Senior: ["2008-02-01", "2012-01-31"], Junior: ["2012-02-01", "2016-01-31"] } },
-                "Tamil": { type: "OPEN" },
+                "Tamil": { type: "JR_SR", ranges: { Senior: ["2008-02-01", "2012-01-31"], Junior: ["2012-02-01", "2016-01-31"] } },
                 "default": { type: "STANDARD" }
             },
             "Dubbing": {
@@ -779,7 +788,6 @@
                 tr.innerHTML = `
                     <td>${index + 1}</td>
                     <td class="font-bold">${escapeHtml(contestant.fullName)}</td>
-                    <td>${escapeHtml(contestant.mobileNumber)}</td>
                     <td>${escapeHtml(contestant.dob)}</td>
                     <td><span class="px-2 py-1 bg-yellow-400/10 text-yellow-400 border border-yellow-400/20 rounded-md text-xs font-bold font-[Montserrat]">${escapeHtml(contestant.category)}</span></td>
                     <td>${escapeHtml(contestant.language)}</td>
@@ -800,7 +808,6 @@
 
             const filtered = activeContestants.filter(c =>
                 c.fullName.toLowerCase().includes(q) ||
-                c.mobileNumber.toLowerCase().includes(q) ||
                 c.dob.toLowerCase().includes(q) ||
                 c.category.toLowerCase().includes(q) ||
                 c.language.toLowerCase().includes(q) ||
@@ -839,7 +846,6 @@
             e.preventDefault();
 
             const fullName = document.getElementById('c-fullName').value.trim();
-            const mobileNumber = document.getElementById('c-mobileNumber').value.trim();
             const category = document.getElementById('c-category').value;
             const language = document.getElementById('c-language').value;
             const dob = document.getElementById('c-dob').value;
@@ -850,7 +856,7 @@
             status.textContent = '';
             status.classList.add('hidden');
 
-            if (!fullName || !mobileNumber || !category || !language || !ageCategory || !dob) {
+            if (!fullName || !category || !language || !ageCategory || !dob) {
                 status.textContent = 'Please fill in all fields.';
                 status.classList.remove('hidden');
                 return;
@@ -884,7 +890,6 @@
             const newContestant = {
                 id: contestantId,
                 fullName,
-                mobileNumber,
                 category,
                 language,
                 ageCategory,
@@ -957,11 +962,10 @@
                 docPdf.text(`Date Generated: ${new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' })}`, 14, 56);
 
                 // Registered Contestants Table
-                const headers = [["#", "Contestant Full Name", "Mobile No", "Date of Birth", "Category", "Language", "Age Category"]];
+                const headers = [["#", "Contestant Full Name", "Date of Birth", "Category", "Language", "Age Category"]];
                 const body = activeContestants.map((c, i) => [
                     i + 1,
                     c.fullName,
-                    c.mobileNumber,
                     c.dob,
                     c.category,
                     c.language,
@@ -987,12 +991,11 @@
                     },
                     columnStyles: {
                         0: { cellWidth: 8 },
-                        1: { cellWidth: 40 },
-                        2: { cellWidth: 40 },
-                        3: { cellWidth: 24 },
-                        4: { cellWidth: 32 },
-                        5: { cellWidth: 20 },
-                        6: { cellWidth: 24 }
+                        1: { cellWidth: 48 },
+                        2: { cellWidth: 24 },
+                        3: { cellWidth: 36 },
+                        4: { cellWidth: 24 },
+                        5: { cellWidth: 24 }
                     }
                 });
 

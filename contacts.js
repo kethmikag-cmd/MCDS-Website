@@ -5,12 +5,12 @@ import { signInWithEmailAndPassword, signOut, onAuthStateChanged } from 'firebas
 import { collection, getDocs, doc, getDoc } from 'firebase/firestore';
 
 // ── Application State ─────────────────────────────────────────────────────
-let allSchoolsData     = []; // Cached in-memory full list of schools from Firestore
+let allSchoolsData = []; // Cached in-memory full list of schools from Firestore
 let filteredSchoolsData = []; // Active filtered and sorted dataset
-let currentPage        = 1;
-const pageSize         = 25;
+let currentPage = 1;
+const pageSize = 25;
 
-let currentSortKey   = 'schoolName'; // Default initial sort column
+let currentSortKey = 'schoolName'; // Default initial sort column
 let currentSortOrder = 'asc';        // Default sort direction: ascending
 
 // Header checkboxes dictate which columns are included in exports (all enabled by default)
@@ -20,7 +20,8 @@ const exportColumnConfig = [
     { key: 'ticPhone', label: 'TIC Contact', sortable: false },
     { key: 'coordinatorName', label: 'Coordinator', sortable: true },
     { key: 'coordinatorPhone', label: 'Coordinator Contact', sortable: false },
-    { key: 'coordinatorEmail', label: 'Coordinator Email', sortable: true }
+    { key: 'coordinatorEmail', label: 'Coordinator Email', sortable: true },
+    { key: 'requiresInvitation', label: 'Invitation Required?', sortable: false }
 ];
 
 let selectedExportColumns = {
@@ -29,7 +30,8 @@ let selectedExportColumns = {
     ticPhone: true,
     coordinatorName: true,
     coordinatorPhone: true,
-    coordinatorEmail: true
+    coordinatorEmail: true,
+    requiresInvitation: true
 };
 
 // ── DOM Element References ────────────────────────────────────────────────
@@ -49,40 +51,40 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function bindDOM() {
-    loginContainer       = document.getElementById('login-container');
-    dashboardContainer   = document.getElementById('dashboard-container');
-    logoutBtn            = document.getElementById('logout-btn');
+    loginContainer = document.getElementById('login-container');
+    dashboardContainer = document.getElementById('dashboard-container');
+    logoutBtn = document.getElementById('logout-btn');
 
-    loginForm            = document.getElementById('login-form');
-    loginEmail           = document.getElementById('login-email');
-    loginPassword        = document.getElementById('login-password');
-    loginError           = document.getElementById('login-error');
-    loginSubmitBtn       = document.getElementById('login-submit-btn');
+    loginForm = document.getElementById('login-form');
+    loginEmail = document.getElementById('login-email');
+    loginPassword = document.getElementById('login-password');
+    loginError = document.getElementById('login-error');
+    loginSubmitBtn = document.getElementById('login-submit-btn');
 
-    filterSearchInput    = document.getElementById('filter-search');
-    btnClearSearch       = document.getElementById('btn-clear-search');
-    btnRefresh           = document.getElementById('btn-refresh');
-    btnOpenExport        = document.getElementById('btn-open-export');
+    filterSearchInput = document.getElementById('filter-search');
+    btnClearSearch = document.getElementById('btn-clear-search');
+    btnRefresh = document.getElementById('btn-refresh');
+    btnOpenExport = document.getElementById('btn-open-export');
 
-    contactsTbody        = document.getElementById('contacts-tbody');
-    contactsMobileCards  = document.getElementById('contacts-mobile-cards');
+    contactsTbody = document.getElementById('contacts-tbody');
+    contactsMobileCards = document.getElementById('contacts-mobile-cards');
 
-    currentPageNum       = document.getElementById('current-page-num');
-    paginationInfo       = document.getElementById('pagination-info');
-    btnPrev              = document.getElementById('btn-prev');
-    btnNext              = document.getElementById('btn-next');
-    pageIndicator        = document.getElementById('page-indicator');
+    currentPageNum = document.getElementById('current-page-num');
+    paginationInfo = document.getElementById('pagination-info');
+    btnPrev = document.getElementById('btn-prev');
+    btnNext = document.getElementById('btn-next');
+    pageIndicator = document.getElementById('page-indicator');
 
-    metricTotalSchools   = document.getElementById('metric-total-schools');
-    metricFilteredSchools= document.getElementById('metric-filtered-schools');
+    metricTotalSchools = document.getElementById('metric-total-schools');
+    metricFilteredSchools = document.getElementById('metric-filtered-schools');
 
-    exportModal          = document.getElementById('export-modal');
-    btnCloseExport       = document.getElementById('btn-close-export');
-    btnCancelExport      = document.getElementById('btn-cancel-export');
-    btnExecuteExport     = document.getElementById('btn-execute-export');
-    exportScope          = document.getElementById('export-scope');
-    exportFormat         = document.getElementById('export-format');
-    exportColumnsCount   = document.getElementById('export-columns-count');
+    exportModal = document.getElementById('export-modal');
+    btnCloseExport = document.getElementById('btn-close-export');
+    btnCancelExport = document.getElementById('btn-cancel-export');
+    btnExecuteExport = document.getElementById('btn-execute-export');
+    exportScope = document.getElementById('export-scope');
+    exportFormat = document.getElementById('export-format');
+    exportColumnsCount = document.getElementById('export-columns-count');
 }
 
 // ── Event Listeners ───────────────────────────────────────────────────────
@@ -289,7 +291,8 @@ async function fetchSchoolsData(isRefresh = false) {
                 ticPhone: (data.ticPhone || '').trim(),
                 coordinatorName: (data.coordinatorName || '').trim(),
                 coordinatorPhone: (data.coordinatorPhone || '').trim(),
-                coordinatorEmail: (data.coordinatorEmail || '').trim()
+                coordinatorEmail: (data.coordinatorEmail || '').trim(),
+                requiresInvitation: data.requiresInvitation ? "Yes" : "No"
             });
         });
 
@@ -395,7 +398,7 @@ function renderPageData() {
     // Handle Empty States
     if (allSchoolsData.length === 0) {
         const msg = 'No schools registered yet.';
-        contactsTbody.innerHTML = `<tr><td colspan="6" class="py-12 text-center text-gray-400 font-bold font-[Montserrat]">${msg}</td></tr>`;
+        contactsTbody.innerHTML = `<tr><td colspan="7" class="py-12 text-center text-gray-400 font-bold font-[Montserrat]">${msg}</td></tr>`;
         contactsMobileCards.innerHTML = `<p class="text-center text-gray-400 font-bold py-12 font-[Montserrat]">${msg}</p>`;
         updatePaginationUI(0, 1);
         return;
@@ -403,7 +406,7 @@ function renderPageData() {
 
     if (total === 0) {
         const msg = 'No matching records found.';
-        contactsTbody.innerHTML = `<tr><td colspan="6" class="py-12 text-center text-gray-400 font-bold font-[Montserrat]">${msg}</td></tr>`;
+        contactsTbody.innerHTML = `<tr><td colspan="7" class="py-12 text-center text-gray-400 font-bold font-[Montserrat]">${msg}</td></tr>`;
         contactsMobileCards.innerHTML = `<p class="text-center text-gray-400 font-bold py-12 font-[Montserrat]">${msg}</p>`;
         updatePaginationUI(0, 1);
         return;
@@ -423,13 +426,14 @@ function renderPageData() {
         tr.className = 'border-b border-white/5 hover:bg-yellow-500/5 transition-colors';
 
         tr.innerHTML = `
-            <td class="py-3 px-4 font-bold text-white">${escapeHtml(item.schoolName || '—')}</td>
-            <td class="py-3 px-4 text-gray-200">${escapeHtml(item.ticName || '—')}</td>
-            <td class="py-3 px-4">${renderPhoneLink(item.ticPhone)}</td>
-            <td class="py-3 px-4 text-yellow-400 font-medium">${escapeHtml(item.coordinatorName || '—')}</td>
-            <td class="py-3 px-4">${renderPhoneLink(item.coordinatorPhone)}</td>
-            <td class="py-3 px-4">${renderEmailLink(item.coordinatorEmail)}</td>
-        `;
+    <td class="py-3 px-4 font-bold text-white">${escapeHtml(item.schoolName || '—')}</td>
+    <td class="py-3 px-4 text-gray-200">${escapeHtml(item.ticName || '—')}</td>
+    <td class="py-3 px-4">${renderPhoneLink(item.ticPhone)}</td>
+    <td class="py-3 px-4 text-yellow-400 font-medium">${escapeHtml(item.coordinatorName || '—')}</td>
+    <td class="py-3 px-4">${renderPhoneLink(item.coordinatorPhone)}</td>
+    <td class="py-3 px-4">${renderEmailLink(item.coordinatorEmail)}</td>
+    <td class="py-3 px-4 text-center">${escapeHtml(item.requiresInvitation)}</td>
+`;
         contactsTbody.appendChild(tr);
     });
 
@@ -458,6 +462,12 @@ function renderPageData() {
                         ${renderPhoneLink(item.coordinatorPhone)}
                         ${renderEmailLink(item.coordinatorEmail)}
                     </div>
+                    <div class="pt-2">
+                        <span class="text-[0.65rem] uppercase font-bold text-yellow-500/80 font-[Montserrat] block">
+                            Invitation Required?
+                        </span>
+                        <span class="text-white">${escapeHtml(item.requiresInvitation)}</span>
+                    </div>
                 </div>
             </div>
         `;
@@ -472,7 +482,7 @@ function renderPageData() {
 
 function updatePaginationUI(total, totalPages) {
     currentPageNum.textContent = currentPage;
-    pageIndicator.textContent  = `Page ${currentPage} of ${totalPages}`;
+    pageIndicator.textContent = `Page ${currentPage} of ${totalPages}`;
     paginationInfo.textContent = `${total} records`;
 
     btnPrev.disabled = (currentPage <= 1);
@@ -560,7 +570,7 @@ function updateExportColumnsCountLabel() {
 }
 
 function executeExport() {
-    const scope  = exportScope.value;
+    const scope = exportScope.value;
     const format = exportFormat.value;
 
     const activeColumns = exportColumnConfig.filter(col => selectedExportColumns[col.key]);
@@ -599,7 +609,7 @@ function getFormattedDate() {
 // ── CSV Export Handler ────────────────────────────────────────────────────
 function exportToCSV(dataset, activeColumns, todayDate) {
     const headers = activeColumns.map(col => escapeCSVField(col.label));
-    
+
     const rows = dataset.map(item => {
         return activeColumns.map(col => escapeCSVField(item[col.key] || '')).join(',');
     });
@@ -638,7 +648,7 @@ function exportToPDF(dataset, activeColumns, todayDate) {
     const docPdf = new jsPDF(orientation);
 
     const primaryGold = [212, 175, 55];
-    const textDark    = [26, 26, 26];
+    const textDark = [26, 26, 26];
 
     // Header title & info
     docPdf.setFont('helvetica', 'bold');

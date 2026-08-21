@@ -5,7 +5,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Administrator Panel — Ninnada'26 | MCDS</title>
-    <meta name="description" content="Administrator panel for Ninnada'26 school media competition registration system.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -950,10 +949,6 @@
                     <span class="text-sm text-gray-200">${escapeHtml(item.dob || '—')}</span>
                 </div>
                 <div>
-                    <span class="text-xs uppercase font-bold text-yellow-500/80 font-[Montserrat] block">Mobile Number</span>
-                    <span class="text-sm text-gray-200">${escapeHtml(item.mobileNumber || '—')}</span>
-                </div>
-                <div>
                     <span class="text-xs uppercase font-bold text-yellow-500/80 font-[Montserrat] block">Submitted Date</span>
                     <span class="text-sm text-gray-200">${dateStr}</span>
                 </div>
@@ -1010,7 +1005,6 @@
                             const payload = {
                                 id: cId,
                                 fullName: c.fullName || '',
-                                mobileNumber: c.mobileNumber || '',
                                 category: c.category || '',
                                 language: c.language || '',
                                 ageCategory: c.ageCategory || '',
@@ -1097,7 +1091,6 @@
                 "Language Medium": item.language || '',
                 "Age Category": item.ageCategory || '',
                 "Date of Birth": item.dob || '',
-                "Mobile Number": item.mobileNumber || '',
                 "Submitted Date": item.submittedAt ? new Date(item.submittedAt).toLocaleString() : ''
             }));
 
@@ -1125,7 +1118,7 @@
             docPdf.setTextColor(...darkColor);
             docPdf.text(`Generated on: ${new Date().toLocaleString()} | Total Records: ${dataList.length}`, 14, 22);
 
-            const tableHeaders = [["#", "Full Name", "School Name", "Category", "Language", "Age", "DOB", "Mobile"]];
+            const tableHeaders = [["#", "Full Name", "School Name", "Category", "Language", "Age", "DOB"]];
             const tableData = dataList.map((c, i) => [
                 i + 1,
                 c.fullName || '',
@@ -1134,7 +1127,6 @@
                 c.language || '',
                 c.ageCategory || '',
                 c.dob || '',
-                c.mobileNumber || ''
             ]);
 
             docPdf.autoTable({

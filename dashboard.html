@@ -496,10 +496,10 @@
                         <option value="Sports Commentary">Sports Commentary</option>
                         <option value="Cartoon Drawing">Cartoon Drawing</option>
                         <option value="Photography">Photography</option>
+                        <option value="Videography">Videography</option>
                         <option value="Graphic Designing">Graphic Designing</option>
                         <option value="Technical">Technical</option>
                         <option value="AI Short Film">AI Short Film</option>
-
                     </select>
                 </div>
 
@@ -553,24 +553,25 @@
             "Announcing": { type: "STANDARD" },
             "News Editing": { type: "STANDARD" },
             "Program Presenting": {
-                "Sinhala": { type: "JR_SR", ranges: { Senior: ["2008-02-01", "2012-01-31"], Junior: ["2012-02-01", "2016-01-31"] } },
-                "English": { type: "JR_SR", ranges: { Senior: ["2008-02-01", "2012-01-31"], Junior: ["2012-02-01", "2016-01-31"] } },
-                "Tamil": { type: "JR_SR", ranges: { Senior: ["2008-02-01", "2012-01-31"], Junior: ["2012-02-01", "2016-01-31"] } },
+                "Sinhala": { type: "JR_SR", ranges: { Senior: ["2007-02-01", "2012-01-31"], Junior: ["2012-02-01", "2016-01-31"] } },
+                "English": { type: "JR_SR", ranges: { Senior: ["2007-02-01", "2012-01-31"], Junior: ["2012-02-01", "2016-01-31"] } },
+                "Tamil": { type: "JR_SR", ranges: { Senior: ["2007-02-01", "2012-01-31"], Junior: ["2012-02-01", "2016-01-31"] } },
                 "default": { type: "STANDARD" }
             },
             "Dubbing": {
-                "English": { type: "JR_SR", ranges: { Senior: ["2008-02-01", "2012-01-31"], Junior: ["2012-02-01", "2016-01-31"] } },
+                "English": { type: "JR_SR", ranges: { Senior: ["2007-02-01", "2012-01-31"], Junior: ["2012-02-01", "2016-01-31"] } },
                 "Tamil": { type: "OPEN" },
                 "default": { type: "STANDARD" }
             },
             "Sports Commentary": {
-                "Sinhala": { type: "JR_SR", ranges: { Senior: ["2008-02-01", "2012-01-31"], Junior: ["2012-02-01", "2016-01-31"] } },
-                "English": { type: "JR_SR", ranges: { Senior: ["2008-02-01", "2012-01-31"], Junior: ["2012-02-01", "2016-01-31"] } },
+                "Sinhala": { type: "JR_SR", ranges: { Senior: ["2007-02-01", "2012-01-31"], Junior: ["2012-02-01", "2016-01-31"] } },
+                "English": { type: "JR_SR", ranges: { Senior: ["2007-02-01", "2012-01-31"], Junior: ["2012-02-01", "2016-01-31"] } },
                 "Tamil": { type: "OPEN" },
                 "default": { type: "STANDARD" }
             },
             "Cartoon Drawing": { type: "OPEN", noLanguage: true },
             "Photography": { type: "OPEN", noLanguage: true },
+            "Videography": { type: "OPEN", noLanguage: true },
             "Graphic Designing": { type: "OPEN", noLanguage: true },
             "Technical": { type: "OPEN", allowedLanguages: ["Sinhala", "English"] },
             "AI Short Film": { type: "OPEN", noLanguage: true },
@@ -578,7 +579,7 @@
         };
 
         const STANDARD_RANGES = {
-            Senior: ["2008-02-01", "2010-01-31"],
+            Senior: ["2007-02-01", "2010-01-31"],
             Intermediate: ["2010-02-01", "2013-01-31"],
             Junior: ["2013-02-01", "2016-01-31"]
         };

@@ -438,6 +438,55 @@
             }
 
         }
+
+        /* Rules & Regulations Button */
+        .ninnada-rules-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin: 1rem 0 1.8rem;
+            padding: 0.9rem 2rem;
+
+            border-radius: 18px;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+
+            color: #facc15;
+            font-family: "Montserrat", sans-serif;
+            font-weight: 700;
+            text-decoration: none;
+            letter-spacing: 1px;
+
+            transition: all .3s ease;
+            box-shadow:
+                0 8px 32px rgba(0, 0, 0, .35),
+                0 0 18px rgba(250, 204, 21, .08);
+        }
+
+        .ninnada-rules-btn:hover {
+            transform: translateY(-3px);
+            background: rgba(255, 255, 255, .12);
+            border-color: rgba(250, 204, 21, .45);
+            color: #ffe45c;
+            box-shadow:
+                0 12px 35px rgba(0, 0, 0, .4),
+                0 0 22px rgba(250, 204, 21, .25);
+        }
+
+        .ninnada-rules-btn:active {
+            transform: scale(.98);
+        }
+
+        @media (max-width:480px) {
+            .ninnada-rules-btn {
+                width: min(100%, 330px);
+                padding: 0.9rem 1rem;
+                font-size: .95rem;
+            }
+        }
     </style>
     <link rel="icon" href="/favicon.ico" sizes="any">
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
@@ -446,6 +495,7 @@
     <link rel="manifest" href="/site.webmanifest">
     <link rel="icon" type="image/png" sizes="192x192" href="/android-chrome-192x192.png">
     <link rel="icon" type="image/png" sizes="512x512" href="/android-chrome-512x512.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 </head>
 
 <body>
@@ -504,7 +554,6 @@
                                     Magazine</a></li>
                         </ul>
                     </li>
-                    <li class="nav-item"><a href="#" class="nav-link" data-tab="news">News</a></li>
                     <li class="nav-item"><a href="#" onclick="showTab('contact')" class="nav-link"
                             data-tab="contact">Contact</a></li>
                 </ul>
@@ -555,6 +604,13 @@
                     <a href="registration.html"
                         class="ninnada-register-btn rounded-full font-bold ninnada-btn-glow">Register
                         Now</a>
+
+                    <!-- Rules & Regulations Button
+                    <a href="YOUR_GOOGLE_DRIVE_LINK" target="_blank" rel="noopener noreferrer"
+                        class="ninnada-rules-btn">
+                        <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                        <span class="ml-2.5">Rules & Regulations</span>
+                    </a> -->
 
                     <div
                         class="ninnada-info-card ninnada-info-card-inner rounded-xl text-yellow-400 font-bold tracking-wider uppercase font-[Montserrat]">
@@ -696,6 +752,16 @@
                                 <h3
                                     class="text-lg md:text-xl font-bold text-yellow-400 mb-3 font-[Montserrat] tracking-wide">
                                     Photography</h3>
+                                <p class="text-gray-400 text-sm leading-relaxed font-[Lato]">
+                                    <span>Languages: N/A</span><br>
+                                    <span>Age Category: Open</span>
+                                </p>
+                            </div>
+                            <!-- Category 9 -->
+                            <div class="category-box rounded-xl p-5 md:p-6 flex flex-col">
+                                <h3
+                                    class="text-lg md:text-xl font-bold text-yellow-400 mb-3 font-[Montserrat] tracking-wide">
+                                    Videography</h3>
                                 <p class="text-gray-400 text-sm leading-relaxed font-[Lato]">
                                     <span>Languages: N/A</span><br>
                                     <span>Age Category: Open</span>

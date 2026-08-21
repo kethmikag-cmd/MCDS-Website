@@ -1,0 +1,12 @@
+User-agent: *
+
+Disallow: /login
+Disallow: /login.html
+Disallow: /admin
+Disallow: /admin.html
+Disallow: /contacts
+Disallow: /contacts.html
+Disallow: /dashboard
+Disallow: /dashboard.html
+
+Sitemap: https://mcdssc.lk/sitemap.xml

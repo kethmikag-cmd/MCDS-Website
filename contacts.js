@@ -38,6 +38,7 @@ let selectedExportColumns = {
 let loginContainer, dashboardContainer, logoutBtn;
 let loginForm, loginEmail, loginPassword, loginError, loginSubmitBtn;
 let filterSearchInput, btnClearSearch, btnRefresh, btnOpenExport;
+let dateOrderFilter
 let contactsTbody, contactsMobileCards;
 let currentPageNum, paginationInfo, btnPrev, btnNext, pageIndicator;
 let metricTotalSchools, metricFilteredSchools;
@@ -62,6 +63,7 @@ function bindDOM() {
     loginSubmitBtn = document.getElementById('login-submit-btn');
 
     filterSearchInput = document.getElementById('filter-search');
+    dateOrderFilter = document.getElementById('filter-date-order');
     btnClearSearch = document.getElementById('btn-clear-search');
     btnRefresh = document.getElementById('btn-refresh');
     btnOpenExport = document.getElementById('btn-open-export');
@@ -108,6 +110,23 @@ function setupEventListeners() {
                 btnClearSearch.classList.add('hidden');
             }
             currentPage = 1;
+            applyFiltersAndRender();
+        });
+    }
+
+    if (dateOrderFilter) {
+        dateOrderFilter.addEventListener('change', () => {
+            console.log("Date filter:", dateOrderFilter.value);
+            currentPage = 1;
+
+            if (dateOrderFilter.value === "none") {
+                currentSortKey = "schoolName";
+                currentSortOrder = "asc";
+            } else {
+                currentSortKey = "createdAt";
+            }
+
+            updateSortIcons();
             applyFiltersAndRender();
         });
     }
@@ -292,7 +311,8 @@ async function fetchSchoolsData(isRefresh = false) {
                 coordinatorName: (data.coordinatorName || '').trim(),
                 coordinatorPhone: (data.coordinatorPhone || '').trim(),
                 coordinatorEmail: (data.coordinatorEmail || '').trim(),
-                requiresInvitation: data.requiresInvitation ? "Yes" : "No"
+                requiresInvitation: data.requiresInvitation ? "Yes" : "No",
+                createdAt: data.createdAt
             });
         });
 
@@ -365,12 +385,41 @@ function applyFiltersAndRender(isRefresh = false) {
 }
 
 function sortFilteredData() {
-    filteredSchoolsData.sort((a, b) => {
-        let valA = (a[currentSortKey] || '').toLowerCase();
-        let valB = (b[currentSortKey] || '').toLowerCase();
 
-        if (valA < valB) return currentSortOrder === 'asc' ? -1 : 1;
-        if (valA > valB) return currentSortOrder === 'asc' ? 1 : -1;
+    // 1. Date dropdown takes priority
+    const dateMode = dateOrderFilter?.value || "";
+
+    if (dateMode === "newest" || dateMode === "oldest") {
+
+        filteredSchoolsData.sort((a, b) => {
+            const aTime = a.createdAt?.toMillis?.() || 0;
+            const bTime = b.createdAt?.toMillis?.() || 0;
+
+            return dateMode === "newest"
+                ? bTime - aTime
+                : aTime - bTime;
+        });
+
+        return;
+    }
+
+    // 2. Otherwise use the selected table header
+    filteredSchoolsData.sort((a, b) => {
+
+        let valA = a[currentSortKey];
+        let valB = b[currentSortKey];
+
+        // Handle empty values
+        if (valA == null) valA = "";
+        if (valB == null) valB = "";
+
+        // Case-insensitive string sorting
+        if (typeof valA === "string") valA = valA.toLowerCase();
+        if (typeof valB === "string") valB = valB.toLowerCase();
+
+        if (valA < valB) return currentSortOrder === "asc" ? -1 : 1;
+        if (valA > valB) return currentSortOrder === "asc" ? 1 : -1;
+
         return 0;
     });
 }
